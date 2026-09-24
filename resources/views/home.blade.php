@@ -1,24 +1,417 @@
-<x-layouts.app title="Beranda">
-    <div class="bg-maroon/10 rounded-lg p-10 mb-10">
-        <h1 class="font-serif text-3xl md:text-4xl text-maroon max-w-md mb-3">Tampil Stylish, Jadi Dirimu Sendiri</h1>
-        <p class="text-sm text-gray-600 max-w-sm mb-5">Temukan koleksi fashion pilihan untuk melengkapi gaya setiap harimu.</p>
-        <a href="{{ route('products.index') }}" class="inline-block bg-maroon text-white text-sm px-5 py-2.5 rounded-md hover:bg-maroon-dark">Belanja Sekarang</a>
-    </div>
+@extends('layouts.app')
 
-    <h2 class="font-serif text-xl text-gray-800 mb-1">Produk Terbaru</h2>
-    <p class="text-xs text-gray-400 mb-5">{{ $products->count() }} produk ditemukan</p>
+@section('content')
 
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-        @foreach ($products as $product)
-            <div class="bg-white rounded-lg overflow-hidden border border-gray-100">
-                <img src="{{ $product->image ?? 'https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=400' }}" class="w-full h-40 object-cover">
-                <div class="p-3">
-                    <p class="text-xs text-gray-400">{{ $product->category }}</p>
-                    <p class="text-sm text-gray-800 line-clamp-2 h-10">{{ $product->name }}</p>
-                    <p class="text-sm font-medium text-gray-800 mt-1">{{ $product->formatted_price }}</p>
-                    <a href="{{ route('products.show', $product) }}" class="block text-center mt-2 text-xs bg-maroon text-white rounded-md py-1.5 hover:bg-maroon-dark">Lihat Detail</a>
-                </div>
+{{-- ========================= --}}
+{{-- HERO BANNER --}}
+{{-- ========================= --}}
+<section class="bg-[#faf5ef]">
+
+    <div class="max-w-[1400px] mx-auto px-6 pt-5">
+
+        <div
+            class="relative h-[380px] overflow-hidden
+                   border border-[#ead8d0]
+                   bg-cover bg-center"
+            style="background-image: url('{{ asset('images/banner.jpeg') }}');"
+        >
+
+            {{-- Overlay tipis --}}
+            <div class="absolute inset-0 bg-white/20"></div>
+
+
+            {{-- Ornamen kiri --}}
+            <div class="absolute left-8 top-8 text-[#b98585] text-2xl">
+                ✦
             </div>
-        @endforeach
+
+
+            {{-- TEXT HERO --}}
+            <div
+                class="relative z-10 flex h-full
+                       max-w-[650px] flex-col
+                       justify-center px-12"
+            >
+
+                <h1
+                    class="font-serif text-4xl
+                           font-bold leading-tight
+                           text-[#211919] md:text-5xl"
+                >
+                    Tampil Stylish, Jadi
+                    <br>
+                    Dirimu Sendiri
+                </h1>
+
+
+                <p
+                    class="mt-4 max-w-[500px]
+                           font-serif text-base
+                           font-semibold leading-7
+                           text-[#302727]"
+                >
+                    Temukan koleksi fashion pilihan untuk
+                    melengkapi gaya setiap harimu.
+                </p>
+
+
+                <a
+                    href="/produk"
+                    class="mt-7 w-fit rounded-md
+                           bg-[#955f60]
+                           px-6 py-2.5
+                           font-serif font-semibold
+                           text-white
+                           transition hover:bg-[#7d4d4e]"
+                >
+                    Belanja Sekarang
+                </a>
+
+            </div>
+
+        </div>
+
     </div>
-</x-layouts.app>
+
+</section>
+
+
+
+{{-- ========================= --}}
+{{-- PRODUK TERBARU --}}
+{{-- ========================= --}}
+<section class="bg-[#faf5ef]">
+
+    <div class="max-w-[1400px] mx-auto px-8 py-5">
+
+
+        {{-- JUDUL --}}
+        <div class="mb-3">
+
+            <h2
+                class="font-serif text-3xl
+                       font-bold text-[#211919]"
+            >
+                Produk Terbaru
+            </h2>
+
+            <p
+                class="mt-1 font-serif
+                       text-sm font-semibold
+                       text-[#302727]"
+            >
+                5 produk ditemukan
+            </p>
+
+        </div>
+
+
+        {{-- PRODUK --}}
+        <div
+            class="grid grid-cols-1 gap-6
+                   sm:grid-cols-2
+                   lg:grid-cols-5"
+        >
+
+
+            {{-- PRODUK 1 --}}
+            <div
+                class="overflow-hidden rounded-xl
+                       bg-[#f0eeeb] shadow-sm"
+            >
+
+                <div class="h-[220px] overflow-hidden">
+
+                    <img
+                        src="{{ asset('images/produk1.jpg') }}"
+                        alt="Femes Abelia Blouse"
+                        class="h-full w-full object-cover
+                               transition duration-300
+                               hover:scale-105"
+                    >
+
+                </div>
+
+
+                <div class="p-3">
+
+                    <p class="text-[10px] font-semibold text-gray-500">
+                        Atasan
+                    </p>
+
+                    <h3
+                        class="mt-1 min-h-[40px]
+                               font-serif text-xs
+                               font-bold leading-4
+                               text-[#292323]"
+                    >
+                        Femes - Abelia Blouse Top Kemeja
+                        Wanita Korean Style
+                    </h3>
+
+                    <p
+                        class="mt-2 font-serif
+                               text-sm font-bold"
+                    >
+                        Rp 162.000,00
+                    </p>
+
+                    <a
+                        href="/produk/1"
+                        class="mt-2 block rounded-full
+                               bg-[#921f45]
+                               py-1.5 text-center
+                               text-[11px] font-bold
+                               text-white
+                               hover:bg-[#741735]"
+                    >
+                        Lihat Detail
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- PRODUK 2 --}}
+            <div
+                class="overflow-hidden rounded-xl
+                       bg-[#f0eeeb] shadow-sm"
+            >
+
+                <div class="h-[220px] overflow-hidden">
+
+                    <img
+                        src="{{ asset('images/produk2.jpg') }}"
+                        alt="Blouse Fashion Wanita"
+                        class="h-full w-full object-cover
+                               transition duration-300
+                               hover:scale-105"
+                    >
+
+                </div>
+
+
+                <div class="p-3">
+
+                    <p class="text-[10px] font-semibold text-gray-500">
+                        Atasan
+                    </p>
+
+                    <h3
+                        class="mt-1 min-h-[40px]
+                               font-serif text-xs
+                               font-bold leading-4"
+                    >
+                        Blouse Fashion Wanita Lengan
+                        Panjang Korean Looks
+                    </h3>
+
+                    <p
+                        class="mt-2 font-serif
+                               text-sm font-bold"
+                    >
+                        Rp 109.000,00
+                    </p>
+
+                    <a
+                        href="/produk/2"
+                        class="mt-2 block rounded-full
+                               bg-[#921f45]
+                               py-1.5 text-center
+                               text-[11px] font-bold
+                               text-white
+                               hover:bg-[#741735]"
+                    >
+                        Lihat Detail
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- PRODUK 3 --}}
+            <div
+                class="overflow-hidden rounded-xl
+                       bg-[#f0eeeb] shadow-sm"
+            >
+
+                <div class="h-[220px] overflow-hidden">
+
+                    <img
+                        src="{{ asset('images/produk3.jpg') }}"
+                        alt="MYCASSI Sweater"
+                        class="h-full w-full object-cover
+                               transition duration-300
+                               hover:scale-105"
+                    >
+
+                </div>
+
+
+                <div class="p-3">
+
+                    <p class="text-[10px] font-semibold text-gray-500">
+                        Atasan
+                    </p>
+
+                    <h3
+                        class="mt-1 min-h-[40px]
+                               font-serif text-xs
+                               font-bold leading-4"
+                    >
+                        MYCASSI Sweater Wanita Plaid
+                        Longsleeve Polo Sweatshirt Preppy
+                    </h3>
+
+                    <p
+                        class="mt-2 font-serif
+                               text-sm font-bold"
+                    >
+                        Rp 182.360,00
+                    </p>
+
+                    <a
+                        href="/produk/3"
+                        class="mt-2 block rounded-full
+                               bg-[#921f45]
+                               py-1.5 text-center
+                               text-[11px] font-bold
+                               text-white
+                               hover:bg-[#741735]"
+                    >
+                        Lihat Detail
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- PRODUK 4 --}}
+            <div
+                class="overflow-hidden rounded-xl
+                       bg-[#f0eeeb] shadow-sm"
+            >
+
+                <div class="h-[220px] overflow-hidden">
+
+                    <img
+                        src="{{ asset('images/produk4.jpg') }}"
+                        alt="Namira Blouse"
+                        class="h-full w-full object-cover
+                               transition duration-300
+                               hover:scale-105"
+                    >
+
+                </div>
+
+
+                <div class="p-3">
+
+                    <p class="text-[10px] font-semibold text-gray-500">
+                        Atasan
+                    </p>
+
+                    <h3
+                        class="mt-1 min-h-[40px]
+                               font-serif text-xs
+                               font-bold leading-4"
+                    >
+                        Namira Blouse Kemeja Katun Mix
+                        Stripe dan Renda
+                    </h3>
+
+                    <p
+                        class="mt-2 font-serif
+                               text-sm font-bold"
+                    >
+                        Rp 99.900,00
+                    </p>
+
+                    <a
+                        href="/produk/4"
+                        class="mt-2 block rounded-full
+                               bg-[#921f45]
+                               py-1.5 text-center
+                               text-[11px] font-bold
+                               text-white
+                               hover:bg-[#741735]"
+                    >
+                        Lihat Detail
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- PRODUK 5 --}}
+            <div
+                class="overflow-hidden rounded-xl
+                       bg-[#f0eeeb] shadow-sm"
+            >
+
+                <div class="h-[220px] overflow-hidden">
+
+                    <img
+                        src="{{ asset('images/produk5.jpg') }}"
+                        alt="Blouse Wanita"
+                        class="h-full w-full object-cover
+                               transition duration-300
+                               hover:scale-105"
+                    >
+
+                </div>
+
+
+                <div class="p-3">
+
+                    <p class="text-[10px] font-semibold text-gray-500">
+                        Atasan
+                    </p>
+
+                    <h3
+                        class="mt-1 min-h-[40px]
+                               font-serif text-xs
+                               font-bold leading-4"
+                    >
+                        Blouse Wanita Kemeja Wanita
+                        Korean Style Casual
+                    </h3>
+
+                    <p
+                        class="mt-2 font-serif
+                               text-sm font-bold"
+                    >
+                        Rp 89.000,00
+                    </p>
+
+                    <a
+                        href="/produk/5"
+                        class="mt-2 block rounded-full
+                               bg-[#921f45]
+                               py-1.5 text-center
+                               text-[11px] font-bold
+                               text-white
+                               hover:bg-[#741735]"
+                    >
+                        Lihat Detail
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+@endsection
