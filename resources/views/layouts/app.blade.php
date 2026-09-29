@@ -7,93 +7,74 @@
 
     <title>{{ $title ?? 'Lune Attiré' }}</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
-    <nav class="border-b bg-white">
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
 
-    <div class="max-w-7xl mx-auto px-6 py-5">
+            <div class="flex items-center justify-between">
 
-        <div class="flex items-center justify-between">
-
-            <!-- LOGO -->
-            <a href="/" class="text-2xl font-bold tracking-wide">
-                Lune Attiré
-            </a>
-
-
-            <!-- MENU -->
-            <div class="hidden md:flex items-center gap-8">
-
-                <a
-                    href="/"
-                    class="text-sm hover:text-pink-500"
-                >
-                    Beranda
+                <!-- Logo -->
+                <a href="/" class="text-2xl font-bold tracking-wide">
+                    Lune Attiré
                 </a>
 
-                <a
-                    href="/produk"
-                    class="text-sm hover:text-pink-500"
-                >
-                    Produk
-                </a>
+                <!-- Menu -->
+                <div class="flex gap-8 text-sm">
 
-                <a
-                    href="/pesanan"
-                    class="text-sm hover:text-pink-500"
-                >
-                    Pesanan
-                </a>
+                    <a href="/" class="hover:text-pink-500">
+                        Beranda
+                    </a>
 
-            </div>
+                    <a href="/produk" class="hover:text-pink-500">
+                        Produk
+                    </a>
 
+                    <a href="/pesanan" class="hover:text-pink-500">
+                        Pesanan
+                    </a>
 
-            <!-- MENU KANAN -->
-            <div class="flex items-center gap-3">
+                    <a href="/keranjang" class="hover:text-pink-500">
+                        Keranjang
+                    </a>
 
-                <a
-                    href="/keranjang"
-                    class="border px-4 py-2 rounded-lg text-sm hover:bg-gray-100"
-                >
-                    Keranjang
-                </a>
+                </div>
 
-                <a
-                    href="/profil"
-                    class="border border-gray-800 px-4 py-2 rounded-lg text-sm hover:bg-gray-800 hover:text-white"
-                >
-                    Profil
+                <!-- Login -->
+                <a href="/login"
+                   class="border px-5 py-2 rounded-lg hover:bg-black hover:text-white">
+                    Login
                 </a>
 
             </div>
 
         </div>
+    </nav>
 
-    </div>
 
-</nav>
-
-    <!-- ISI HALAMAN -->
-    @yield('content')
+    <!-- CONTENT -->
+    <main>
+        @yield('content')
+    </main>
 
 
     <!-- FOOTER -->
-    <footer class="border-t mt-20">
-        <div class="max-w-7xl mx-auto px-6 py-10 text-center">
+    <footer class="bg-black text-white mt-20">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-center">
 
-            <h2 class="font-bold text-xl">
+            <h2 class="text-xl font-bold">
                 Lune Attiré
             </h2>
 
-            <p class="text-gray-500 text-sm mt-2">
-                Tampil Stylish, Jadi Dirimu Sendiri
+            <p class="text-gray-400 mt-2">
+                Fashion pilihan untuk gaya setiap harimu.
             </p>
 
-            <p class="text-gray-400 text-xs mt-5">
+            <p class="text-gray-500 text-sm mt-5">
                 © 2026 Lune Attiré Official Store
             </p>
 
