@@ -3,14 +3,35 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    protected $fillable = ['name','slug','category','description','price','image','stock','sizes','colors'];
-    protected $casts = ['sizes' => 'array', 'colors' => 'array'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'category',
+        'description',
+        'price',
+        'image',
+        'stock',
+        'sizes',
+        'colors',
+    ];
 
-    public function getFormattedPriceAttribute(): string
+    protected $casts = [
+        'sizes' => 'array',
+        'colors' => 'array',
+    ];
+
+    protected static function boot()
     {
-        return 'Rp ' . number_format($this->price, 0, ',', '.') . ',00';
+        parent::boot();
+
+        static::creating(function ($product) {
+            if (empty($product->slug)) {
+                $product->slug = Str::slug($product->name);
+            }
+        });
     }
 }
