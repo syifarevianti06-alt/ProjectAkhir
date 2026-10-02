@@ -1,4 +1,4 @@
-@extends('layout.penjual')
+@extends('layouts.penjual')
 
 @section('title', 'Tambah Produk')
 @section('page-title', 'Tambah Produk')

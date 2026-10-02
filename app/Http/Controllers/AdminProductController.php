@@ -6,27 +6,68 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
-class ProductController extends Controller
+class AdminProductController extends Controller
 {
-    // Menampilkan semua produk
-    public function index()
+    /**
+     * Daftar produk
+     */
+    public function index(Request $request)
     {
-        $products = Product::latest()->get();
+        $query = Product::query();
 
-        return view('penjual.produk', compact('products'));
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('category', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Filter kategori
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        $products = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        // Statistik
+        $totalProduk = Product::count();
+
+        $totalStok = Product::sum('stock');
+
+        $stokMenipis = Product::where('stock', '<=', 10)->count();
+
+        $kategori = Product::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+
+        return view('admin.produk', compact(
+            'products',
+            'totalProduk',
+            'totalStok',
+            'stokMenipis',
+            'kategori'
+        ));
     }
 
-
-    // Halaman tambah produk
+    /**
+     * Form tambah produk
+     */
     public function create()
     {
-        return view('penjual.tambah-produk');
+        return view('admin.produk-create');
     }
 
-
-    // Menyimpan produk baru
+    /**
+     * Simpan produk
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -40,145 +81,130 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Upload gambar
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')
+            $data['image'] = $request
+                ->file('image')
                 ->store('products', 'public');
         }
 
+        // Slug otomatis
         $data['slug'] = Str::slug($data['name']);
 
+        // Sizes dari string menjadi array
         if (!empty($data['sizes'])) {
             $data['sizes'] = array_map(
                 'trim',
                 explode(',', $data['sizes'])
             );
+        } else {
+            $data['sizes'] = null;
         }
 
+        // Colors dari string menjadi array
         if (!empty($data['colors'])) {
             $data['colors'] = array_map(
                 'trim',
                 explode(',', $data['colors'])
             );
+        } else {
+            $data['colors'] = null;
         }
 
         Product::create($data);
 
         return redirect()
-            ->route('penjual.produk')
+            ->route('admin.produk')
             ->with('success', 'Produk berhasil ditambahkan.');
     }
 
-
-    // Halaman edit produk
+    /**
+     * Form edit produk
+     */
     public function edit(Product $product)
     {
-        return view('penjual.edit-produk', compact('product'));
+        return view('admin.produk-edit', compact('product'));
     }
 
-
-    // Memperbarui produk
+    /**
+     * Update produk
+     */
     public function update(Request $request, Product $product)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-
             'category' => 'required|string|max:255',
-
             'price' => 'required|numeric|min:0',
-
             'stock' => 'required|integer|min:0',
-
             'description' => 'nullable|string',
-
             'sizes' => 'nullable|string',
-
             'colors' => 'nullable|string',
-
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-
-        // Update gambar jika ada gambar baru
-        if ($request->hasFile('image')) {
-
-            if (
-                $product->image &&
-                Storage::disk('public')->exists($product->image)
-            ) {
-                Storage::disk('public')->delete($product->image);
-            }
-
-            $data['image'] = $request->file('image')
-                ->store('products', 'public');
-
-        } else {
-
-            // Kalau tidak upload gambar baru,
-            // gunakan gambar lama
-            $data['image'] = $product->image;
-        }
-
-
-        // Slug mengikuti nama produk
+        // Slug
         $data['slug'] = Str::slug($data['name']);
 
-
-        // Ubah ukuran menjadi array
+        // Sizes
         if (!empty($data['sizes'])) {
-
             $data['sizes'] = array_map(
                 'trim',
                 explode(',', $data['sizes'])
             );
-
         } else {
-
             $data['sizes'] = null;
-
         }
 
-
-        // Ubah warna menjadi array
+        // Colors
         if (!empty($data['colors'])) {
-
             $data['colors'] = array_map(
                 'trim',
                 explode(',', $data['colors'])
             );
-
         } else {
-
             $data['colors'] = null;
-
         }
 
+        // Jika upload gambar baru
+        if ($request->hasFile('image')) {
+
+            // Hapus gambar lama
+            if ($product->image) {
+                Storage::disk('public')->delete(
+                    $product->image
+                );
+            }
+
+            // Simpan gambar baru
+            $data['image'] = $request
+                ->file('image')
+                ->store('products', 'public');
+        }
 
         $product->update($data);
 
-
         return redirect()
-            ->route('penjual.produk')
+            ->route('admin.produk')
             ->with('success', 'Produk berhasil diperbarui.');
     }
 
-
-    // Menghapus produk
+    /**
+     * Hapus produk
+     */
     public function destroy(Product $product)
     {
-        // Hapus gambar produk dari storage
-        if (
-            $product->image &&
-            Storage::disk('public')->exists($product->image)
-        ) {
-            Storage::disk('public')->delete($product->image);
+        // Hapus gambar
+        if ($product->image) {
+            Storage::disk('public')->delete(
+                $product->image
+            );
         }
 
-
+        // Hapus produk
         $product->delete();
 
-
         return redirect()
-            ->route('penjual.produk')
+            ->route('admin.produk')
             ->with('success', 'Produk berhasil dihapus.');
     }
 }

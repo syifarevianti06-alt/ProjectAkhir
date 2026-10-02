@@ -5,27 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PenjualController extends Controller
 {
     public function dashboard()
     {
-        /*
-        |--------------------------------------------------------------------------
-        | STATISTIK PESANAN
-        |--------------------------------------------------------------------------
-        */
+        // ==========================================
+        // STATUS PESANAN YANG DIHITUNG SEBAGAI PENJUALAN
+        // ==========================================
+
+        $statusSukses = [
+            'paid',
+            'processing',
+            'shipped',
+            'completed',
+            'selesai',
+        ];
+
+
+        // ==========================================
+        // STATISTIK PESANAN
+        // ==========================================
 
         // Penjualan hari ini
         $penjualanHariIni = Order::whereDate('created_at', today())
-            ->whereIn('status', [
-                'paid',
-                'processing',
-                'shipped',
-                'completed',
-                'selesai',
-            ])
+            ->whereIn('status', $statusSukses)
             ->sum('total');
+
 
         // Pesanan baru
         $pesananBaru = Order::whereIn('status', [
@@ -33,11 +40,13 @@ class PenjualController extends Controller
             'baru',
         ])->count();
 
+
         // Pesanan diproses
         $pesananDiproses = Order::whereIn('status', [
             'processing',
             'diproses',
         ])->count();
+
 
         // Pesanan selesai
         $pesananSelesai = Order::whereIn('status', [
@@ -46,30 +55,25 @@ class PenjualController extends Controller
         ])->count();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | DATA PRODUK
-        |--------------------------------------------------------------------------
-        */
+        // ==========================================
+        // DATA PRODUK
+        // ==========================================
 
-        // Jumlah produk
         $totalProduk = Product::count();
 
-        // Total stok semua produk
         $totalStok = Product::sum('stock');
 
-        // Produk yang stoknya 10 atau kurang
+
+        // Produk dengan stok menipis
         $stokMenipis = Product::where('stock', '<=', 10)
             ->orderBy('stock', 'asc')
             ->take(5)
             ->get();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | PESANAN TERBARU
-        |--------------------------------------------------------------------------
-        */
+        // ==========================================
+        // PESANAN TERBARU
+        // ==========================================
 
         $pesananTerbaru = Order::with('user')
             ->latest()
@@ -77,11 +81,9 @@ class PenjualController extends Controller
             ->get();
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | DATA GRAFIK PENJUALAN 7 HARI
-        |--------------------------------------------------------------------------
-        */
+        // ==========================================
+        // GRAFIK PENJUALAN 7 HARI TERAKHIR
+        // ==========================================
 
         $grafikPenjualan = [];
 
@@ -90,27 +92,19 @@ class PenjualController extends Controller
             $tanggal = Carbon::today()->subDays($i);
 
             $total = Order::whereDate('created_at', $tanggal)
-                ->whereIn('status', [
-                    'paid',
-                    'processing',
-                    'shipped',
-                    'completed',
-                    'selesai',
-                ])
+                ->whereIn('status', $statusSukses)
                 ->sum('total');
 
             $grafikPenjualan[] = [
                 'tanggal' => $tanggal->format('d M'),
-                'total' => $total,
+                'total' => (float) $total,
             ];
         }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | PENJUALAN BERDASARKAN KATEGORI
-        |--------------------------------------------------------------------------
-        */
+        // ==========================================
+        // PENJUALAN BERDASARKAN KATEGORI
+        // ==========================================
 
         $kategoriPenjualan = Product::query()
             ->join(
@@ -125,28 +119,22 @@ class PenjualController extends Controller
                 '=',
                 'order_items.order_id'
             )
-            ->whereIn('orders.status', [
-                'paid',
-                'processing',
-                'shipped',
-                'completed',
-                'selesai',
-            ])
-            ->selectRaw(
-                'products.category, SUM(order_items.quantity) as jumlah'
+            ->whereIn('orders.status', $statusSukses)
+            ->select(
+                'products.category',
+                DB::raw('SUM(order_items.quantity) as jumlah')
             )
             ->groupBy('products.category')
             ->orderByDesc('jumlah')
             ->get();
 
+
         $totalTerjual = $kategoriPenjualan->sum('jumlah');
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | KIRIM DATA KE VIEW
-        |--------------------------------------------------------------------------
-        */
+        // ==========================================
+        // KIRIM DATA KE DASHBOARD PENJUAL
+        // ==========================================
 
         return view('penjual.dashboard', compact(
             'penjualanHariIni',

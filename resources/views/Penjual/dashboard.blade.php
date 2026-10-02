@@ -1,4 +1,4 @@
-@extends('layout.penjual')
+@extends('layouts.penjual')
 
 @section('title', 'Dashboard Penjual')
 
@@ -27,7 +27,6 @@
 
         {{-- PENJUALAN HARI INI --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm">
-
             <div class="flex items-center justify-between">
 
                 <div>
@@ -57,13 +56,11 @@
                 </div>
 
             </div>
-
         </div>
 
 
         {{-- PESANAN BARU --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm">
-
             <div class="flex items-center justify-between">
 
                 <div>
@@ -93,13 +90,11 @@
                 </div>
 
             </div>
-
         </div>
 
 
-        {{-- DIPROSES --}}
+        {{-- PESANAN DIPROSES --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm">
-
             <div class="flex items-center justify-between">
 
                 <div>
@@ -129,13 +124,11 @@
                 </div>
 
             </div>
-
         </div>
 
 
-        {{-- SELESAI --}}
+        {{-- PESANAN SELESAI --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm">
-
             <div class="flex items-center justify-between">
 
                 <div>
@@ -165,7 +158,6 @@
                 </div>
 
             </div>
-
         </div>
 
     </div>
@@ -176,8 +168,7 @@
     ========================================================== --}}
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
 
-
-        {{-- GRAFIK PENJUALAN --}}
+        {{-- GRAFIK --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm xl:col-span-2">
 
             <div class="mb-6">
@@ -192,8 +183,7 @@
 
 
             @php
-                $nilaiMaksimal = collect($grafikPenjualan)
-                    ->max('total');
+                $nilaiMaksimal = collect($grafikPenjualan)->max('total');
 
                 if ($nilaiMaksimal <= 0) {
                     $nilaiMaksimal = 1;
@@ -218,7 +208,6 @@
                                 style="height: {{ max($tinggi, 3) }}%;"
                             ></div>
 
-                            {{-- TOOLTIP --}}
                             <div
                                 class="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-lg bg-gray-800 px-3 py-1.5 text-xs text-white group-hover:block"
                             >
@@ -327,7 +316,6 @@
     ========================================================== --}}
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
 
-
         {{-- PESANAN TERBARU --}}
         <div class="overflow-hidden rounded-2xl bg-white shadow-sm xl:col-span-2">
 
@@ -395,6 +383,8 @@
                                         'pending',
                                         'baru' => 'bg-yellow-50 text-yellow-700',
 
+                                        'paid' => 'bg-green-50 text-green-700',
+
                                         'processing',
                                         'diproses' => 'bg-blue-50 text-blue-700',
 
@@ -414,6 +404,7 @@
 
                                 <tr class="hover:bg-gray-50">
 
+                                    {{-- NOMOR PESANAN --}}
                                     <td class="px-6 py-4">
 
                                         <span class="text-sm font-medium text-gray-800">
@@ -423,15 +414,17 @@
                                     </td>
 
 
+                                    {{-- PELANGGAN --}}
                                     <td class="px-6 py-4">
 
                                         <span class="text-sm text-gray-600">
-                                            {{ $order->user->name ?? $order->address_name ?? 'Pelanggan' }}
+                                            {{ $order->user?->name ?? $order->address_name ?? 'Pelanggan' }}
                                         </span>
 
                                     </td>
 
 
+                                    {{-- TOTAL --}}
                                     <td class="px-6 py-4">
 
                                         <span class="text-sm font-medium text-gray-800">
@@ -441,6 +434,7 @@
                                     </td>
 
 
+                                    {{-- STATUS --}}
                                     <td class="px-6 py-4">
 
                                         <span class="inline-flex rounded-full px-3 py-1 text-xs font-medium {{ $statusClass }}">
@@ -513,8 +507,7 @@
 
                             <div class="ml-4 flex-shrink-0 text-right">
 
-                                <p
-                                    class="text-sm font-semibold
+                                <p class="text-sm font-semibold
                                     {{ $product->stock <= 5
                                         ? 'text-red-500'
                                         : 'text-orange-500' }}"
@@ -556,6 +549,7 @@
     ========================================================== --}}
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
+        {{-- TOTAL PRODUK --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm">
 
             <p class="text-sm text-gray-400">
@@ -573,6 +567,7 @@
         </div>
 
 
+        {{-- TOTAL STOK --}}
         <div class="rounded-2xl bg-white p-6 shadow-sm">
 
             <p class="text-sm text-gray-400">
