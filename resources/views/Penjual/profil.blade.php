@@ -81,7 +81,7 @@
 
     {{-- FORM INFORMASI --}}
     <form
-        action="{{ route('penjual.profil.update') }}"
+        action="{{ route('penjual.profil') }}"
         method="POST"
     >
 
@@ -273,7 +273,7 @@
     </p>
 
     <form
-        action="{{ route('penjual.profil.password') }}"
+        action="{{ route('penjual.profil') }}"
         method="POST"
         class="mt-6"
     >

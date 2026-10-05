@@ -1,506 +1,451 @@
 @extends('layouts.app')
 
+@section('title', 'Produk')
+
 @section('content')
 
-<div class="min-h-screen bg-[#f8f1eb]">
+<div class="min-h-screen bg-[#fbf5ef]">
 
-    <div class="max-w-[1180px] mx-auto px-6 py-10">
+    <div class="max-w-6xl mx-auto px-6 py-10">
 
-        <!-- JUDUL -->
-        <div class="mb-5">
+        {{-- HEADER --}}
+        <div class="mb-8">
 
-            <h1 class="font-serif text-3xl font-bold text-[#302424]">
+            <h1 class="text-3xl font-serif text-[#332326]">
                 Katalog Produk
             </h1>
 
-            <p class="mt-2 text-sm text-[#9b8585]">
+            <p class="text-sm text-gray-500 mt-2">
                 Temukan produk fashion pilihan Lune Attiré
             </p>
 
         </div>
 
 
-        <!-- SEARCH + FILTER -->
-        <div class="flex items-center gap-2 mb-5">
+        {{-- SEARCH + KATEGORI --}}
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
 
-            <!-- SEARCH -->
-            <div class="w-[215px] shrink-0">
+            {{-- SEARCH --}}
+            <form
+                action="{{ route('produk.index') }}"
+                method="GET"
+                class="flex-1"
+            >
 
-                <input
-                    type="text"
-                    placeholder="Cari produk...."
-                    class="w-full h-[35px]
-                           rounded-lg
-                           border border-[#e2d5d2]
+                @if(request('category'))
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ request('category') }}"
+                    >
+                @endif
+
+                <div class="relative">
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Cari produk..."
+                        class="w-full bg-white
+                               border border-[#eadfe1]
+                               rounded-xl
+                               px-5 py-3 pr-12
+                               text-sm text-[#332326]
+                               outline-none
+                               focus:border-[#8b2947]"
+                    >
+
+                    <button
+                        type="submit"
+                        class="absolute
+                               right-4
+                               top-1/2
+                               -translate-y-1/2
+                               text-gray-400
+                               hover:text-[#8b2947]"
+                    >
+                        🔍
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            {{-- KATEGORI --}}
+            <form
+                action="{{ route('produk.index') }}"
+                method="GET"
+            >
+
+                {{-- Pertahankan pencarian --}}
+                @if(request('search'))
+
+                    <input
+                        type="hidden"
+                        name="search"
+                        value="{{ request('search') }}"
+                    >
+
+                @endif
+
+
+                <select
+                    name="category"
+                    onchange="this.form.submit()"
+                    class="w-full md:w-52
                            bg-white
-                           px-4
-                           text-xs
-                           text-[#555]
+                           border border-[#eadfe1]
+                           rounded-xl
+                           px-5 py-3
+                           text-sm text-[#332326]
                            outline-none
-                           placeholder:text-[#9b9090]
-                           focus:border-[#8d1f42]"
+                           focus:border-[#8b2947]"
                 >
 
-            </div>
+                    <option value="">
+                        Semua Kategori
+                    </option>
 
 
-            <!-- LABEL KATEGORI -->
-            <span class="text-xs text-[#8e7b7b] whitespace-nowrap">
-                Kategori:
-            </span>
+                    {{-- KATEGORI DARI DATABASE --}}
+                    @foreach($categories as $category)
 
+                        <option
+                            value="{{ $category }}"
+                            {{ request('category') == $category ? 'selected' : '' }}
+                        >
+                            {{ $category }}
+                        </option>
 
-            <!-- FILTER -->
-            <button
-                class="h-[35px] px-5
-                       rounded-full
-                       bg-[#8d1f42]
-                       text-white
-                       text-xs
-                       font-medium">
-                Semua
-            </button>
+                    @endforeach
 
-            <button
-                class="h-[35px] px-5
-                       rounded-full
-                       border border-[#dfd1cf]
-                       bg-white
-                       text-[#655858]
-                       text-xs
-                       hover:bg-[#f4e9e6]">
-                Atasan
-            </button>
+                </select>
 
-            <button
-                class="h-[35px] px-5
-                       rounded-full
-                       border border-[#dfd1cf]
-                       bg-white
-                       text-[#655858]
-                       text-xs
-                       hover:bg-[#f4e9e6]">
-                Bawahan
-            </button>
-
-            <button
-                class="h-[35px] px-5
-                       rounded-full
-                       border border-[#dfd1cf]
-                       bg-white
-                       text-[#655858]
-                       text-xs
-                       hover:bg-[#f4e9e6]">
-                Dress
-            </button>
-
-            <button
-                class="h-[35px] px-5
-                       rounded-full
-                       border border-[#dfd1cf]
-                       bg-white
-                       text-[#655858]
-                       text-xs
-                       hover:bg-[#f4e9e6]">
-                Outer
-            </button>
-
-            <button
-                class="h-[35px] px-5
-                       rounded-full
-                       border border-[#dfd1cf]
-                       bg-white
-                       text-[#655858]
-                       text-xs
-                       hover:bg-[#f4e9e6]">
-                Setelan
-            </button>
-
-
-            <!-- SORTING -->
-            <select
-                class="ml-auto h-[35px]
-                       w-[145px]
-                       rounded-lg
-                       border border-[#dfd5d2]
-                       bg-white
-                       px-3
-                       text-xs
-                       text-[#655858]
-                       outline-none">
-
-                <option>Semua</option>
-                <option>Termurah</option>
-                <option>Termahal</option>
-                <option>Terbaru</option>
-
-            </select>
-
-
-            <select
-                class="h-[35px]
-                       w-[145px]
-                       rounded-lg
-                       border border-[#dfd5d2]
-                       bg-white
-                       px-3
-                       text-xs
-                       text-[#655858]
-                       outline-none">
-
-                <option>Terbaru</option>
-                <option>Terlama</option>
-
-            </select>
+            </form>
 
         </div>
 
 
-        <!-- JUMLAH PRODUK -->
-        <p class="mb-4 ml-2 text-xs text-[#8f7d7d]">
-            8 Produk ditemukan
-        </p>
+        {{-- FILTER AKTIF --}}
+        @if(request('search') || request('category'))
+
+            <div class="flex items-center gap-2 mb-6">
+
+                <span class="text-sm text-gray-500">
+                    Filter:
+                </span>
 
 
-        <!-- GRID PRODUK -->
-        <div class="grid grid-cols-5 gap-5">
+                @if(request('search'))
 
-
-            <!-- PRODUK 1 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk1.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
+                    <span
+                        class="inline-flex items-center
+                               bg-white
+                               border border-[#eadfe1]
+                               rounded-full
+                               px-3 py-1
+                               text-xs
+                               text-[#8b2947]"
                     >
 
-                </div>
+                        "{{ request('search') }}"
 
-                <div class="px-3 pt-2 pb-3">
+                    </span>
 
-                    <h2 class="font-serif text-[11px] font-bold leading-4 text-[#302424]">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
+                @endif
 
-                    <p class="font-serif text-[10px] leading-4 text-[#302424]">
-                        Korean Style Casual
-                    </p>
 
-                    <p class="mt-2 font-serif text-xs font-bold text-[#302424]">
-                        Rp 89.000.00
-                    </p>
+                @if(request('category'))
 
-                    <a
-                        href="/produk/1"
-                        class="mt-2 block rounded-full
-                               bg-[#8d1f42]
-                               py-1.5
-                               text-center
-                               font-serif
-                               text-[10px]
-                               font-bold
-                               text-white
-                               hover:bg-[#741835]"
+                    <span
+                        class="inline-flex items-center
+                               bg-white
+                               border border-[#eadfe1]
+                               rounded-full
+                               px-3 py-1
+                               text-xs
+                               text-[#8b2947]"
                     >
-                        Lihat Detail
-                    </a>
 
-                </div>
+                        {{ request('category') }}
+
+                    </span>
+
+                @endif
+
+
+                <a
+                    href="{{ route('produk.index') }}"
+                    class="ml-auto
+                           text-sm
+                           text-[#8b2947]
+                           hover:underline"
+                >
+                    Reset Filter
+                </a>
 
             </div>
 
+        @endif
 
-            <!-- PRODUK 2 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
 
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
+        {{-- JUMLAH PRODUK --}}
+        <div class="flex items-center justify-between mb-6">
 
-                    <img
-                        src="{{ asset('images/produk2.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
+            <p class="text-sm text-gray-500">
 
-                </div>
+                Menampilkan
 
-                <div class="px-3 pt-2 pb-3">
+                <span class="font-semibold text-[#332326]">
+                    {{ $products->count() }}
+                </span>
 
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
+                produk
 
-                    <p class="font-serif text-[10px] leading-4">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/2"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white
-                               hover:bg-[#741835]"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUK 3 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk3.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
-
-                </div>
-
-                <div class="px-3 pt-2 pb-3">
-
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
-
-                    <p class="font-serif text-[10px] leading-4">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/3"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUK 4 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk4.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
-
-                </div>
-
-                <div class="px-3 pt-2 pb-3">
-
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
-
-                    <p class="font-serif text-[10px] leading-4">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/4"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUK 5 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk5.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
-
-                </div>
-
-                <div class="px-3 pt-2 pb-3">
-
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
-
-                    <p class="font-serif text-[10px] leading-4">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/5"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUK 6 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk6.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
-
-                </div>
-
-                <div class="px-3 pt-2 pb-3">
-
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
-
-                    <p class="font-serif text-[10px]">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/6"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUK 7 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk7.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
-
-                </div>
-
-                <div class="px-3 pt-2 pb-3">
-
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
-
-                    <p class="font-serif text-[10px]">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/7"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUK 8 -->
-            <div class="overflow-hidden rounded-xl bg-[#dcdcdc]">
-
-                <div class="h-[180px] bg-[#e6e6e6] flex items-center justify-center overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk8.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover"
-                    >
-
-                </div>
-
-                <div class="px-3 pt-2 pb-3">
-
-                    <h2 class="font-serif text-[11px] font-bold leading-4">
-                        Blouse Wanita Kemeja Wanita
-                    </h2>
-
-                    <p class="font-serif text-[10px]">
-                        Korean Style Casual
-                    </p>
-
-                    <p class="mt-2 font-serif text-xs font-bold">
-                        Rp 89.000.00
-                    </p>
-
-                    <a
-                        href="/produk/8"
-                        class="mt-2 block rounded-full bg-[#8d1f42]
-                               py-1.5 text-center font-serif
-                               text-[10px] font-bold text-white"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
+            </p>
 
         </div>
+
+
+        {{-- PRODUK --}}
+        @if($products->count() > 0)
+
+            <div
+                class="grid
+                       grid-cols-2
+                       md:grid-cols-3
+                       lg:grid-cols-4
+                       gap-6"
+            >
+
+                @foreach($products as $product)
+
+                    <div
+                        class="bg-white
+                               rounded-2xl
+                               overflow-hidden
+                               border border-[#eadfe1]
+                               hover:shadow-lg
+                               transition duration-300"
+                    >
+
+                        {{-- GAMBAR --}}
+                        <a
+                            href="{{ route('produk.show', $product->id) }}"
+                            class="block"
+                        >
+
+                            <div
+                                class="aspect-[3/4]
+                                       bg-[#f3eeee]
+                                       overflow-hidden"
+                            >
+
+                                @if($product->image)
+
+                                    <img
+                                        src="{{ asset('storage/' . $product->image) }}"
+                                        alt="{{ $product->name }}"
+                                        class="w-full
+                                               h-full
+                                               object-cover
+                                               hover:scale-105
+                                               transition
+                                               duration-500"
+                                    >
+
+                                @else
+
+                                    <div
+                                        class="w-full
+                                               h-full
+                                               flex
+                                               items-center
+                                               justify-center
+                                               text-gray-400"
+                                    >
+
+                                        <div class="text-center">
+
+                                            <div class="text-3xl mb-2">
+                                                ♡
+                                            </div>
+
+                                            <p class="text-xs">
+                                                Tidak ada gambar
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                @endif
+
+                            </div>
+
+                        </a>
+
+
+                        {{-- INFORMASI --}}
+                        <div class="p-4">
+
+                            {{-- KATEGORI --}}
+                            @if($product->category)
+
+                                <p
+                                    class="text-xs
+                                           text-gray-400
+                                           mb-1"
+                                >
+                                    {{ $product->category }}
+                                </p>
+
+                            @endif
+
+
+                            {{-- NAMA --}}
+                            <a
+                                href="{{ route('produk.show', $product->id) }}"
+                                class="block"
+                            >
+
+                                <h2
+                                    class="font-semibold
+                                           text-sm
+                                           text-[#332326]
+                                           line-clamp-2
+                                           hover:text-[#8b2947]
+                                           transition"
+                                >
+                                    {{ $product->name }}
+                                </h2>
+
+                            </a>
+
+
+                            {{-- HARGA --}}
+                            <p
+                                class="text-[#8b2947]
+                                       font-bold
+                                       mt-2"
+                            >
+
+                                Rp {{ number_format($product->price, 0, ',', '.') }}
+
+                            </p>
+
+
+                            {{-- STOK --}}
+                            @if($product->stock > 0)
+
+                                <p
+                                    class="text-xs
+                                           text-gray-400
+                                           mt-1"
+                                >
+
+                                    Stok:
+                                    {{ $product->stock }}
+
+                                </p>
+
+                            @else
+
+                                <p
+                                    class="text-xs
+                                           text-red-500
+                                           mt-1"
+                                >
+                                    Stok habis
+                                </p>
+
+                            @endif
+
+
+                            {{-- DETAIL --}}
+                            <a
+                                href="{{ route('produk.show', $product->id) }}"
+                                class="block
+                                       text-center
+                                       mt-4
+                                       border border-[#8b2947]
+                                       text-[#8b2947]
+                                       py-2
+                                       rounded-lg
+                                       text-sm
+                                       font-medium
+                                       hover:bg-[#8b2947]
+                                       hover:text-white
+                                       transition"
+                            >
+                                Lihat Detail
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        @else
+
+            {{-- TIDAK ADA PRODUK --}}
+            <div
+                class="bg-white
+                       border border-[#eadfe1]
+                       rounded-2xl
+                       p-12
+                       text-center"
+            >
+
+                <div
+                    class="text-5xl
+                           text-[#c48797]
+                           mb-4"
+                >
+                    ♡
+                </div>
+
+                <h2
+                    class="text-lg
+                           font-semibold
+                           text-[#332326]"
+                >
+                    Produk tidak ditemukan
+                </h2>
+
+                <p
+                    class="text-sm
+                           text-gray-400
+                           mt-2"
+                >
+                    Coba gunakan kata pencarian
+                    atau kategori yang berbeda.
+                </p>
+
+                <a
+                    href="{{ route('produk.index') }}"
+                    class="inline-block
+                           mt-5
+                           bg-[#8b2947]
+                           text-white
+                           px-6
+                           py-2.5
+                           rounded-lg
+                           text-sm
+                           hover:bg-[#721f39]
+                           transition"
+                >
+                    Lihat Semua Produk
+                </a>
+
+            </div>
+
+        @endif
 
     </div>
 

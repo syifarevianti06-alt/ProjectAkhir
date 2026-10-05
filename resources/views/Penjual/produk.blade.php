@@ -21,7 +21,7 @@
         </div>
 
         <a
-            href="{{ route('penjual.produk.tambah') }}"
+            href="{{ route('penjual.produk.create') }}"
             class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#986d6d] px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-[#805959]"
         >
             <svg

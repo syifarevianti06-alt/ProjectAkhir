@@ -113,7 +113,7 @@
                     type="submit"
                     class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
                 >
-                    ↪
+                    🚪🚶
                     Logout
                 </button>
 

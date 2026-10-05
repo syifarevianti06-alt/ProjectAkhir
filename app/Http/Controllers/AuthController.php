@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | LOGIN
+    |--------------------------------------------------------------------------
+    */
+
     public function showLogin()
     {
         return view('login');
@@ -21,7 +26,7 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
             return back()
                 ->withErrors([
                     'email' => 'Email atau password salah.',
@@ -33,41 +38,26 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        // Cek status akun
-        if ($user->status !== 'aktif') {
-            Auth::logout();
-
-            return back()
-                ->withErrors([
-                    'email' => 'Akun Anda sedang nonaktif.',
-                ])
-                ->withInput($request->only('email'));
-        }
-
         // ADMIN
-        if ($user->isAdmin()) {
+        if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
         // PENJUAL
-        if ($user->isPenjual()) {
+        if ($user->role === 'penjual') {
             return redirect()->route('penjual.dashboard');
         }
 
         // PELANGGAN
-        if ($user->isPelanggan()) {
-            return redirect()->route('pelanggan.beranda');
-        }
-
-        // Jika role tidak valid
-        Auth::logout();
-
-        return back()
-            ->withErrors([
-                'email' => 'Role pengguna tidak valid.',
-            ])
-            ->withInput($request->only('email'));
+        return redirect()->route('home');
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | REGISTER
+    |--------------------------------------------------------------------------
+    */
 
     public function showRegister()
     {
@@ -76,7 +66,8 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate([
+        // Validasi data dari form
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
 
             'email' => [
@@ -88,25 +79,38 @@ class AuthController extends Controller
 
             'password' => [
                 'required',
+                'string',
                 'min:8',
                 'confirmed',
             ],
         ]);
 
+        // Membuat user baru
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+
+            // Semua akun yang daftar sendiri menjadi pelanggan
             'role' => 'pelanggan',
-            'status' => 'aktif',
         ]);
 
+        // Langsung login setelah berhasil daftar
         Auth::login($user);
 
         $request->session()->regenerate();
 
-        return redirect()->route('pelanggan.beranda');
+        return redirect()
+            ->route('home')
+            ->with('success', 'Akun berhasil dibuat.');
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOGOUT
+    |--------------------------------------------------------------------------
+    */
 
     public function logout(Request $request)
     {

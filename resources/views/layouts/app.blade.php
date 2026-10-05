@@ -26,7 +26,7 @@
                 <!-- Menu -->
                 <div class="flex gap-8 text-sm">
 
-                    <a href="/" class="hover:text-pink-500">
+                    <a href="/home" class="hover:text-pink-500">
                         Beranda
                     </a>
 
@@ -45,10 +45,15 @@
                 </div>
 
                 <!-- Login -->
-                <a href="/login"
-                   class="border px-5 py-2 rounded-lg hover:bg-black hover:text-white">
-                    Login
-                </a>
+                @auth
+    <a href="{{ route('profil') }}">
+        
+    </a>
+@else
+    <a href="{{ route('login') }}">
+        Login
+    </a>
+@endauth
 
             </div>
 

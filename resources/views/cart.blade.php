@@ -6,7 +6,7 @@
 
     <div class="max-w-6xl mx-auto px-6 py-10">
 
-        <!-- JUDUL -->
+        {{-- JUDUL --}}
         <h1 class="text-3xl font-bold text-[#332326] mb-8">
             Keranjang Belanja
         </h1>
@@ -14,7 +14,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <!-- ================= PRODUK ================= -->
+            {{-- ================= PRODUK ================= --}}
             <div class="lg:col-span-2">
 
                 <div class="bg-white border border-[#eadfe1]
@@ -22,16 +22,17 @@
 
                     <div class="flex items-center gap-4">
 
-
-                        <!-- CHECKBOX -->
+                        {{-- CHECKBOX --}}
                         <input
                             type="checkbox"
+                            id="product-check"
                             checked
+                            onchange="hitungTotal()"
                             class="w-4 h-4 accent-[#8b2947]"
                         >
 
 
-                        <!-- FOTO PRODUK -->
+                        {{-- FOTO PRODUK --}}
                         <div class="w-20 h-20 rounded-lg overflow-hidden
                                     bg-gray-100 flex-shrink-0">
 
@@ -44,7 +45,7 @@
                         </div>
 
 
-                        <!-- INFORMASI PRODUK -->
+                        {{-- INFORMASI PRODUK --}}
                         <div class="flex-1 min-w-0">
 
                             <h2 class="font-semibold text-sm text-[#332326]">
@@ -59,15 +60,14 @@
                                 Ukuran: S • Warna: Biru Muda
                             </p>
 
-                            <p class="text-sm font-bold
-                                      text-[#8b2947] mt-1">
-                                Rp 162.000.00
+                            <p class="text-sm font-bold text-[#8b2947] mt-1">
+                                Rp 162.000
                             </p>
 
                         </div>
 
 
-                        <!-- JUMLAH -->
+                        {{-- JUMLAH --}}
                         <div class="flex items-center gap-3">
 
                             <button
@@ -78,15 +78,19 @@
                                        flex items-center justify-center
                                        text-gray-600
                                        hover:border-[#8b2947]
-                                       hover:text-[#8b2947]">
+                                       hover:text-[#8b2947]"
+                            >
                                 −
                             </button>
 
+
                             <span
                                 id="jumlah"
-                                class="text-sm w-3 text-center">
+                                class="text-sm w-3 text-center"
+                            >
                                 1
                             </span>
+
 
                             <button
                                 type="button"
@@ -96,25 +100,30 @@
                                        flex items-center justify-center
                                        text-gray-600
                                        hover:border-[#8b2947]
-                                       hover:text-[#8b2947]">
+                                       hover:text-[#8b2947]"
+                            >
                                 +
                             </button>
 
                         </div>
 
 
-                        <!-- HARGA -->
+                        {{-- HARGA --}}
                         <div class="text-right ml-3">
 
-                            <p class="text-sm font-bold
-                                      text-[#332326]">
-                                Rp 162.000.00
+                            <p
+                                id="harga"
+                                class="text-sm font-bold text-[#332326]"
+                            >
+                                Rp 162.000
                             </p>
 
                             <button
                                 type="button"
+                                onclick="hapusProduk()"
                                 class="text-[11px] text-[#c48797]
-                                       mt-2 hover:text-[#8b2947]">
+                                       mt-2 hover:text-[#8b2947]"
+                            >
                                 Hapus
                             </button>
 
@@ -127,34 +136,33 @@
             </div>
 
 
-            <!-- ================= RINGKASAN ================= -->
+            {{-- ================= RINGKASAN ================= --}}
             <div>
 
                 <div class="bg-white border border-[#eadfe1]
                             rounded-xl p-5">
 
-                    <!-- JUDUL -->
                     <h2 class="text-base font-bold text-[#332326] mb-5">
                         Ringkasan Pesanan
                     </h2>
 
 
-                    <!-- SUBTOTAL -->
+                    {{-- SUBTOTAL --}}
                     <div class="flex justify-between
                                 text-xs text-gray-500 mb-4">
 
-                        <span>
+                        <span id="subtotal-text">
                             Subtotal (1 produk)
                         </span>
 
-                        <span>
-                            Rp 162.000.00
+                        <span id="subtotal">
+                            Rp 162.000
                         </span>
 
                     </div>
 
 
-                    <!-- TOTAL -->
+                    {{-- TOTAL --}}
                     <div class="flex justify-between
                                 items-center pt-3
                                 border-t border-gray-200">
@@ -163,16 +171,20 @@
                             Total pembayaran
                         </span>
 
-                        <span class="font-bold text-sm text-[#8b2947]">
-                            Rp 162.000.00
+                        <span
+                            id="total"
+                            class="font-bold text-sm text-[#8b2947]"
+                        >
+                            Rp 162.000
                         </span>
 
                     </div>
 
 
-                    <!-- CHECKOUT -->
+                    {{-- CHECKOUT --}}
                     <a
-                        href="/checkout"
+                        id="checkout-button"
+                        href="{{ route('checkout') }}?product_id=1&quantity=1&size=S&color=Biru%20Muda"
                         class="block text-center
                                bg-[#8b2947]
                                text-white
@@ -198,11 +210,95 @@
 </div>
 
 
-<!-- ================= JAVASCRIPT ================= -->
+{{-- ================= JAVASCRIPT ================= --}}
 
 <script>
 
     let jumlah = 1;
+
+    const hargaProduk = 162000;
+
+
+    function formatRupiah(angka) {
+
+        return 'Rp ' + angka.toLocaleString('id-ID');
+
+    }
+
+
+    function updateCheckoutLink() {
+
+        const checkbox = document.getElementById('product-check');
+
+        const button = document.getElementById('checkout-button');
+
+        if (!checkbox.checked) {
+
+            button.classList.add('opacity-50', 'pointer-events-none');
+
+            return;
+
+        }
+
+
+        button.classList.remove('opacity-50', 'pointer-events-none');
+
+
+        button.href =
+            "{{ route('checkout') }}" +
+            "?product_id=1" +
+            "&quantity=" + jumlah +
+            "&size=S" +
+            "&color=Biru%20Muda";
+    }
+
+
+    function hitungTotal() {
+
+        const checkbox =
+            document.getElementById('product-check');
+
+        const subtotal =
+            document.getElementById('subtotal');
+
+        const total =
+            document.getElementById('total');
+
+        const subtotalText =
+            document.getElementById('subtotal-text');
+
+
+        if (!checkbox.checked) {
+
+            subtotal.innerText = 'Rp 0';
+
+            total.innerText = 'Rp 0';
+
+            subtotalText.innerText = 'Subtotal (0 produk)';
+
+            updateCheckoutLink();
+
+            return;
+        }
+
+
+        const hasil = hargaProduk * jumlah;
+
+
+        subtotal.innerText =
+            formatRupiah(hasil);
+
+        total.innerText =
+            formatRupiah(hasil);
+
+        subtotalText.innerText =
+            'Subtotal (' + jumlah + ' produk)';
+
+
+        updateCheckoutLink();
+
+    }
+
 
     function tambah() {
 
@@ -210,7 +306,13 @@
 
         document.getElementById('jumlah').innerText = jumlah;
 
+        document.getElementById('harga').innerText =
+            formatRupiah(hargaProduk * jumlah);
+
+        hitungTotal();
+
     }
+
 
     function kurang() {
 
@@ -220,7 +322,24 @@
 
             document.getElementById('jumlah').innerText = jumlah;
 
+            document.getElementById('harga').innerText =
+                formatRupiah(hargaProduk * jumlah);
+
+            hitungTotal();
+
         }
+
+    }
+
+
+    function hapusProduk() {
+
+        const checkbox =
+            document.getElementById('product-check');
+
+        checkbox.checked = false;
+
+        hitungTotal();
 
     }
 

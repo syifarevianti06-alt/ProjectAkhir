@@ -54,7 +54,7 @@
                 </div>
 
 
-                {{-- Error --}}
+                {{-- ERROR --}}
                 @if ($errors->any())
 
                     <div
@@ -69,7 +69,22 @@
                 @endif
 
 
-                {{-- Form --}}
+                {{-- SUCCESS --}}
+                @if (session('success'))
+
+                    <div
+                        class="mb-5 rounded-lg
+                               bg-green-50
+                               px-4 py-3
+                               text-xs text-green-600"
+                    >
+                        {{ session('success') }}
+                    </div>
+
+                @endif
+
+
+                {{-- FORM LOGIN --}}
                 <form
                     action="{{ route('login.process') }}"
                     method="POST"
@@ -97,6 +112,7 @@
                             value="{{ old('email') }}"
                             autocomplete="email"
                             required
+                            autofocus
                             class="block h-[46px] w-full
                                    rounded-[7px]
                                    border border-[#b88787]
@@ -162,7 +178,7 @@
                     </div>
 
 
-                    {{-- BUTTON --}}
+                    {{-- BUTTON LOGIN --}}
                     <button
                         type="submit"
                         class="h-[46px] w-full
