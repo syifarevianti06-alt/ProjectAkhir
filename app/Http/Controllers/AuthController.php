@@ -8,17 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | LOGIN
-    |--------------------------------------------------------------------------
-    */
-
+    // MENAMPILKAN HALAMAN LOGIN
     public function showLogin()
     {
         return view('login');
     }
 
+    // PROSES LOGIN
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -52,66 +48,46 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | REGISTER
-    |--------------------------------------------------------------------------
-    */
-
+    // HALAMAN REGISTER
     public function showRegister()
     {
         return view('register');
     }
 
+    // PROSES REGISTER
     public function register(Request $request)
     {
-        // Validasi data dari form
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-
             'email' => [
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email',
+                'unique:users,email'
             ],
-
             'password' => [
                 'required',
                 'string',
                 'min:8',
-                'confirmed',
+                'confirmed'
             ],
         ]);
 
-        // Membuat user baru
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
-
-            // Semua akun yang daftar sendiri menjadi pelanggan
             'role' => 'pelanggan',
         ]);
 
-        // Langsung login setelah berhasil daftar
         Auth::login($user);
 
         $request->session()->regenerate();
 
-        return redirect()
-            ->route('home')
-            ->with('success', 'Akun berhasil dibuat.');
+        return redirect()->route('home');
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | LOGOUT
-    |--------------------------------------------------------------------------
-    */
-
+    // LOGOUT
     public function logout(Request $request)
     {
         Auth::logout();

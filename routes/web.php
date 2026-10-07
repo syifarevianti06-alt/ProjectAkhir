@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\PenjualController;
+use App\Http\Controllers\PenjualProdukController;
 use App\Http\Controllers\PenjualStokController;
 use App\Http\Controllers\PenjualLaporanController;
 use App\Http\Controllers\PenjualPesananController;
@@ -50,6 +51,8 @@ Route::post('/register', [AuthController::class, 'register'])
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
+
+
 /*
 |--------------------------------------------------------------------------
 | HOME PELANGGAN
@@ -79,7 +82,10 @@ Route::get('/penjual', function () {
 |--------------------------------------------------------------------------
 */
 
-// Dashboard
+// =========================
+// ADMIN DASHBOARD
+// =========================
+
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->name('admin.dashboard');
 
@@ -162,23 +168,42 @@ Route::delete('/admin/produk/{product}', [AdminProductController::class, 'destro
 // DASHBOARD
 // =========================
 
+// =========================
+// PENJUAL - DASHBOARD
+// =========================
+
 Route::get('/penjual/dashboard', [PenjualController::class, 'dashboard'])
     ->name('penjual.dashboard');
 
 
 // =========================
-// PRODUK
+// PENJUAL - PRODUK
 // =========================
 
+Route::get('/penjual/produk', [PenjualProdukController::class, 'index'])
+    ->name('penjual.produk');
 
-Route::get('/produk', [CustomerProductController::class, 'index'])
-    ->name('produk.index');
+Route::get('/penjual/produk/tambah', [PenjualProdukController::class, 'create'])
+    ->name('penjual.produk.create');
 
-Route::get('/produk/{id}', [CustomerProductController::class, 'show'])
-    ->name('produk.show');
+Route::post('/penjual/produk', [PenjualProdukController::class, 'store'])
+    ->name('penjual.produk.store');
+
+Route::get('/penjual/produk/{product}', [PenjualProdukController::class, 'show'])
+    ->name('penjual.produk.show');
+
+Route::get('/penjual/produk/{product}/edit', [PenjualProdukController::class, 'edit'])
+    ->name('penjual.produk.edit');
+
+Route::put('/penjual/produk/{product}', [PenjualProdukController::class, 'update'])
+    ->name('penjual.produk.update');
+
+Route::delete('/penjual/produk/{product}', [PenjualProdukController::class, 'destroy'])
+    ->name('penjual.produk.destroy');
+
 
 // =========================
-// STOK
+// PENJUAL - STOK
 // =========================
 
 Route::get('/penjual/stok', [PenjualStokController::class, 'index'])
@@ -189,7 +214,7 @@ Route::put('/penjual/stok/{product}', [PenjualStokController::class, 'update'])
 
 
 // =========================
-// LAPORAN
+// PENJUAL - LAPORAN
 // =========================
 
 Route::get('/penjual/laporan', [PenjualLaporanController::class, 'index'])
@@ -197,7 +222,7 @@ Route::get('/penjual/laporan', [PenjualLaporanController::class, 'index'])
 
 
 // =========================
-// PESANAN
+// PENJUAL - PESANAN
 // =========================
 
 Route::get('/penjual/pesanan', [PenjualPesananController::class, 'index'])
@@ -209,6 +234,11 @@ Route::get('/penjual/pesanan/{order}', [PenjualPesananController::class, 'show']
 Route::put('/penjual/pesanan/{order}/status', [PenjualPesananController::class, 'updateStatus'])
     ->name('penjual.pesanan.status');
 
+
+// =========================
+// PENJUAL - PROFIL TOKO
+// =========================
+
 Route::get('/penjual/profil', function () {
     return view('penjual.profil');
 })->name('penjual.profil');
@@ -218,7 +248,10 @@ Route::get('/penjual/profil', function () {
 |--------------------------------------------------------------------------
 */
 
-// Home pelanggan
+// =========================
+// HOME PELANGGAN
+// =========================
+
 Route::get('/pelanggan/home', function () {
     return view('home');
 })->name('pelanggan.home');
@@ -227,11 +260,13 @@ Route::get('/pelanggan/home', function () {
 // =========================
 // PRODUK
 // =========================
+
 Route::get('/produk', [CustomerProductController::class, 'index'])
     ->name('produk.index');
 
 Route::get('/produk/{id}', [CustomerProductController::class, 'show'])
     ->name('produk.show');
+
 
 // =========================
 // KERANJANG
@@ -245,6 +280,7 @@ Route::get('/keranjang', function () {
 // =========================
 // CHECKOUT
 // =========================
+
 Route::get('/checkout', [CheckoutController::class, 'index'])
     ->name('checkout');
 
@@ -283,8 +319,9 @@ Route::get('/pesanan', function () {
     ]);
 })->name('orders');
 
+
 // =========================
-// PROFIL
+// PROFIL PELANGGAN
 // =========================
 
 Route::get('/profil', [PelangganProfileController::class, 'edit'])

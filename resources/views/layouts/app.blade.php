@@ -45,12 +45,19 @@
                 </div>
 
                 <!-- Login -->
-                @auth
-    <a href="{{ route('profil') }}">
-        
+              <!-- PROFIL / LOGIN -->
+@auth
+    <a
+        href="{{ route('profil') }}"
+        class="text-sm hover:text-pink-500 transition"
+    >
+        Profil
     </a>
 @else
-    <a href="{{ route('login') }}">
+    <a
+        href="{{ route('login') }}"
+        class="text-sm hover:text-pink-500 transition"
+    >
         Login
     </a>
 @endauth

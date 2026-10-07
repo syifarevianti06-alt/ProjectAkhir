@@ -21,6 +21,7 @@
     {{-- SIDEBAR --}}
     <aside class="fixed inset-y-0 left-0 z-40 flex w-[245px] flex-col bg-[#986d6d] text-white">
 
+        {{-- LOGO + PROFILE --}}
         <div class="border-b border-white/15 px-6 py-6">
 
             <h1 class="font-serif text-2xl font-bold">
@@ -51,49 +52,78 @@
         {{-- MENU --}}
         <nav class="flex-1 space-y-1 px-4 py-5">
 
+            {{-- DASHBOARD --}}
             <a
                 href="{{ route('penjual.dashboard') }}"
-                class="flex items-center gap-3 rounded-lg bg-white px-4 py-3 text-sm font-semibold text-[#986d6d]"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition
+                {{ request()->routeIs('penjual.dashboard')
+                    ? 'bg-white font-semibold text-[#986d6d]'
+                    : 'text-white hover:bg-white/10' }}"
             >
                 ⌂
                 Dashboard
             </a>
 
-            <a
-    href="{{ route('penjual.produk') }}"
-    class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
->
-    ▣
-    Produk
-</a>
 
+            {{-- PRODUK --}}
             <a
-                href="{{route('penjual.pesanan')}}"
-                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
+                href="{{ route('penjual.produk') }}"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition
+                {{ request()->routeIs('penjual.produk*')
+                    ? 'bg-white font-semibold text-[#986d6d]'
+                    : 'text-white hover:bg-white/10' }}"
+            >
+                ▣
+                Produk
+            </a>
+
+
+            {{-- PESANAN --}}
+            <a
+                href="{{ route('penjual.pesanan') }}"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition
+                {{ request()->routeIs('penjual.pesanan*')
+                    ? 'bg-white font-semibold text-[#986d6d]'
+                    : 'text-white hover:bg-white/10' }}"
             >
                 □
                 Pesanan
             </a>
 
+
+            {{-- STOK --}}
             <a
-                href="{{route('penjual.stok')}}"
-                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
+                href="{{ route('penjual.stok') }}"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition
+                {{ request()->routeIs('penjual.stok*')
+                    ? 'bg-white font-semibold text-[#986d6d]'
+                    : 'text-white hover:bg-white/10' }}"
             >
                 ▤
                 Stok
             </a>
 
+
+            {{-- LAPORAN --}}
             <a
-                href="{{route('penjual.laporan')}}"
-                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
+                href="{{ route('penjual.laporan') }}"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition
+                {{ request()->routeIs('penjual.laporan*')
+                    ? 'bg-white font-semibold text-[#986d6d]'
+                    : 'text-white hover:bg-white/10' }}"
             >
                 ◫
                 Laporan Penjualan
             </a>
 
+
+            {{-- PROFIL TOKO --}}
             <a
-                href="{{route('penjual.profil')}}"
-                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
+                href="{{ route('penjual.profil') }}"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition
+                {{ request()->routeIs('penjual.profil')
+                    ? 'bg-white font-semibold text-[#986d6d]'
+                    : 'text-white hover:bg-white/10' }}"
             >
                 ♙
                 Profil Toko
@@ -111,7 +141,7 @@
 
                 <button
                     type="submit"
-                    class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-white/10"
+                    class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm text-white transition hover:bg-white/10"
                 >
                     🚪🚶
                     Logout
@@ -159,6 +189,7 @@
         </header>
 
 
+        {{-- CONTENT --}}
         <main class="flex-1 p-8">
 
             @yield('content')
