@@ -332,57 +332,64 @@
                         >
 
                             {{-- PRODUK --}}
-                            <td class="px-6 py-4">
+<td class="px-6 py-4">
 
-                                <div class="flex items-center gap-4">
+    <a
+        href="{{ route('penjual.produk.show', $product->id) }}"
+        class="flex items-center gap-4 group"
+    >
 
-                                    @if ($product->image)
+        @if ($product->image)
 
-                                        <img
-                                            src="{{ asset('storage/' . $product->image) }}"
-                                            alt="{{ $product->name }}"
-                                            class="h-14 w-14 rounded-xl object-cover"
-                                        >
+            <img
+                src="{{ asset('storage/' . $product->image) }}"
+                alt="{{ $product->name }}"
+                class="h-14 w-14 rounded-xl object-cover transition group-hover:scale-105"
+            >
 
-                                    @else
+        @else
 
-                                        <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-[#f5eaea]">
+            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-[#f5eaea]">
 
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                class="h-6 w-6 text-[#b99e9e]"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                                stroke-width="1.5"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                                />
-                                            </svg>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-[#b99e9e]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                </svg>
 
-                                        </div>
+            </div>
 
-                                    @endif
+        @endif
 
 
-                                    <div>
+        <div>
 
-                                        <p class="font-medium text-[#4d4141]">
-                                            {{ $product->name }}
-                                        </p>
+            <p class="font-medium text-[#4d4141] group-hover:text-[#986d6d] transition">
+                {{ $product->name }}
+            </p>
 
-                                        <p class="mt-1 text-xs text-[#a99595]">
-                                            {{ $product->slug }}
-                                        </p>
+            <p class="mt-1 text-xs text-[#a99595]">
+                {{ $product->slug }}
+            </p>
 
-                                    </div>
+            <p class="mt-1 text-[11px] text-[#b99e9e]">
+                Klik untuk melihat detail
+            </p>
 
-                                </div>
+        </div>
 
-                            </td>
+    </a>
+
+</td>
 
 
                             {{-- KATEGORI --}}

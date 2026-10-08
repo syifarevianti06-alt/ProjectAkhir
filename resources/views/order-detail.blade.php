@@ -1,408 +1,383 @@
 @extends('layouts.app')
 
+@section('title', 'Detail Pesanan')
+
 @section('content')
 
-<div class="max-w-5xl mx-auto px-6 py-12">
+<div class="min-h-[calc(100vh-80px)] bg-[#f8f1eb]">
 
-    <!-- HEADER -->
-    <div class="mb-8">
+    <div class="max-w-5xl mx-auto px-6 py-10">
 
-        <a href="/pesanan"
-           class="text-sm text-gray-500 hover:text-black">
+        {{-- KEMBALI --}}
+        <a
+            href="{{ route('orders') }}"
+            class="inline-flex items-center text-sm text-[#8b203d] hover:underline mb-6"
+        >
             ← Kembali ke Pesanan Saya
         </a>
 
-        <h1 class="text-3xl font-bold mt-4">
-            Detail Pesanan
-        </h1>
 
-        <p class="text-gray-500 mt-2">
-            Nomor pesanan: {{ $id }}
-        </p>
+        {{-- HEADER --}}
+        <div class="mb-8">
 
-    </div>
+            <h1 class="text-3xl font-bold text-[#332326]">
+                Detail Pesanan
+            </h1>
 
-
-    <!-- STATUS -->
-    <div class="border rounded-xl p-6">
-
-        <div class="flex flex-wrap justify-between items-center gap-4">
-
-            <div>
-                <p class="text-sm text-gray-500">
-                    Status pesanan
-                </p>
-
-                <p class="font-bold text-lg mt-1">
-                    Dikirim
-                </p>
-            </div>
-
-            <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-                Dikirim
-            </span>
+            <p class="mt-2 text-sm text-gray-500">
+                {{ $order->order_number ?: 'PS-' . str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
+            </p>
 
         </div>
 
-    </div>
 
+        {{-- STATUS PESANAN --}}
+        <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
-    <!-- PRODUK -->
-    <div class="border rounded-xl p-6 mt-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <h2 class="text-xl font-bold mb-6">
-            Produk
-        </h2>
+                <div>
 
-        <div class="flex flex-col sm:flex-row gap-5">
-
-            <!-- FOTO -->
-            <div class="w-full sm:w-32 h-36 bg-gray-100 rounded-lg flex items-center justify-center">
-
-                <span class="text-sm text-gray-400">
-                    Foto Produk
-                </span>
-
-            </div>
-
-
-            <!-- INFORMASI -->
-            <div class="flex-1">
-
-                <h3 class="font-semibold text-lg">
-                    Femes - Abelia Blouse Top
-                </h3>
-
-                <p class="text-gray-500 mt-1">
-                    Kemeja Wanita Korean Style
-                </p>
-
-                <div class="mt-4 space-y-1 text-sm">
-
-                    <p>
-                        Ukuran:
-                        <span class="font-medium">S</span>
+                    <p class="text-xs text-gray-400">
+                        Status Pesanan
                     </p>
 
-                    <p>
-                        Warna:
-                        <span class="font-medium">Biru Muda</span>
+                    @php
+                        $status = strtolower($order->status ?? '');
+
+                        $statusClass = match ($status) {
+                            'pending',
+                            'baru',
+                            'menunggu_pembayaran'
+                                => 'bg-yellow-50 text-yellow-700',
+
+                            'paid',
+                            'processing',
+                            'diproses'
+                                => 'bg-blue-50 text-blue-700',
+
+                            'shipped',
+                            'dikirim'
+                                => 'bg-purple-50 text-purple-700',
+
+                            'completed',
+                            'selesai'
+                                => 'bg-green-50 text-green-700',
+
+                            'cancelled',
+                            'dibatalkan'
+                                => 'bg-red-50 text-red-700',
+
+                            default
+                                => 'bg-gray-50 text-gray-600',
+                        };
+                    @endphp
+
+                    <span
+                        class="inline-flex mt-2 rounded-full px-3 py-1
+                               text-xs font-medium {{ $statusClass }}"
+                    >
+                        {{ ucfirst(str_replace('_', ' ', $order->status ?? 'Tidak diketahui')) }}
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs text-gray-400">
+                        Tanggal Pesanan
                     </p>
 
-                    <p>
-                        Jumlah:
-                        <span class="font-medium">1</span>
+                    <p class="mt-2 text-sm font-medium text-[#332326]">
+                        {{ $order->created_at?->format('d M Y, H:i') ?? '-' }}
                     </p>
 
                 </div>
 
             </div>
 
-
-            <!-- HARGA -->
-            <div class="sm:text-right">
-
-                <p class="text-sm text-gray-500">
-                    Harga
-                </p>
-
-                <p class="font-bold text-lg mt-1">
-                    Rp162.000
-                </p>
-
-            </div>
-
         </div>
 
-    </div>
 
+        {{-- INFORMASI PENGIRIMAN --}}
+        <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
-    <!-- ALAMAT & PEMBAYARAN -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-        <!-- ALAMAT -->
-        <div class="border rounded-xl p-6">
-
-            <h2 class="font-bold text-lg mb-4">
-                Alamat Pengiriman
+            <h2 class="text-lg font-semibold text-[#332326] mb-5">
+                Informasi Pengiriman
             </h2>
 
-            <p class="font-semibold">
-                Rina Amalia
-            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
 
-            <p class="text-gray-600 mt-2">
-                081234567890
-            </p>
+                <div>
+                    <p class="text-xs text-gray-400">
+                        Nama Penerima
+                    </p>
 
-            <p class="text-gray-600 mt-1">
-                Jl. Mawar No. 12 RT 03/RW 01
-            </p>
+                    <p class="mt-1 text-[#332326]">
+                        {{ $order->address_name ?: '-' }}
+                    </p>
+                </div>
 
-            <p class="text-gray-600">
-                Bandung, 40132
-            </p>
+
+                <div>
+                    <p class="text-xs text-gray-400">
+                        Nomor Telepon
+                    </p>
+
+                    <p class="mt-1 text-[#332326]">
+                        {{ $order->address_phone ?: '-' }}
+                    </p>
+                </div>
+
+
+                <div class="md:col-span-2">
+
+                    <p class="text-xs text-gray-400">
+                        Alamat
+                    </p>
+
+                    <p class="mt-1 text-[#332326]">
+                        {{ $order->address_full ?: '-' }}
+                    </p>
+
+                </div>
+
+
+                <div>
+                    <p class="text-xs text-gray-400">
+                        Kota / Kabupaten
+                    </p>
+
+                    <p class="mt-1 text-[#332326]">
+                        {{ $order->address_city ?: '-' }}
+                    </p>
+                </div>
+
+
+                <div>
+                    <p class="text-xs text-gray-400">
+                        Kode Pos
+                    </p>
+
+                    <p class="mt-1 text-[#332326]">
+                        {{ $order->address_postal_code ?: '-' }}
+                    </p>
+                </div>
+
+            </div>
 
         </div>
 
 
-        <!-- PEMBAYARAN -->
-        <div class="border rounded-xl p-6">
+        {{-- PRODUK --}}
+        <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
-            <h2 class="font-bold text-lg mb-4">
-                Pembayaran
+            <h2 class="text-lg font-semibold text-[#332326] mb-5">
+                Produk Pesanan
             </h2>
 
-            <p class="text-gray-600">
-                Metode pembayaran
-            </p>
+            @if ($order->items->count())
 
-            <p class="font-semibold mt-1">
-                QRIS
-            </p>
+                <div class="divide-y divide-gray-100">
+
+                    @foreach ($order->items as $item)
+
+                        <div class="flex gap-4 py-5 first:pt-0 last:pb-0">
+
+                            {{-- FOTO --}}
+                            <div class="h-20 w-20 flex-shrink-0 overflow-hidden
+                                        rounded-xl bg-[#f8f1eb]">
+
+                                @if ($item->product_image)
+
+                                    <img
+                                        src="{{ asset('storage/' . $item->product_image) }}"
+                                        alt="{{ $item->product_name }}"
+                                        class="h-full w-full object-cover"
+                                    >
+
+                                @else
+
+                                    <div class="flex h-full w-full items-center
+                                                justify-center">
+                                        <span class="text-xs text-gray-400">
+                                            No Image
+                                        </span>
+                                    </div>
+
+                                @endif
+
+                            </div>
+
+
+                            {{-- DETAIL PRODUK --}}
+                            <div class="flex-1 min-w-0">
+
+                                <h3 class="font-semibold text-[#332326]">
+                                    {{ $item->product_name }}
+                                </h3>
+
+                                <div class="mt-2 space-y-1 text-xs text-gray-400">
+
+                                    <p>
+                                        Ukuran:
+                                        {{ $item->size ?: '-' }}
+                                    </p>
+
+                                    <p>
+                                        Warna:
+                                        {{ $item->color ?: '-' }}
+                                    </p>
+
+                                    <p>
+                                        Jumlah:
+                                        {{ $item->quantity }} pcs
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            {{-- HARGA --}}
+                            <div class="text-right flex-shrink-0">
+
+                                <p class="text-sm font-semibold text-[#332326]">
+                                    Rp {{ number_format(
+                                        $item->price * $item->quantity,
+                                        0,
+                                        ',',
+                                        '.'
+                                    ) }}
+                                </p>
+
+                                <p class="mt-1 text-xs text-gray-400">
+                                    Rp {{ number_format(
+                                        $item->price,
+                                        0,
+                                        ',',
+                                        '.'
+                                    ) }}
+                                    / pcs
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+
+            @else
+
+                <div class="py-8 text-center text-sm text-gray-400">
+                    Tidak ada produk dalam pesanan ini.
+                </div>
+
+            @endif
 
         </div>
 
-    </div>
+
+        {{-- RINGKASAN PEMBAYARAN --}}
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+            <h2 class="text-lg font-semibold text-[#332326] mb-5">
+                Ringkasan Pembayaran
+            </h2>
+
+            <div class="space-y-3 text-sm">
+
+                <div class="flex justify-between">
+
+                    <span class="text-gray-500">
+                        Subtotal
+                    </span>
+
+                    <span class="font-medium text-[#332326]">
+                        Rp {{ number_format(
+                            $order->subtotal,
+                            0,
+                            ',',
+                            '.'
+                        ) }}
+                    </span>
+
+                </div>
 
 
-    <!-- TOTAL -->
-    <div class="border rounded-xl p-6 mt-6">
+                <div class="flex justify-between">
 
-        <div class="flex justify-between text-gray-600">
-            <span>Subtotal</span>
-            <span>Rp162.000</span>
-        </div>
+                    <span class="text-gray-500">
+                        Ongkir
+                    </span>
 
-        <div class="border-t mt-4 pt-4 flex justify-between text-xl font-bold">
+                    <span class="font-medium text-green-600">
+                        Gratis
+                    </span>
 
-            <span>
-                Total pembayaran
-            </span>
-
-            <span>
-                Rp162.000
-            </span>
-
-        </div>
-
-    </div>
+                </div>
 
 
-    <!-- BUTTON -->
-    <div class="flex justify-end mt-6">
+                <div class="border-t border-gray-100 pt-4
+                            flex justify-between items-center">
 
-        <a
-            href="/pesanan"
-            class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
-        >
-            Kembali ke Pesanan
-        </a>
+                    <span class="font-semibold text-[#332326]">
+                        Total
+                    </span>
 
-    </div>
+                    <span class="text-xl font-bold text-[#8b203d]">
+                        Rp {{ number_format(
+                            $order->total,
+                            0,
+                            ',',
+                            '.'
+                        ) }}
+                    </span>
 
-</div>
-
-@endsection@extends('layouts.app')
-
-@section('content')
-
-<div class="max-w-5xl mx-auto px-6 py-12">
-
-    <!-- HEADER -->
-    <div class="mb-8">
-
-        <a href="/pesanan"
-           class="text-sm text-gray-500 hover:text-black">
-            ← Kembali ke Pesanan Saya
-        </a>
-
-        <h1 class="text-3xl font-bold mt-4">
-            Detail Pesanan
-        </h1>
-
-        <p class="text-gray-500 mt-2">
-            Nomor pesanan: {{ $id }}
-        </p>
-
-    </div>
+                </div>
 
 
-    <!-- STATUS -->
-    <div class="border rounded-xl p-6">
+                <div class="flex justify-between pt-2">
 
-        <div class="flex flex-wrap justify-between items-center gap-4">
+                    <span class="text-gray-500">
+                        Metode Pembayaran
+                    </span>
 
-            <div>
-                <p class="text-sm text-gray-500">
-                    Status pesanan
-                </p>
-
-                <p class="font-bold text-lg mt-1">
-                    Dikirim
-                </p>
-            </div>
-
-            <span class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-                Dikirim
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <!-- PRODUK -->
-    <div class="border rounded-xl p-6 mt-6">
-
-        <h2 class="text-xl font-bold mb-6">
-            Produk
-        </h2>
-
-        <div class="flex flex-col sm:flex-row gap-5">
-
-            <!-- FOTO -->
-            <div class="w-full sm:w-32 h-36 bg-gray-100 rounded-lg flex items-center justify-center">
-
-                <span class="text-sm text-gray-400">
-                    Foto Produk
-                </span>
-
-            </div>
-
-
-            <!-- INFORMASI -->
-            <div class="flex-1">
-
-                <h3 class="font-semibold text-lg">
-                    Femes - Abelia Blouse Top
-                </h3>
-
-                <p class="text-gray-500 mt-1">
-                    Kemeja Wanita Korean Style
-                </p>
-
-                <div class="mt-4 space-y-1 text-sm">
-
-                    <p>
-                        Ukuran:
-                        <span class="font-medium">S</span>
-                    </p>
-
-                    <p>
-                        Warna:
-                        <span class="font-medium">Biru Muda</span>
-                    </p>
-
-                    <p>
-                        Jumlah:
-                        <span class="font-medium">1</span>
-                    </p>
+                    <span class="font-medium text-[#332326]">
+                        {{ strtoupper($order->payment_method ?: '-') }}
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <!-- HARGA -->
-            <div class="sm:text-right">
+            {{-- BAYAR QRIS --}}
+            @if (
+                strtolower($order->payment_method ?? '') === 'qris' &&
+                in_array(strtolower($order->status ?? ''), [
+                    'pending',
+                    'baru',
+                    'menunggu_pembayaran'
+                ])
+            )
 
-                <p class="text-sm text-gray-500">
-                    Harga
-                </p>
+                <a
+                    href="{{ route('payment.qris', $order->id) }}"
+                    class="block mt-6 w-full rounded-xl
+                           bg-[#8b2947] py-3 text-center
+                           text-sm font-semibold text-white
+                           hover:bg-[#721f39] transition"
+                >
+                    Bayar dengan QRIS
+                </a>
 
-                <p class="font-bold text-lg mt-1">
-                    Rp162.000
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ALAMAT & PEMBAYARAN -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-        <!-- ALAMAT -->
-        <div class="border rounded-xl p-6">
-
-            <h2 class="font-bold text-lg mb-4">
-                Alamat Pengiriman
-            </h2>
-
-            <p class="font-semibold">
-                Rina Amalia
-            </p>
-
-            <p class="text-gray-600 mt-2">
-                081234567890
-            </p>
-
-            <p class="text-gray-600 mt-1">
-                Jl. Mawar No. 12 RT 03/RW 01
-            </p>
-
-            <p class="text-gray-600">
-                Bandung, 40132
-            </p>
+            @endif
 
         </div>
-
-
-        <!-- PEMBAYARAN -->
-        <div class="border rounded-xl p-6">
-
-            <h2 class="font-bold text-lg mb-4">
-                Pembayaran
-            </h2>
-
-            <p class="text-gray-600">
-                Metode pembayaran
-            </p>
-
-            <p class="font-semibold mt-1">
-                QRIS
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- TOTAL -->
-    <div class="border rounded-xl p-6 mt-6">
-
-        <div class="flex justify-between text-gray-600">
-            <span>Subtotal</span>
-            <span>Rp162.000</span>
-        </div>
-
-        <div class="border-t mt-4 pt-4 flex justify-between text-xl font-bold">
-
-            <span>
-                Total pembayaran
-            </span>
-
-            <span>
-                Rp162.000
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <!-- BUTTON -->
-    <div class="flex justify-end mt-6">
-
-        <a
-            href="/pesanan"
-            class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
-        >
-            Kembali ke Pesanan
-        </a>
 
     </div>
 

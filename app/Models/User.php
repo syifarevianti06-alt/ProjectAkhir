@@ -10,12 +10,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+   protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role',
+    'store_name',
+    'phone',
+    'category',
+    'address',
+    'description',
+];
 
     protected $hidden = [
         'password',
@@ -30,21 +35,31 @@ class User extends Authenticatable
         ];
     }
 
+    // Relasi ke pesanan
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
+    // Relasi ke keranjang
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    // Cek role admin
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
 
+    // Cek role penjual
     public function isPenjual()
     {
         return $this->role === 'penjual';
     }
 
+    // Cek role pelanggan
     public function isPelanggan()
     {
         return $this->role === 'pelanggan';

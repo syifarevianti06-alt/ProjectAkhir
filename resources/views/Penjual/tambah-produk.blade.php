@@ -321,17 +321,16 @@
         </label>
 
         <input
-            type="file"
-            id="image"
-            name="image"
-            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-            class="mt-4 block w-full cursor-pointer text-sm text-[#6f5b5b]"
-        >
+    type="file"
+    name="images[]"
+    accept=".jpg,.jpeg,.png,.webp"
+    multiple
+    class="w-full rounded-xl border border-[#e5dada] bg-white px-4 py-3 text-sm"
 
-        <p
-            id="file-name"
-            class="mt-3 hidden text-sm text-[#986d6d]"
-        ></p>
+    
+><p class="text-xs text-gray-400 mt-1">
+    Kamu bisa memilih beberapa foto sekaligus.
+</p>
 
     </div>
 

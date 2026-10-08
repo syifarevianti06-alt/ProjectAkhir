@@ -38,9 +38,9 @@
                         Pesanan
                     </a>
 
-                    <a href="/keranjang" class="hover:text-pink-500">
-                        Keranjang
-                    </a>
+                    <a href="{{ route('cart.index') }}">
+    Keranjang
+</a>
 
                 </div>
 

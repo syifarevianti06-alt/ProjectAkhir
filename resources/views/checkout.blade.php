@@ -194,52 +194,136 @@
                         </h2>
 
 
-                        {{-- PRODUK --}}
-                        <div class="space-y-5">
+                        {{-- ================================================= --}}
+                        {{-- JIKA CHECKOUT DARI KERANJANG --}}
+                        {{-- ================================================= --}}
+
+                        @if(isset($items) && $items->count())
+
+                            <div class="space-y-5">
+
+                                @foreach($items as $item)
+
+                                    <div class="flex gap-4">
+
+                                        {{-- GAMBAR --}}
+                                        @if (!empty($item->product->image))
+
+                                            <img
+                                                src="{{ asset('storage/' . $item->product->image) }}"
+                                                alt="{{ $item->product->name }}"
+                                                class="w-20 h-24 object-cover rounded-xl bg-gray-100"
+                                            >
+
+                                        @else
+
+                                            <div class="w-20 h-24 rounded-xl bg-gray-100 flex items-center justify-center">
+                                                <span class="text-xs text-gray-400">
+                                                    No Image
+                                                </span>
+                                            </div>
+
+                                        @endif
+
+
+                                        {{-- INFO --}}
+                                        <div class="flex-1">
+
+                                            <h3 class="font-medium text-[#4b3838]">
+                                                {{ $item->product->name }}
+                                            </h3>
+
+
+                                            @if($item->size)
+
+                                                <p class="text-sm text-gray-400 mt-1">
+                                                    Ukuran: {{ $item->size }}
+                                                </p>
+
+                                            @endif
+
+
+                                            @if($item->color)
+
+                                                <p class="text-sm text-gray-400">
+                                                    Warna: {{ $item->color }}
+                                                </p>
+
+                                            @endif
+
+
+                                            <p class="text-sm text-gray-500 mt-2">
+                                                {{ $item->quantity }} ×
+                                                Rp{{ number_format($item->product->price, 0, ',', '.') }}
+                                            </p>
+
+
+                                            <p class="text-sm font-semibold text-[#8b5e5e] mt-1">
+                                                Rp{{ number_format($item->subtotal, 0, ',', '.') }}
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                @endforeach
+
+                            </div>
+
+
+                        {{-- ================================================= --}}
+                        {{-- JIKA BELI LANGSUNG DARI PRODUK --}}
+                        {{-- ================================================= --}}
+
+                        @else
 
                             <div class="flex gap-4">
 
                                 {{-- GAMBAR --}}
                                 @if (!empty($product->image))
+
                                     <img
                                         src="{{ asset('storage/' . $product->image) }}"
                                         alt="{{ $product->name }}"
                                         class="w-20 h-24 object-cover rounded-xl bg-gray-100"
                                     >
+
                                 @else
+
                                     <div class="w-20 h-24 rounded-xl bg-gray-100 flex items-center justify-center">
                                         <span class="text-xs text-gray-400">
                                             No Image
                                         </span>
                                     </div>
+
                                 @endif
 
 
                                 <div class="flex-1">
 
-                                    {{-- NAMA PRODUK --}}
                                     <h3 class="font-medium text-[#4b3838]">
                                         {{ $product->name }}
                                     </h3>
 
 
-                                    {{-- UKURAN --}}
                                     @if (!empty($size))
+
                                         <p class="text-sm text-gray-400 mt-1">
                                             Ukuran: {{ $size }}
                                         </p>
+
                                     @endif
 
 
-                                    {{-- WARNA --}}
                                     @if (!empty($color))
+
                                         <p class="text-sm text-gray-400">
                                             Warna: {{ $color }}
                                         </p>
+
                                     @endif
 
 
-                                    {{-- QTY --}}
                                     <p class="text-sm text-gray-500 mt-2">
                                         {{ $quantity }} ×
                                         Rp{{ number_format($product->price, 0, ',', '.') }}
@@ -249,7 +333,7 @@
 
                             </div>
 
-                        </div>
+                        @endif
 
 
                         {{-- PEMISAH --}}
@@ -304,32 +388,70 @@
 
 
                         {{-- ================================================= --}}
-                        {{-- DATA PRODUK YANG DIKIRIM KE CONTROLLER --}}
+                        {{-- DATA PRODUK --}}
                         {{-- ================================================= --}}
 
-                        <input
-                            type="hidden"
-                            name="products[0][product_id]"
-                            value="{{ $product->id }}"
-                        >
+                        @if(isset($items) && $items->count())
 
-                        <input
-                            type="hidden"
-                            name="products[0][quantity]"
-                            value="{{ $quantity }}"
-                        >
+                            {{-- SEMUA PRODUK DARI KERANJANG --}}
 
-                        <input
-                            type="hidden"
-                            name="products[0][size]"
-                            value="{{ $size ?? '' }}"
-                        >
+                            @foreach($items as $index => $item)
 
-                        <input
-                            type="hidden"
-                            name="products[0][color]"
-                            value="{{ $color ?? '' }}"
-                        >
+                                <input
+                                    type="hidden"
+                                    name="products[{{ $index }}][product_id]"
+                                    value="{{ $item->product->id }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="products[{{ $index }}][quantity]"
+                                    value="{{ $item->quantity }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="products[{{ $index }}][size]"
+                                    value="{{ $item->size ?? '' }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="products[{{ $index }}][color]"
+                                    value="{{ $item->color ?? '' }}"
+                                >
+
+                            @endforeach
+
+                        @else
+
+                            {{-- SATU PRODUK DARI BELI SEKARANG --}}
+
+                            <input
+                                type="hidden"
+                                name="products[0][product_id]"
+                                value="{{ $product->id }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="products[0][quantity]"
+                                value="{{ $quantity }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="products[0][size]"
+                                value="{{ $size ?? '' }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="products[0][color]"
+                                value="{{ $color ?? '' }}"
+                            >
+
+                        @endif
 
 
                         {{-- BUTTON --}}

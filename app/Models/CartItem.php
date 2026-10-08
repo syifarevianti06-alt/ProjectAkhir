@@ -6,14 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
-    protected $fillable = ['user_id','product_id','size','color','quantity'];
+    protected $fillable = [
+        'user_id',
+        'product_id',
+        'size',
+        'color',
+        'quantity',
+    ];
+
+    protected $casts = [
+        'quantity' => 'integer',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function getSubtotalAttribute(): int
+    public function getSubtotalAttribute()
     {
         return $this->product->price * $this->quantity;
     }

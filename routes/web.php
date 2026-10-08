@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 // Controllers
+use App\Models\Order;
+use App\Http\Controllers\CartController;
+use App\Models\Product;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
@@ -12,6 +15,7 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\PenjualController;
 use App\Http\Controllers\PenjualProdukController;
+use App\Http\Controllers\PenjualProfileController;
 use App\Http\Controllers\PenjualStokController;
 use App\Http\Controllers\PenjualLaporanController;
 use App\Http\Controllers\PenjualPesananController;
@@ -59,10 +63,13 @@ Route::post('/logout', [AuthController::class, 'logout'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
 
+
+Route::get('/home', function () {
+    $products = Product::latest()->take(5)->get();
+
+    return view('home', compact('products'));
+})->name('home');
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +187,10 @@ Route::get('/penjual/dashboard', [PenjualController::class, 'dashboard'])
 // PENJUAL - PRODUK
 // =========================
 
+// =========================
+// PENJUAL - PRODUK
+// =========================
+
 Route::get('/penjual/produk', [PenjualProdukController::class, 'index'])
     ->name('penjual.produk');
 
@@ -189,18 +200,20 @@ Route::get('/penjual/produk/tambah', [PenjualProdukController::class, 'create'])
 Route::post('/penjual/produk', [PenjualProdukController::class, 'store'])
     ->name('penjual.produk.store');
 
-Route::get('/penjual/produk/{product}', [PenjualProdukController::class, 'show'])
-    ->name('penjual.produk.show');
-
+// EDIT HARUS SEBELUM {product}
 Route::get('/penjual/produk/{product}/edit', [PenjualProdukController::class, 'edit'])
     ->name('penjual.produk.edit');
 
 Route::put('/penjual/produk/{product}', [PenjualProdukController::class, 'update'])
     ->name('penjual.produk.update');
 
+// DETAIL
+Route::get('/penjual/produk/{product}', [PenjualProdukController::class, 'show'])
+    ->name('penjual.produk.show');
+
+// HAPUS
 Route::delete('/penjual/produk/{product}', [PenjualProdukController::class, 'destroy'])
     ->name('penjual.produk.destroy');
-
 
 // =========================
 // PENJUAL - STOK
@@ -238,10 +251,14 @@ Route::put('/penjual/pesanan/{order}/status', [PenjualPesananController::class, 
 // =========================
 // PENJUAL - PROFIL TOKO
 // =========================
+Route::get('/penjual/profil', [PenjualProfileController::class, 'index'])
+    ->name('penjual.profil');
 
-Route::get('/penjual/profil', function () {
-    return view('penjual.profil');
-})->name('penjual.profil');
+Route::put('/penjual/profil', [PenjualProfileController::class, 'update'])
+    ->name('penjual.profil.update');
+
+Route::put('/penjual/profil/password', [PenjualProfileController::class, 'updatePassword'])
+    ->name('penjual.profil.password');
 /*
 |--------------------------------------------------------------------------
 | PELANGGAN
@@ -271,10 +288,17 @@ Route::get('/produk/{id}', [CustomerProductController::class, 'show'])
 // =========================
 // KERANJANG
 // =========================
+Route::get('/keranjang', [CartController::class, 'index'])
+    ->name('cart.index');
 
-Route::get('/keranjang', function () {
-    return view('cart');
-})->name('cart');
+Route::post('/keranjang', [CartController::class, 'store'])
+    ->name('cart.store');
+
+Route::put('/keranjang/{cartItem}', [CartController::class, 'update'])
+    ->name('cart.update');
+
+Route::delete('/keranjang/{cartItem}', [CartController::class, 'destroy'])
+    ->name('cart.destroy');
 
 
 // =========================
@@ -292,9 +316,27 @@ Route::post('/checkout', [CheckoutController::class, 'store'])
 // PEMBAYARAN
 // =========================
 
-Route::get('/pembayaran', function () {
-    return view('payment');
-})->name('payment');
+Route::get('/pembayaran/{order}', function (\App\Models\Order $order) {
+
+    abort_unless($order->user_id === auth()->id(), 403);
+
+    return view('payment', compact('order'));
+
+})->name('payment.qris');
+Route::post('/pembayaran/{order}/success', function (\App\Models\Order $order) {
+
+    abort_unless($order->user_id === auth()->id(), 403);
+
+    $order->update([
+        'status' => 'paid',
+        'paid_at' => now(),
+    ]);
+
+    return redirect()
+        ->route('orders')
+        ->with('success', 'Pembayaran berhasil dikonfirmasi.');
+
+})->name('payment.qris.success');
 
 
 // =========================
@@ -310,14 +352,24 @@ Route::get('/pesanan-berhasil', function () {
 // PESANAN PELANGGAN
 // =========================
 
+
+
 Route::get('/pesanan', function () {
-    return view('order', [
-        'orders' => \App\Models\Order::with('items')
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->get()
-    ]);
+    $orders = Order::with('items')
+        ->where('user_id', auth()->id())
+        ->latest()
+        ->get();
+
+    return view('order', compact('orders'));
 })->name('orders');
+
+Route::get('/pesanan/{order}', function (Order $order) {
+    abort_unless($order->user_id === auth()->id(), 403);
+
+    $order->load('items');
+
+    return view('order-detail', compact('order'));
+})->name('order-detail');
 
 
 // =========================

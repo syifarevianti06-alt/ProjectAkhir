@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -14,15 +15,96 @@ class CheckoutController extends Controller
 {
     public function index(Request $request)
     {
-        $product = Product::findOrFail($request->product_id);
+        /*
+        |--------------------------------------------------------------------------
+        | CHECKOUT DARI PRODUK / BELI SEKARANG
+        |--------------------------------------------------------------------------
+        */
 
-        $quantity = (int) ($request->quantity ?? 1);
-        $size = $request->size;
-        $color = $request->color;
+        if ($request->filled('product_id')) {
 
-        $subtotal = $product->price * $quantity;
+            $product = Product::findOrFail($request->product_id);
+
+            $quantity = max(1, (int) ($request->quantity ?? 1));
+
+            if ($quantity > $product->stock) {
+                $quantity = $product->stock;
+            }
+
+            $size = $request->size;
+            $color = $request->color;
+
+            $subtotal = $product->price * $quantity;
+
+            return view('checkout', compact(
+                'product',
+                'quantity',
+                'size',
+                'color',
+                'subtotal'
+            ));
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CHECKOUT DARI KERANJANG
+        |--------------------------------------------------------------------------
+        */
+
+        $items = Auth::user()
+            ->cartItems()
+            ->with('product')
+            ->get();
+
+        // Kalau keranjang kosong
+        if ($items->isEmpty()) {
+            return redirect()
+                ->route('cart.index')
+                ->with('error', 'Keranjang masih kosong.');
+        }
+
+        // Cek stok
+        foreach ($items as $item) {
+
+            if (!$item->product) {
+                continue;
+            }
+
+            if ($item->quantity > $item->product->stock) {
+                return redirect()
+                    ->route('cart.index')
+                    ->with(
+                        'error',
+                        "Stok {$item->product->name} tidak mencukupi."
+                    );
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA UNTUK HALAMAN CHECKOUT
+        |--------------------------------------------------------------------------
+        */
+
+        $subtotal = $items->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        /*
+        | checkout.blade.php kamu sebelumnya menggunakan
+        | $product, $quantity, $size, $color.
+        |
+        | Untuk checkout keranjang, kita kirim juga $items.
+        */
+
+        $product = $items->first()->product;
+        $quantity = $items->first()->quantity;
+        $size = $items->first()->size;
+        $color = $items->first()->color;
 
         return view('checkout', compact(
+            'items',
             'product',
             'quantity',
             'size',
@@ -31,9 +113,16 @@ class CheckoutController extends Controller
         ));
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | BUAT PESANAN
+    |--------------------------------------------------------------------------
+    */
+
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'address_name' => 'required|string|max:255',
             'address_phone' => 'required|string|max:30',
             'address_full' => 'required|string|max:500',
@@ -41,10 +130,21 @@ class CheckoutController extends Controller
             'address_postal_code' => 'required|string|max:20',
 
             'products' => 'required|array|min:1',
-            'products.*.product_id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
-            'products.*.size' => 'nullable|string|max:100',
-            'products.*.color' => 'nullable|string|max:100',
+
+            'products.*.product_id' =>
+                'required|exists:products,id',
+
+            'products.*.quantity' =>
+                'required|integer|min:1',
+
+            'products.*.size' =>
+                'nullable|string|max:100',
+
+            'products.*.color' =>
+                'nullable|string|max:100',
+
+            'payment_method' =>
+                'nullable|string|max:50',
         ]);
 
         DB::beginTransaction();
@@ -52,9 +152,15 @@ class CheckoutController extends Controller
         try {
 
             $subtotal = 0;
-            $cartItems = [];
+            $orderItems = [];
 
-            foreach ($request->products as $item) {
+            /*
+            |--------------------------------------------------------------------------
+            | CEK SEMUA PRODUK
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($validated['products'] as $item) {
 
                 $product = Product::findOrFail(
                     $item['product_id']
@@ -62,7 +168,6 @@ class CheckoutController extends Controller
 
                 $quantity = (int) $item['quantity'];
 
-                // Cek stok
                 if ($product->stock < $quantity) {
 
                     DB::rollBack();
@@ -78,7 +183,7 @@ class CheckoutController extends Controller
                 $subtotal +=
                     $product->price * $quantity;
 
-                $cartItems[] = [
+                $orderItems[] = [
                     'product' => $product,
                     'quantity' => $quantity,
                     'size' => $item['size'] ?? null,
@@ -87,8 +192,14 @@ class CheckoutController extends Controller
             }
 
 
-            // BUAT ORDER
+            /*
+            |--------------------------------------------------------------------------
+            | BUAT ORDER
+            |--------------------------------------------------------------------------
+            */
+
             $order = Order::create([
+
                 'user_id' => Auth::id(),
 
                 'order_number' =>
@@ -98,42 +209,46 @@ class CheckoutController extends Controller
                     strtoupper(Str::random(4)),
 
                 'address_name' =>
-                    $request->address_name,
+                    $validated['address_name'],
 
                 'address_phone' =>
-                    $request->address_phone,
+                    $validated['address_phone'],
 
                 'address_full' =>
-                    $request->address_full,
+                    $validated['address_full'],
 
                 'address_city' =>
-                    $request->address_city,
+                    $validated['address_city'],
 
                 'address_postal_code' =>
-                    $request->address_postal_code,
+                    $validated['address_postal_code'],
 
                 'subtotal' => $subtotal,
 
                 'total' => $subtotal,
 
                 'payment_method' =>
-                    $request->payment_method ?? 'qris',
+                    $validated['payment_method'] ?? 'qris',
 
                 'status' => 'pending',
             ]);
 
 
-            // BUAT ORDER ITEM + KURANGI STOK
-            foreach ($cartItems as $item) {
+            /*
+            |--------------------------------------------------------------------------
+            | SIMPAN ORDER ITEMS + KURANGI STOK
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($orderItems as $item) {
 
                 $product = $item['product'];
 
                 OrderItem::create([
-                    'order_id' =>
-                        $order->id,
 
-                    'product_id' =>
-                        $product->id,
+                    'order_id' => $order->id,
+
+                    'product_id' => $product->id,
 
                     'product_name' =>
                         $product->name,
@@ -154,7 +269,6 @@ class CheckoutController extends Controller
                         $item['quantity'],
                 ]);
 
-
                 $product->decrement(
                     'stock',
                     $item['quantity']
@@ -162,15 +276,33 @@ class CheckoutController extends Controller
             }
 
 
+            /*
+            |--------------------------------------------------------------------------
+            | HAPUS ITEM DARI KERANJANG
+            |--------------------------------------------------------------------------
+            |
+            | Karena barang sudah menjadi pesanan,
+            | barang tersebut tidak boleh tetap berada di keranjang.
+            |
+            */
+
+            Auth::user()
+                ->cartItems()
+                ->delete();
+
+
             DB::commit();
 
 
+            /*
+            |--------------------------------------------------------------------------
+            | KE QRIS
+            |--------------------------------------------------------------------------
+            */
+
             return redirect()
-                ->route('orders')
-                ->with(
-                    'success',
-                    'Pesanan berhasil dibuat.'
-                );
+                ->route('payment.qris', $order->id);
+
 
         } catch (\Throwable $e) {
 

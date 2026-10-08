@@ -21,25 +21,25 @@
 
     {{-- PESAN BERHASIL --}}
     @if (session('status'))
-        <div class="rounded-xl border border-green-100 bg-green-50 px-5 py-4 text-sm text-green-700">
-            {{ session('status') }}
-        </div>
+    <div class="rounded-xl border border-green-100 bg-green-50 px-5 py-4 text-sm text-green-700">
+        {{ session('status') }}
+    </div>
     @endif
 
 
     {{-- ERROR VALIDASI --}}
     @if ($errors->any())
-        <div class="rounded-xl border border-red-100 bg-red-50 px-5 py-4 text-sm text-red-700">
-            <p class="font-semibold mb-2">
-                Ada data yang perlu diperbaiki:
-            </p>
+    <div class="rounded-xl border border-red-100 bg-red-50 px-5 py-4 text-sm text-red-700">
+        <p class="font-semibold mb-2">
+            Ada data yang perlu diperbaiki:
+        </p>
 
-            <ul class="list-disc pl-5 space-y-1">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+        <ul class="list-disc pl-5 space-y-1">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
 
@@ -80,11 +80,7 @@
 
 
     {{-- FORM INFORMASI --}}
-    <form
-        action="{{ route('penjual.profil') }}"
-        method="POST"
-    >
-
+    <form action="{{ route('penjual.profil.update') }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -112,10 +108,9 @@
                     <input
                         type="text"
                         name="name"
-                        value="{{ old('name', $user->name) }}"
+                        value="{{ old('name', $profile->name) }}"
                         required
-                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
 
                 </div>
 
@@ -132,8 +127,7 @@
                         name="store_name"
                         value="{{ old('store_name', $profile->store_name) }}"
                         required
-                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
 
                 </div>
 
@@ -148,10 +142,9 @@
                     <input
                         type="email"
                         name="email"
-                        value="{{ old('email', $user->email) }}"
+                        value="{{ old('email', $profile->email) }}"
                         required
-                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
 
                 </div>
 
@@ -168,8 +161,7 @@
                         name="phone"
                         value="{{ old('phone', $profile->phone) }}"
                         placeholder="Masukkan nomor telepon"
-                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
 
                 </div>
 
@@ -183,8 +175,7 @@
 
                     <select
                         name="category"
-                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
 
                         <option value="Fashion Wanita"
                             {{ old('category', $profile->category) === 'Fashion Wanita' ? 'selected' : '' }}>
@@ -217,8 +208,7 @@
                         name="address"
                         rows="4"
                         placeholder="Masukkan alamat toko"
-                        class="w-full resize-none rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 py-3 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >{{ old('address', $profile->address) }}</textarea>
+                        class="w-full resize-none rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 py-3 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">{{ old('address', $profile->address) }}</textarea>
 
                 </div>
 
@@ -234,8 +224,7 @@
                         name="description"
                         rows="5"
                         placeholder="Tuliskan deskripsi toko"
-                        class="w-full resize-none rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 py-3 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                    >{{ old('description', $profile->description) }}</textarea>
+                        class="w-full resize-none rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 py-3 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">{{ old('description', $profile->description) }}</textarea>
 
                 </div>
 
@@ -247,8 +236,7 @@
 
                 <button
                     type="submit"
-                    class="rounded-lg bg-[#986d6d] px-7 py-3 text-xs font-semibold text-white transition hover:bg-[#805959]"
-                >
+                    class="rounded-lg bg-[#986d6d] px-7 py-3 text-xs font-semibold text-white transition hover:bg-[#805959]">
                     Simpan Perubahan
                 </button>
 
@@ -259,82 +247,78 @@
     </form>
 
 
-    
-    
-{{-- AKUN --}}
-<div class="rounded-2xl border border-[#eadede] bg-white p-7 shadow-sm">
 
-    <h2 class="font-serif text-lg font-semibold text-[#4d4141]">
-        Keamanan Akun
-    </h2>
 
-    <p class="mt-1 text-xs text-[#a28f8f]">
-        Kelola informasi login akun penjual.
-    </p>
+    {{-- AKUN --}}
+    <div class="rounded-2xl border border-[#eadede] bg-white p-7 shadow-sm">
 
-    <form
-        action="{{ route('penjual.profil') }}"
-        method="POST"
-        class="mt-6"
-    >
+        <h2 class="font-serif text-lg font-semibold text-[#4d4141]">
+            Keamanan Akun
+        </h2>
 
-        @csrf
-        @method('PUT')
+        <p class="mt-1 text-xs text-[#a28f8f]">
+            Kelola informasi login akun penjual.
+        </p>
 
-        <div class="grid gap-5 md:grid-cols-2">
+       <form
+    action="{{ route('penjual.profil.password') }}"
+    method="POST"
+    class="mt-6">
 
-            {{-- PASSWORD BARU --}}
-            <div>
+    @csrf
+    @method('PUT')
 
-                <label class="mb-2 block text-xs font-semibold text-[#665858]">
-                    Password Baru
-                </label>
+            <div class="grid gap-5 md:grid-cols-2">
 
-                <input
-                    type="password"
-                    name="password"
-                    required
-                    minlength="8"
-                    placeholder="Minimal 8 karakter"
-                    class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                >
+                {{-- PASSWORD BARU --}}
+                <div>
+
+                    <label class="mb-2 block text-xs font-semibold text-[#665858]">
+                        Password Baru
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        required
+                        minlength="8"
+                        placeholder="Minimal 8 karakter"
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
+
+                </div>
+
+                {{-- KONFIRMASI PASSWORD --}}
+                <div>
+
+                    <label class="mb-2 block text-xs font-semibold text-[#665858]">
+                        Konfirmasi Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password_confirmation"
+                        required
+                        minlength="8"
+                        placeholder="Ulangi password baru"
+                        class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
+
+                </div>
 
             </div>
 
-            {{-- KONFIRMASI PASSWORD --}}
-            <div>
+            <div class="mt-5 flex justify-end">
 
-                <label class="mb-2 block text-xs font-semibold text-[#665858]">
-                    Konfirmasi Password
-                </label>
-
-                <input
-                    type="password"
-                    name="password_confirmation"
-                    required
-                    minlength="8"
-                    placeholder="Ulangi password baru"
-                    class="h-11 w-full rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-                >
+                <button
+                    type="submit"
+                    class="rounded-lg bg-[#986d6d] px-7 py-3 text-xs font-semibold text-white transition hover:bg-[#805959]">
+                    Ubah Password
+                </button>
 
             </div>
 
-        </div>
+        </form>
 
-        <div class="mt-5 flex justify-end">
-
-            <button
-                type="submit"
-                class="rounded-lg bg-[#986d6d] px-7 py-3 text-xs font-semibold text-white transition hover:bg-[#805959]"
-            >
-                Ubah Password
-            </button>
-
-        </div>
-
-    </form>
-
-</div>
+    </div>
 
 </div>
 

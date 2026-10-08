@@ -82,8 +82,7 @@
 {{-- ========================= --}}
 <section class="bg-[#faf5ef]">
 
-    <div class="max-w-[1400px] mx-auto px-8 py-5">
-
+    <div class="mx-auto max-w-[1400px] px-8 py-5">
 
         {{-- JUDUL --}}
         <div class="mb-3">
@@ -100,318 +99,121 @@
                        text-sm font-semibold
                        text-[#302727]"
             >
-                5 produk ditemukan
+                {{ $products->count() }} produk ditemukan
             </p>
 
         </div>
 
 
-        {{-- PRODUK --}}
+        {{-- PRODUK DARI DATABASE --}}
         <div
             class="grid grid-cols-1 gap-6
                    sm:grid-cols-2
                    lg:grid-cols-5"
         >
 
+            @forelse ($products as $product)
 
-            {{-- PRODUK 1 --}}
-            <div
-                class="overflow-hidden rounded-xl
-                       bg-[#f0eeeb] shadow-sm"
-            >
+                <div
+                    class="overflow-hidden rounded-xl
+                           bg-[#f0eeeb] shadow-sm"
+                >
 
-                <div class="h-[220px] overflow-hidden">
+                    {{-- FOTO PRODUK --}}
+                    <div class="h-[220px] overflow-hidden">
 
-                    <img
-                        src="{{ asset('images/produk1.jpg') }}"
-                        alt="Femes Abelia Blouse"
-                        class="h-full w-full object-cover
-                               transition duration-300
-                               hover:scale-105"
-                    >
+                        @if ($product->image)
 
-                </div>
+                            <img
+                                src="{{ asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}"
+                                class="h-full w-full object-cover
+                                       transition duration-300
+                                       hover:scale-105"
+                            >
 
+                        @else
 
-                <div class="p-3">
+                            <div
+                                class="flex h-full w-full
+                                       items-center justify-center
+                                       bg-[#e8e3df]"
+                            >
+                                <span class="text-sm text-gray-500">
+                                    Tidak ada gambar
+                                </span>
+                            </div>
 
-                    <p class="text-[10px] font-semibold text-gray-500">
-                        Atasan
-                    </p>
+                        @endif
 
-                    <h3
-                        class="mt-1 min-h-[40px]
-                               font-serif text-xs
-                               font-bold leading-4
-                               text-[#292323]"
-                    >
-                        Femes - Abelia Blouse Top Kemeja
-                        Wanita Korean Style
-                    </h3>
-
-                    <p
-                        class="mt-2 font-serif
-                               text-sm font-bold"
-                    >
-                        Rp 162.000,00
-                    </p>
-
-                    <a
-                        href="/produk/1"
-                        class="mt-2 block rounded-full
-                               bg-[#921f45]
-                               py-1.5 text-center
-                               text-[11px] font-bold
-                               text-white
-                               hover:bg-[#741735]"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
+                    </div>
 
 
+                    {{-- INFORMASI PRODUK --}}
+                    <div class="p-3">
 
-            {{-- PRODUK 2 --}}
-            <div
-                class="overflow-hidden rounded-xl
-                       bg-[#f0eeeb] shadow-sm"
-            >
-
-                <div class="h-[220px] overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk2.jpg') }}"
-                        alt="Blouse Fashion Wanita"
-                        class="h-full w-full object-cover
-                               transition duration-300
-                               hover:scale-105"
-                    >
-
-                </div>
+                        {{-- KATEGORI --}}
+                        <p class="text-[10px] font-semibold text-gray-500">
+                            {{ $product->category ?? 'Fashion' }}
+                        </p>
 
 
-                <div class="p-3">
+                        {{-- NAMA --}}
+                        <h3
+                            class="mt-1 min-h-[40px]
+                                   font-serif text-xs
+                                   font-bold leading-4
+                                   text-[#292323]"
+                        >
+                            {{ $product->name }}
+                        </h3>
 
-                    <p class="text-[10px] font-semibold text-gray-500">
-                        Atasan
-                    </p>
 
-                    <h3
-                        class="mt-1 min-h-[40px]
-                               font-serif text-xs
-                               font-bold leading-4"
-                    >
-                        Blouse Fashion Wanita Lengan
-                        Panjang Korean Looks
-                    </h3>
+                        {{-- HARGA --}}
+                        <p
+                            class="mt-2 font-serif
+                                   text-sm font-bold"
+                        >
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                        </p>
 
-                    <p
-                        class="mt-2 font-serif
-                               text-sm font-bold"
-                    >
-                        Rp 109.000,00
-                    </p>
 
-                    <a
-                        href="/produk/2"
-                        class="mt-2 block rounded-full
-                               bg-[#921f45]
-                               py-1.5 text-center
-                               text-[11px] font-bold
-                               text-white
-                               hover:bg-[#741735]"
-                    >
-                        Lihat Detail
-                    </a>
+                        {{-- DETAIL --}}
+                        <a
+                            href="{{ route('produk.show', $product->id) }}"
+                            class="mt-2 block rounded-full
+                                   bg-[#921f45]
+                                   py-1.5 text-center
+                                   text-[11px] font-bold
+                                   text-white
+                                   hover:bg-[#741735]"
+                        >
+                            Lihat Detail
+                        </a>
+
+                    </div>
 
                 </div>
 
-            </div>
+            @empty
 
+                <div class="col-span-full py-12 text-center">
 
+                    <p class="font-serif text-lg text-[#4d4141]">
+                        Belum ada produk.
+                    </p>
 
-            {{-- PRODUK 3 --}}
-            <div
-                class="overflow-hidden rounded-xl
-                       bg-[#f0eeeb] shadow-sm"
-            >
-
-                <div class="h-[220px] overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk3.jpg') }}"
-                        alt="MYCASSI Sweater"
-                        class="h-full w-full object-cover
-                               transition duration-300
-                               hover:scale-105"
-                    >
+                    <p class="mt-1 text-sm text-gray-500">
+                        Produk yang ditambahkan penjual akan muncul di sini.
+                    </p>
 
                 </div>
 
-
-                <div class="p-3">
-
-                    <p class="text-[10px] font-semibold text-gray-500">
-                        Atasan
-                    </p>
-
-                    <h3
-                        class="mt-1 min-h-[40px]
-                               font-serif text-xs
-                               font-bold leading-4"
-                    >
-                        MYCASSI Sweater Wanita Plaid
-                        Longsleeve Polo Sweatshirt Preppy
-                    </h3>
-
-                    <p
-                        class="mt-2 font-serif
-                               text-sm font-bold"
-                    >
-                        Rp 182.360,00
-                    </p>
-
-                    <a
-                        href="/produk/3"
-                        class="mt-2 block rounded-full
-                               bg-[#921f45]
-                               py-1.5 text-center
-                               text-[11px] font-bold
-                               text-white
-                               hover:bg-[#741735]"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            {{-- PRODUK 4 --}}
-            <div
-                class="overflow-hidden rounded-xl
-                       bg-[#f0eeeb] shadow-sm"
-            >
-
-                <div class="h-[220px] overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk4.jpg') }}"
-                        alt="Namira Blouse"
-                        class="h-full w-full object-cover
-                               transition duration-300
-                               hover:scale-105"
-                    >
-
-                </div>
-
-
-                <div class="p-3">
-
-                    <p class="text-[10px] font-semibold text-gray-500">
-                        Atasan
-                    </p>
-
-                    <h3
-                        class="mt-1 min-h-[40px]
-                               font-serif text-xs
-                               font-bold leading-4"
-                    >
-                        Namira Blouse Kemeja Katun Mix
-                        Stripe dan Renda
-                    </h3>
-
-                    <p
-                        class="mt-2 font-serif
-                               text-sm font-bold"
-                    >
-                        Rp 99.900,00
-                    </p>
-
-                    <a
-                        href="/produk/4"
-                        class="mt-2 block rounded-full
-                               bg-[#921f45]
-                               py-1.5 text-center
-                               text-[11px] font-bold
-                               text-white
-                               hover:bg-[#741735]"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
-
-
-
-            {{-- PRODUK 5 --}}
-            <div
-                class="overflow-hidden rounded-xl
-                       bg-[#f0eeeb] shadow-sm"
-            >
-
-                <div class="h-[220px] overflow-hidden">
-
-                    <img
-                        src="{{ asset('images/produk5.jpg') }}"
-                        alt="Blouse Wanita"
-                        class="h-full w-full object-cover
-                               transition duration-300
-                               hover:scale-105"
-                    >
-
-                </div>
-
-
-                <div class="p-3">
-
-                    <p class="text-[10px] font-semibold text-gray-500">
-                        Atasan
-                    </p>
-
-                    <h3
-                        class="mt-1 min-h-[40px]
-                               font-serif text-xs
-                               font-bold leading-4"
-                    >
-                        Blouse Wanita Kemeja Wanita
-                        Korean Style Casual
-                    </h3>
-
-                    <p
-                        class="mt-2 font-serif
-                               text-sm font-bold"
-                    >
-                        Rp 89.000,00
-                    </p>
-
-                    <a
-                        href="/produk/5"
-                        class="mt-2 block rounded-full
-                               bg-[#921f45]
-                               py-1.5 text-center
-                               text-[11px] font-bold
-                               text-white
-                               hover:bg-[#741735]"
-                    >
-                        Lihat Detail
-                    </a>
-
-                </div>
-
-            </div>
+            @endforelse
 
         </div>
 
     </div>
 
 </section>
-
 @endsection

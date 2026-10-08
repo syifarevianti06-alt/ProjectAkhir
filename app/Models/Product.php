@@ -34,4 +34,12 @@ class Product extends Model
             }
         });
     }
+
+    /**
+     * Foto-foto tambahan produk
+     */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

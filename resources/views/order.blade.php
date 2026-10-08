@@ -215,7 +215,7 @@
 
 
                             <a
-                                href="{{ route('order.detail', $order->id) }}"
+                                href="{{ route('order-detail', $order->id) }}"
                                 class="inline-flex items-center justify-center rounded-lg border border-[#8b203d] px-5 py-2.5 text-sm font-semibold text-[#8b203d] transition hover:bg-[#8b203d] hover:text-white"
                             >
                                 Lihat Detail
