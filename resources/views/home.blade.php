@@ -13,7 +13,7 @@
             class="relative h-[380px] overflow-hidden
                    border border-[#ead8d0]
                    bg-cover bg-center"
-            style="background-image: url('{{ asset('images/banner.jpeg') }}');">
+            style="background-image: url('{{ asset('images/bgy.jpeg') }}');">
 
             {{-- Overlay tipis --}}
             <div class="absolute inset-0 bg-white/20"></div>

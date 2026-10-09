@@ -7,7 +7,7 @@
 
 <div class="max-w-5xl mx-auto">
 
-    //HEADER
+    {{-- HEADER --}}
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-[#332326]">
@@ -25,15 +25,15 @@
     </div>
 
 
-    //DETAIL CARD
+    {{-- DETAIL CARD --}}
     <div class="bg-white rounded-2xl border border-[#eadfe1] shadow-sm overflow-hidden">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-7">
 
-            //FOTO PRODUK
+            {{-- FOTO PRODUK --}}
             <div class="bg-white rounded-2xl border border-[#eadfe1] p-5">
 
-                // FOTO UTAMA
+                {{-- FOTO UTAMA --}}
                 <div class="relative overflow-hidden rounded-2xl bg-[#f8f1eb]">
 
                     @if ($product->images->count() > 0)
@@ -44,7 +44,7 @@
                         alt="{{ $product->name }}"
                         class="w-full h-[450px] object-cover transition duration-300">
 
-                    // TOMBOL SEBELUMNYA
+                    {{-- TOMBOL SEBELUMNYA --}}
                     <button
                         type="button"
                         onclick="previousImage()"
@@ -56,7 +56,7 @@
                         ‹
                     </button>
 
-                    // TOMBOL BERIKUTNYA
+                    {{-- TOMBOL BERIKUTNYA --}}
                     <button
                         type="button"
                         onclick="nextImage()"
@@ -87,7 +87,7 @@
                 </div>
 
 
-                // THUMBNAIL
+                {{-- THUMBNAIL --}}
                 @if ($product->images->count() > 0)
 
                 <div class="flex gap-3 mt-4 overflow-x-auto pb-2">
@@ -115,7 +115,7 @@
 
             </div>
 
-            // INFORMASI
+            {{-- INFORMASI --}}
             <div class="flex flex-col">
 
                 <span class="text-xs text-[#966767] font-medium uppercase tracking-wide">
@@ -131,7 +131,7 @@
                 </p>
 
 
-                //STOK
+                {{-- STOK --}}
                 <div class="mt-6 p-4 rounded-xl bg-[#fbf5ef]">
                     <p class="text-xs text-gray-500">
                         Stok
@@ -143,7 +143,7 @@
                 </div>
 
 
-                //DESKRIPSI
+                {{-- DESKRIPSI --}}
                 <div class="mt-6">
                     <h3 class="text-sm font-semibold text-[#332326]">
                         Deskripsi
@@ -155,7 +155,7 @@
                 </div>
 
 
-                //UKURAN
+                {{-- UKURAN --}}
                 @if ($product->sizes)
                 <div class="mt-5">
                     <h3 class="text-sm font-semibold text-[#332326]">
@@ -173,7 +173,7 @@
                 @endif
 
 
-                //WARNA
+                {{-- WARNA --}}
                 @if ($product->colors)
                 <div class="mt-5">
                     <h3 class="text-sm font-semibold text-[#332326]">
@@ -191,17 +191,17 @@
                 @endif
 
 
-                //TOMBOL
+                {{-- TOMBOL --}}
                 <div class="flex gap-3 mt-8">
 
-                    // EDIT
+                    {{-- EDIT --}}
                     <a href="{{ route('penjual.produk.edit', $product->id) }}"
                         class="flex-1 text-center rounded-xl bg-[#966767] px-5 py-3 text-sm font-semibold text-white hover:bg-[#7f5555] transition">
                         Edit Produk
                     </a>
 
 
-                    // HAPUS
+                    {{-- HAPUS --}}
                     <form
                         action="{{ route('penjual.produk.destroy', $product->id) }}"
                         method="POST"
@@ -226,9 +226,9 @@
 </div>
 
 @php
-$productImages = $product->images->map(function ($image) {
-return asset('storage/' . $image->image);
-})->values();
+    $productImages = $product->images->map(function ($image) {
+        return asset('storage/' . $image->image);
+    })->values();
 @endphp
 
 <script>
