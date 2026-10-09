@@ -20,9 +20,7 @@ class AdminController extends Controller
             'selesai',
         ];
 
-        // =========================
-        // STATISTIK UTAMA
-        // =========================
+
 
         // Total pengguna
         $totalPengguna = User::count();

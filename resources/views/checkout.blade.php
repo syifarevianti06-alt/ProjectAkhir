@@ -7,7 +7,7 @@
 <div class="min-h-screen bg-[#f8f5f2] py-10">
     <div class="max-w-6xl mx-auto px-5">
 
-        {{-- HEADER --}}
+        // HEADER
         <div class="mb-8">
             <h1 class="text-3xl font-serif text-[#5d4545]">
                 Checkout
@@ -19,27 +19,27 @@
         </div>
 
 
-        {{-- ERROR --}}
+        // ERROR
         @if ($errors->any())
-            <div class="mb-6 bg-red-50 border border-red-200 text-red-600 rounded-xl p-4">
-                <p class="font-semibold mb-2">
-                    Terjadi kesalahan:
-                </p>
+        <div class="mb-6 bg-red-50 border border-red-200 text-red-600 rounded-xl p-4">
+            <p class="font-semibold mb-2">
+                Terjadi kesalahan:
+            </p>
 
-                <ul class="list-disc list-inside text-sm">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            <ul class="list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
         @endif
 
 
-        {{-- SUCCESS --}}
+        // SUCCESS
         @if (session('success'))
-            <div class="mb-6 bg-green-50 border border-green-200 text-green-600 rounded-xl p-4">
-                {{ session('success') }}
-            </div>
+        <div class="mb-6 bg-green-50 border border-green-200 text-green-600 rounded-xl p-4">
+            {{ session('success') }}
+        </div>
         @endif
 
 
@@ -48,9 +48,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                {{-- ================================================= --}}
-                {{-- INFORMASI PENGIRIMAN --}}
-                {{-- ================================================= --}}
+                // INFORMASI PENGIRIMAN
                 <div class="lg:col-span-2">
 
                     <div class="bg-white rounded-2xl p-7 shadow-sm">
@@ -60,7 +58,7 @@
                         </h2>
 
 
-                        {{-- NAMA --}}
+                        // NAMA
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Nama Penerima
@@ -72,12 +70,11 @@
                                 value="{{ old('address_name', auth()->user()->name ?? '') }}"
                                 required
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-[#966767]"
-                                placeholder="Masukkan nama penerima"
-                            >
+                                placeholder="Masukkan nama penerima">
                         </div>
 
 
-                        {{-- NOMOR TELEPON --}}
+                        // NOMOR TELEPON
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Nomor Telepon
@@ -89,12 +86,11 @@
                                 value="{{ old('address_phone') }}"
                                 required
                                 class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-[#966767]"
-                                placeholder="08xxxxxxxxxx"
-                            >
+                                placeholder="08xxxxxxxxxx">
                         </div>
 
 
-                        {{-- ALAMAT --}}
+                        // ALAMAT
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Alamat Lengkap
@@ -109,7 +105,7 @@
                         </div>
 
 
-                        {{-- KOTA + KODE POS --}}
+                        // KOTA + KODE POS
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
 
                             <div>
@@ -123,8 +119,7 @@
                                     value="{{ old('address_city') }}"
                                     required
                                     class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-[#966767]"
-                                    placeholder="Contoh: Bandung"
-                                >
+                                    placeholder="Contoh: Bandung">
                             </div>
 
 
@@ -139,14 +134,13 @@
                                     value="{{ old('address_postal_code') }}"
                                     required
                                     class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-[#966767]"
-                                    placeholder="401xx"
-                                >
+                                    placeholder="401xx">
                             </div>
 
                         </div>
 
 
-                        {{-- METODE PEMBAYARAN --}}
+                        // METODE PEMBAYARAN
                         <div class="mt-8">
 
                             <h2 class="text-xl font-semibold text-[#4b3838] mb-5">
@@ -160,8 +154,7 @@
                                     name="payment_method"
                                     value="qris"
                                     checked
-                                    class="accent-[#966767]"
-                                >
+                                    class="accent-[#966767]">
 
                                 <div>
                                     <p class="font-semibold text-[#4b3838]">
@@ -182,9 +175,7 @@
                 </div>
 
 
-                {{-- ================================================= --}}
-                {{-- RINGKASAN PESANAN --}}
-                {{-- ================================================= --}}
+                // RINGKASAN PESANAN
                 <div>
 
                     <div class="bg-white rounded-2xl p-6 shadow-sm sticky top-5">
@@ -194,156 +185,150 @@
                         </h2>
 
 
-                        {{-- ================================================= --}}
-                        {{-- JIKA CHECKOUT DARI KERANJANG --}}
-                        {{-- ================================================= --}}
+                        // JIKA BELI DARI KERANJANG
 
                         @if(isset($items) && $items->count())
 
-                            <div class="space-y-5">
+                        <div class="space-y-5">
 
-                                @foreach($items as $item)
-
-                                    <div class="flex gap-4">
-
-                                        {{-- GAMBAR --}}
-                                        @if (!empty($item->product->image))
-
-                                            <img
-                                                src="{{ asset('storage/' . $item->product->image) }}"
-                                                alt="{{ $item->product->name }}"
-                                                class="w-20 h-24 object-cover rounded-xl bg-gray-100"
-                                            >
-
-                                        @else
-
-                                            <div class="w-20 h-24 rounded-xl bg-gray-100 flex items-center justify-center">
-                                                <span class="text-xs text-gray-400">
-                                                    No Image
-                                                </span>
-                                            </div>
-
-                                        @endif
-
-
-                                        {{-- INFO --}}
-                                        <div class="flex-1">
-
-                                            <h3 class="font-medium text-[#4b3838]">
-                                                {{ $item->product->name }}
-                                            </h3>
-
-
-                                            @if($item->size)
-
-                                                <p class="text-sm text-gray-400 mt-1">
-                                                    Ukuran: {{ $item->size }}
-                                                </p>
-
-                                            @endif
-
-
-                                            @if($item->color)
-
-                                                <p class="text-sm text-gray-400">
-                                                    Warna: {{ $item->color }}
-                                                </p>
-
-                                            @endif
-
-
-                                            <p class="text-sm text-gray-500 mt-2">
-                                                {{ $item->quantity }} ×
-                                                Rp{{ number_format($item->product->price, 0, ',', '.') }}
-                                            </p>
-
-
-                                            <p class="text-sm font-semibold text-[#8b5e5e] mt-1">
-                                                Rp{{ number_format($item->subtotal, 0, ',', '.') }}
-                                            </p>
-
-                                        </div>
-
-                                    </div>
-
-                                @endforeach
-
-                            </div>
-
-
-                        {{-- ================================================= --}}
-                        {{-- JIKA BELI LANGSUNG DARI PRODUK --}}
-                        {{-- ================================================= --}}
-
-                        @else
+                            @foreach($items as $item)
 
                             <div class="flex gap-4">
 
-                                {{-- GAMBAR --}}
-                                @if (!empty($product->image))
+                                // GAMBAR
+                                @if (!empty($item->product->image))
 
-                                    <img
-                                        src="{{ asset('storage/' . $product->image) }}"
-                                        alt="{{ $product->name }}"
-                                        class="w-20 h-24 object-cover rounded-xl bg-gray-100"
-                                    >
+                                <img
+                                    src="{{ asset('storage/' . $item->product->image) }}"
+                                    alt="{{ $item->product->name }}"
+                                    class="w-20 h-24 object-cover rounded-xl bg-gray-100">
 
                                 @else
 
-                                    <div class="w-20 h-24 rounded-xl bg-gray-100 flex items-center justify-center">
-                                        <span class="text-xs text-gray-400">
-                                            No Image
-                                        </span>
-                                    </div>
+                                <div class="w-20 h-24 rounded-xl bg-gray-100 flex items-center justify-center">
+                                    <span class="text-xs text-gray-400">
+                                        No Image
+                                    </span>
+                                </div>
 
                                 @endif
 
 
+                                // INFO
                                 <div class="flex-1">
 
                                     <h3 class="font-medium text-[#4b3838]">
-                                        {{ $product->name }}
+                                        {{ $item->product->name }}
                                     </h3>
 
 
-                                    @if (!empty($size))
+                                    @if($item->size)
 
-                                        <p class="text-sm text-gray-400 mt-1">
-                                            Ukuran: {{ $size }}
-                                        </p>
+                                    <p class="text-sm text-gray-400 mt-1">
+                                        Ukuran: {{ $item->size }}
+                                    </p>
 
                                     @endif
 
 
-                                    @if (!empty($color))
+                                    @if($item->color)
 
-                                        <p class="text-sm text-gray-400">
-                                            Warna: {{ $color }}
-                                        </p>
+                                    <p class="text-sm text-gray-400">
+                                        Warna: {{ $item->color }}
+                                    </p>
 
                                     @endif
 
 
                                     <p class="text-sm text-gray-500 mt-2">
-                                        {{ $quantity }} ×
-                                        Rp{{ number_format($product->price, 0, ',', '.') }}
+                                        {{ $item->quantity }} ×
+                                        Rp{{ number_format($item->product->price, 0, ',', '.') }}
+                                    </p>
+
+
+                                    <p class="text-sm font-semibold text-[#8b5e5e] mt-1">
+                                        Rp{{ number_format($item->subtotal, 0, ',', '.') }}
                                     </p>
 
                                 </div>
 
                             </div>
 
+                            @endforeach
+
+                        </div>
+
+
+                        // JIKA BELI LANGSUNG DARI PRODUK
+
+                        @else
+
+                        <div class="flex gap-4">
+
+                            // GAMBAR
+                            @if (!empty($product->image))
+
+                            <img
+                                src="{{ asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}"
+                                class="w-20 h-24 object-cover rounded-xl bg-gray-100">
+
+                            @else
+
+                            <div class="w-20 h-24 rounded-xl bg-gray-100 flex items-center justify-center">
+                                <span class="text-xs text-gray-400">
+                                    No Image
+                                </span>
+                            </div>
+
+                            @endif
+
+
+                            <div class="flex-1">
+
+                                <h3 class="font-medium text-[#4b3838]">
+                                    {{ $product->name }}
+                                </h3>
+
+
+                                @if (!empty($size))
+
+                                <p class="text-sm text-gray-400 mt-1">
+                                    Ukuran: {{ $size }}
+                                </p>
+
+                                @endif
+
+
+                                @if (!empty($color))
+
+                                <p class="text-sm text-gray-400">
+                                    Warna: {{ $color }}
+                                </p>
+
+                                @endif
+
+
+                                <p class="text-sm text-gray-500 mt-2">
+                                    {{ $quantity }} ×
+                                    Rp{{ number_format($product->price, 0, ',', '.') }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
                         @endif
 
 
-                        {{-- PEMISAH --}}
+                        // PEMISAH
                         <div class="border-t border-gray-200 my-6"></div>
 
 
-                        {{-- TOTAL --}}
+                        // TOTAL
                         <div class="space-y-3">
 
-                            {{-- SUBTOTAL --}}
+                            // SUBTOTAL
                             <div class="flex justify-between text-sm">
 
                                 <span class="text-gray-500">
@@ -357,7 +342,7 @@
                             </div>
 
 
-                            {{-- ONGKIR --}}
+                            // ONGKIR
                             <div class="flex justify-between text-sm">
 
                                 <span class="text-gray-500">
@@ -371,7 +356,7 @@
                             </div>
 
 
-                            {{-- TOTAL --}}
+                            // TOTAL
                             <div class="border-t border-gray-200 pt-4 flex justify-between">
 
                                 <span class="font-semibold text-[#4b3838]">
@@ -387,78 +372,67 @@
                         </div>
 
 
-                        {{-- ================================================= --}}
-                        {{-- DATA PRODUK --}}
-                        {{-- ================================================= --}}
+                        // DATA PRODUK
 
                         @if(isset($items) && $items->count())
 
-                            {{-- SEMUA PRODUK DARI KERANJANG --}}
+                        // SEMUA PRODUK DARI KERANJANG
 
-                            @foreach($items as $index => $item)
+                        @foreach($items as $index => $item)
 
-                                <input
-                                    type="hidden"
-                                    name="products[{{ $index }}][product_id]"
-                                    value="{{ $item->product->id }}"
-                                >
+                        <input
+                            type="hidden"
+                            name="products[{{ $index }}][product_id]"
+                            value="{{ $item->product->id }}">
 
-                                <input
-                                    type="hidden"
-                                    name="products[{{ $index }}][quantity]"
-                                    value="{{ $item->quantity }}"
-                                >
+                        <input
+                            type="hidden"
+                            name="products[{{ $index }}][quantity]"
+                            value="{{ $item->quantity }}">
 
-                                <input
-                                    type="hidden"
-                                    name="products[{{ $index }}][size]"
-                                    value="{{ $item->size ?? '' }}"
-                                >
+                        <input
+                            type="hidden"
+                            name="products[{{ $index }}][size]"
+                            value="{{ $item->size ?? '' }}">
 
-                                <input
-                                    type="hidden"
-                                    name="products[{{ $index }}][color]"
-                                    value="{{ $item->color ?? '' }}"
-                                >
+                        <input
+                            type="hidden"
+                            name="products[{{ $index }}][color]"
+                            value="{{ $item->color ?? '' }}">
 
-                            @endforeach
+                        @endforeach
 
                         @else
 
-                            {{-- SATU PRODUK DARI BELI SEKARANG --}}
+                        // SATU PRODUK DARI BELI SEKARANG
 
-                            <input
-                                type="hidden"
-                                name="products[0][product_id]"
-                                value="{{ $product->id }}"
-                            >
+                        <input
+                            type="hidden"
+                            name="products[0][product_id]"
+                            value="{{ $product->id }}">
 
-                            <input
-                                type="hidden"
-                                name="products[0][quantity]"
-                                value="{{ $quantity }}"
-                            >
+                        <input
+                            type="hidden"
+                            name="products[0][quantity]"
+                            value="{{ $quantity }}">
 
-                            <input
-                                type="hidden"
-                                name="products[0][size]"
-                                value="{{ $size ?? '' }}"
-                            >
+                        <input
+                            type="hidden"
+                            name="products[0][size]"
+                            value="{{ $size ?? '' }}">
 
-                            <input
-                                type="hidden"
-                                name="products[0][color]"
-                                value="{{ $color ?? '' }}"
-                            >
+                        <input
+                            type="hidden"
+                            name="products[0][color]"
+                            value="{{ $color ?? '' }}">
 
                         @endif
 
 
-                        {{-- BUTTON --}}
+                        // BUTTON
                         <button
                             type="submit"
-                            class="w-full mt-7 bg-[#8b5e5e] hover:bg-[#754b4b] text-white py-3.5 rounded-xl font-semibold transition"
-                        >
+                            class="w-full mt-7 bg-[#8b5e5e] hover:bg-[#754b4b] text-white py-3.5 rounded-xl font-semibold transition">
                             Buat Pesanan
                         </button>
 

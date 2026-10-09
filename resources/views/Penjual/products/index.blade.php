@@ -7,7 +7,7 @@
 
 <div class="space-y-6">
 
-    {{-- HEADER --}}
+    //HEADER
     <div>
         <h1 class="text-2xl font-semibold text-[#4d4141]">
             Produk
@@ -19,20 +19,20 @@
     </div>
 
 
-    {{-- PESAN BERHASIL --}}
+    //PESAN BERHASIL
     @if (session('success'))
 
-        <div class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-            {{ session('success') }}
-        </div>
+    <div class="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+        {{ session('success') }}
+    </div>
 
     @endif
 
 
-    {{-- STATISTIK --}}
+    //STATISTIK
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
-        {{-- TOTAL PRODUK --}}
+        //TOTAL PRODUK
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-sm text-[#9a8888]">
@@ -46,7 +46,7 @@
         </div>
 
 
-        {{-- TOTAL STOK --}}
+        //TOTAL STOK
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-sm text-[#9a8888]">
@@ -60,7 +60,7 @@
         </div>
 
 
-        {{-- PRODUK HABIS --}}
+        //PRODUK HABIS
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-sm text-[#9a8888]">
@@ -76,29 +76,27 @@
     </div>
 
 
-    {{-- FILTER --}}
+    //FILTER
     <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
         <div class="flex flex-col gap-4 md:flex-row">
 
-            {{-- SEARCH --}}
+            //SEARCH
             <div class="flex-1">
 
                 <input
                     type="text"
                     id="searchProduct"
                     placeholder="Cari nama produk..."
-                    class="w-full rounded-xl border border-[#e5dada] px-4 py-3 text-sm text-[#4d4141] outline-none transition focus:border-[#986d6d] focus:ring-2 focus:ring-[#986d6d]/10"
-                >
+                    class="w-full rounded-xl border border-[#e5dada] px-4 py-3 text-sm text-[#4d4141] outline-none transition focus:border-[#986d6d] focus:ring-2 focus:ring-[#986d6d]/10">
 
             </div>
 
 
-            {{-- KATEGORI --}}
+            //KATEGORI
             <select
                 id="categoryFilter"
-                class="rounded-xl border border-[#e5dada] bg-white px-4 py-3 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
-            >
+                class="rounded-xl border border-[#e5dada] bg-white px-4 py-3 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
 
                 <option value="">
                     Semua Kategori
@@ -123,14 +121,14 @@
     </div>
 
 
-    {{-- TABEL --}}
+    //TABEL
     <div class="overflow-hidden rounded-2xl border border-[#eadede] bg-white shadow-sm">
 
         <div class="overflow-x-auto">
 
             <table class="w-full min-w-[1500px]">
 
-                {{-- HEADER TABEL --}}
+                //HEADER TABEL
                 <thead class="border-b border-[#eadede] bg-[#fcf9f9]">
 
                     <tr>
@@ -180,233 +178,225 @@
                 </thead>
 
 
-                {{-- DATA PRODUK --}}
+                //DATA PRODUK
                 <tbody
                     id="productTable"
-                    class="divide-y divide-[#f0e5e5]"
-                >
+                    class="divide-y divide-[#f0e5e5]">
 
                     @forelse ($products as $product)
 
-                        <tr
-                            class="product-row transition hover:bg-[#fcf9f9]"
-                            data-name="{{ strtolower($product->name) }}"
-                            data-category="{{ strtolower($product->category ?? '') }}"
-                        >
+                    <tr
+                        class="product-row transition hover:bg-[#fcf9f9]"
+                        data-name="{{ strtolower($product->name) }}"
+                        data-category="{{ strtolower($product->category ?? '') }}">
 
-                            {{-- NO --}}
-                            <td class="px-6 py-4 text-sm text-[#6f5b5b]">
-                                {{ $products->firstItem() + $loop->index }}
-                            </td>
-
-
-                            {{-- FOTO --}}
-                            <td class="px-6 py-4">
-
-                                @if ($product->image)
-
-                                    <img
-                                        src="{{ asset('storage/' . $product->image) }}"
-                                        alt="{{ $product->name }}"
-                                        class="h-14 w-14 rounded-xl object-cover"
-                                    >
-
-                                @else
-
-                                    <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-[#f5eaea]">
-                                        <span class="text-xl">
-                                            🖼️
-                                        </span>
-                                    </div>
-
-                                @endif
-
-                            </td>
+                        //NO
+                        <td class="px-6 py-4 text-sm text-[#6f5b5b]">
+                            {{ $products->firstItem() + $loop->index }}
+                        </td>
 
 
-                            {{-- NAMA --}}
-                            <td class="px-6 py-4">
+                        //FOTO
+                        <td class="px-6 py-4">
 
-                                <p class="font-medium text-[#4d4141]">
-                                    {{ $product->name }}
-                                </p>
+                            @if ($product->image)
 
-                                <p class="mt-1 text-xs text-[#a99595]">
-                                    ID #{{ $product->id }}
-                                </p>
+                            <img
+                                src="{{ asset('storage/' . $product->image) }}"
+                                alt="{{ $product->name }}"
+                                class="h-14 w-14 rounded-xl object-cover">
 
-                            </td>
+                            @else
 
-
-                            {{-- KATEGORI --}}
-                            <td class="px-6 py-4">
-
-                                <span class="rounded-lg bg-[#f8eeee] px-3 py-1 text-xs font-medium text-[#805959]">
-                                    {{ $product->category ?? '-' }}
+                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-[#f5eaea]">
+                                <span class="text-xl">
+                                    🖼️
                                 </span>
+                            </div>
 
-                            </td>
+                            @endif
 
-
-                            {{-- HARGA --}}
-                            <td class="px-6 py-4 text-sm font-medium text-[#4d4141]">
-
-                                Rp{{ number_format($product->price, 0, ',', '.') }}
-
-                            </td>
+                        </td>
 
 
-                            {{-- STOK --}}
-                            <td class="px-6 py-4">
+                        //NAMA
+                        <td class="px-6 py-4">
 
-                                <span class="text-sm font-medium text-[#6f5b5b]">
-                                    {{ $product->stock }}
-                                </span>
+                            <p class="font-medium text-[#4d4141]">
+                                {{ $product->name }}
+                            </p>
 
-                                <span class="ml-1 text-xs text-[#a99595]">
-                                    stok
-                                </span>
+                            <p class="mt-1 text-xs text-[#a99595]">
+                                ID #{{ $product->id }}
+                            </p>
 
-                            </td>
-
-
-                            {{-- UKURAN --}}
-                            <td class="px-6 py-4 text-sm text-[#6f5b5b]">
-
-                                @if (is_array($product->sizes ?? null))
-
-                                    {{ implode(', ', $product->sizes) }}
-
-                                @elseif (!empty($product->sizes))
-
-                                    {{ $product->sizes }}
-
-                                @else
-
-                                    -
-
-                                @endif
-
-                            </td>
+                        </td>
 
 
-                            {{-- WARNA --}}
-                            <td class="px-6 py-4 text-sm text-[#6f5b5b]">
+                        //KATEGORI
+                        <td class="px-6 py-4">
 
-                                @if (is_array($product->colors ?? null))
+                            <span class="rounded-lg bg-[#f8eeee] px-3 py-1 text-xs font-medium text-[#805959]">
+                                {{ $product->category ?? '-' }}
+                            </span>
 
-                                    {{ implode(', ', $product->colors) }}
-
-                                @elseif (!empty($product->colors))
-
-                                    {{ $product->colors }}
-
-                                @else
-
-                                    -
-
-                                @endif
-
-                            </td>
+                        </td>
 
 
-                            {{-- STATUS --}}
-                            <td class="px-6 py-4">
+                        //HARGA
+                        <td class="px-6 py-4 text-sm font-medium text-[#4d4141]">
 
-                                @if ($product->stock > 0)
+                            Rp{{ number_format($product->price, 0, ',', '.') }}
 
-                                    <span class="inline-flex rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
-                                        Aktif
-                                    </span>
-
-                                @else
-
-                                    <span class="inline-flex rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
-                                        Habis
-                                    </span>
-
-                                @endif
-
-                            </td>
+                        </td>
 
 
-                            {{-- AKSI --}}
-                            <td class="px-6 py-4">
+                        //STOK
+                        <td class="px-6 py-4">
 
-                                <div class="flex items-center gap-2">
+                            <span class="text-sm font-medium text-[#6f5b5b]">
+                                {{ $product->stock }}
+                            </span>
 
-                                    {{-- LIHAT DETAIL --}}
-                                    <a
-                                        href="{{ route('penjual.produk.show', $product->id) }}"
-                                        class="whitespace-nowrap rounded-lg bg-[#f5eeee] px-3 py-2 text-xs font-medium text-[#805959] transition hover:bg-[#eadede]"
-                                    >
-                                        Lihat Detail
-                                    </a>
+                            <span class="ml-1 text-xs text-[#a99595]">
+                                stok
+                            </span>
 
-
-                                    {{-- EDIT --}}
-                                    <a
-                                        href="{{ route('penjual.produk.edit', $product->id) }}"
-                                        class="whitespace-nowrap rounded-lg bg-[#f3f1e9] px-3 py-2 text-xs font-medium text-[#6f634b] transition hover:bg-[#e9e5d8]"
-                                    >
-                                        Edit
-                                    </a>
+                        </td>
 
 
-                                    {{-- HAPUS --}}
-                                    <form
-                                        action="{{ route('penjual.produk.destroy', $product->id) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Apakah kamu yakin ingin menghapus produk ini?')"
-                                    >
+                        //UKURAN
+                        <td class="px-6 py-4 text-sm text-[#6f5b5b]">
 
-                                        @csrf
-                                        @method('DELETE')
+                            @if (is_array($product->sizes ?? null))
 
-                                        <button
-                                            type="submit"
-                                            class="whitespace-nowrap rounded-lg bg-[#fceeee] px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-[#f8dddd]"
-                                        >
-                                            Hapus
-                                        </button>
+                            {{ implode(', ', $product->sizes) }}
 
-                                    </form>
+                            @elseif (!empty($product->sizes))
 
-                                </div>
+                            {{ $product->sizes }}
 
-                            </td>
+                            @else
 
-                        </tr>
+                            -
+
+                            @endif
+
+                        </td>
+
+
+                        //WARNA
+                        <td class="px-6 py-4 text-sm text-[#6f5b5b]">
+
+                            @if (is_array($product->colors ?? null))
+
+                            {{ implode(', ', $product->colors) }}
+
+                            @elseif (!empty($product->colors))
+
+                            {{ $product->colors }}
+
+                            @else
+
+                            -
+
+                            @endif
+
+                        </td>
+
+
+                        //STATUS
+                        <td class="px-6 py-4">
+
+                            @if ($product->stock > 0)
+
+                            <span class="inline-flex rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
+                                Aktif
+                            </span>
+
+                            @else
+
+                            <span class="inline-flex rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-700">
+                                Habis
+                            </span>
+
+                            @endif
+
+                        </td>
+
+
+                        //AKSI
+                        <td class="px-6 py-4">
+
+                            <div class="flex items-center gap-2">
+
+                                //LIHAT DETAIL
+                                <a
+                                    href="{{ route('penjual.produk.show', $product->id) }}"
+                                    class="whitespace-nowrap rounded-lg bg-[#f5eeee] px-3 py-2 text-xs font-medium text-[#805959] transition hover:bg-[#eadede]">
+                                    Lihat Detail
+                                </a>
+
+
+                                //EDIT
+                                <a
+                                    href="{{ route('penjual.produk.edit', $product->id) }}"
+                                    class="whitespace-nowrap rounded-lg bg-[#f3f1e9] px-3 py-2 text-xs font-medium text-[#6f634b] transition hover:bg-[#e9e5d8]">
+                                    Edit
+                                </a>
+
+
+                                //HAPUS
+                                <form
+                                    action="{{ route('penjual.produk.destroy', $product->id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Apakah kamu yakin ingin menghapus produk ini?')">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        class="whitespace-nowrap rounded-lg bg-[#fceeee] px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-[#f8dddd]">
+                                        Hapus
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
 
 
                     @empty
 
-                        <tr>
+                    <tr>
 
-                            <td
-                                colspan="10"
-                                class="px-6 py-16 text-center"
-                            >
+                        <td
+                            colspan="10"
+                            class="px-6 py-16 text-center">
 
-                                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#f7eeee]">
+                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#f7eeee]">
 
-                                    <span class="text-2xl">
-                                        🛍️
-                                    </span>
+                                <span class="text-2xl">
+                                    🛍️
+                                </span>
 
-                                </div>
+                            </div>
 
-                                <p class="mt-4 font-medium text-[#4d4141]">
-                                    Belum ada produk
-                                </p>
+                            <p class="mt-4 font-medium text-[#4d4141]">
+                                Belum ada produk
+                            </p>
 
-                                <p class="mt-1 text-sm text-[#9a8888]">
-                                    Belum ada produk yang tersedia di toko Lune Attiré.
-                                </p>
+                            <p class="mt-1 text-sm text-[#9a8888]">
+                                Belum ada produk yang tersedia di toko Lune Attiré.
+                            </p>
 
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
 
                     @endforelse
 
@@ -417,14 +407,14 @@
         </div>
 
 
-        {{-- PAGINATION --}}
+        // PAGINATION
         @if ($products->hasPages())
 
-            <div class="border-t border-[#eadede] px-6 py-4">
+        <div class="border-t border-[#eadede] px-6 py-4">
 
-                {{ $products->links() }}
+            {{ $products->links() }}
 
-            </div>
+        </div>
 
         @endif
 
@@ -433,9 +423,8 @@
 </div>
 
 
-{{-- SEARCH & FILTER --}}
+// SEARCH & FILTER
 <script>
-
     const searchInput = document.getElementById('searchProduct');
     const categoryFilter = document.getElementById('categoryFilter');
     const productRows = document.querySelectorAll('.product-row');
@@ -472,7 +461,6 @@
     searchInput.addEventListener('input', filterProducts);
 
     categoryFilter.addEventListener('change', filterProducts);
-
 </script>
 
 @endsection

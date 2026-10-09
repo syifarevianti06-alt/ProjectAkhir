@@ -7,7 +7,7 @@
 
 <div class="space-y-7">
 
-    {{-- HEADER --}}
+    //HEADER
     <div>
 
         <p class="text-[11px] uppercase tracking-[0.16em] text-[#A28B83]">
@@ -25,25 +25,25 @@
     </div>
 
 
-    {{-- SUCCESS --}}
+    // SUCCESS
     @if(session('success'))
 
-        <div class="bg-[#F1E8E3]
+    <div class="bg-[#F1E8E3]
             border border-[#E1D0C8]
             text-[#70534D]
             rounded-xl px-5 py-4 text-sm">
 
-            {{ session('success') }}
+        {{ session('success') }}
 
-        </div>
+    </div>
 
     @endif
 
 
-    {{-- STATISTIK --}}
+    // STATISTIK
     <div class="grid grid-cols-4 gap-5">
 
-        {{-- TOTAL --}}
+        // TOTAL
         <div class="bg-white rounded-2xl
             border border-[#EDE2DA]
             p-5">
@@ -62,7 +62,7 @@
         </div>
 
 
-        {{-- PENDING --}}
+        // PENDING
         <div class="bg-white rounded-2xl
             border border-[#EDE2DA]
             p-5">
@@ -81,7 +81,7 @@
         </div>
 
 
-        {{-- DIPROSES --}}
+        // DIPROSES
         <div class="bg-white rounded-2xl
             border border-[#EDE2DA]
             p-5">
@@ -100,7 +100,7 @@
         </div>
 
 
-        {{-- SELESAI --}}
+        // SELESAI
         <div class="bg-white rounded-2xl
             border border-[#EDE2DA]
             p-5">
@@ -121,7 +121,7 @@
     </div>
 
 
-    {{-- SEARCH & FILTER --}}
+    // SEARCH & FILTER
     <div class="bg-white
         border border-[#EDE2DA]
         rounded-2xl p-5">
@@ -129,8 +129,7 @@
         <form
             action="{{ route('admin.pesanan') }}"
             method="GET"
-            class="flex gap-3"
-        >
+            class="flex gap-3">
 
             <input
                 type="text"
@@ -146,8 +145,7 @@
                 text-[#493535]
                 placeholder:text-[#B5A39D]
                 focus:outline-none
-                focus:border-[#9D6673]"
-            >
+                focus:border-[#9D6673]">
 
 
             <select
@@ -159,8 +157,7 @@
                 px-4 py-3
                 text-sm
                 text-[#665250]
-                focus:outline-none"
-            >
+                focus:outline-none">
 
                 <option value="">
                     Semua Status
@@ -202,8 +199,7 @@
                 px-6 py-3
                 rounded-xl
                 text-sm font-medium
-                transition"
-            >
+                transition">
                 Cari
             </button>
 
@@ -212,7 +208,7 @@
     </div>
 
 
-    {{-- TABLE --}}
+    //TABLE
     <div class="bg-white
         border border-[#EDE2DA]
         rounded-2xl
@@ -285,176 +281,174 @@
 
                     @forelse($orders as $order)
 
-                        <tr class="hover:bg-[#FFFBF8] transition">
+                    <tr class="hover:bg-[#FFFBF8] transition">
 
-                            {{-- ORDER --}}
-                            <td class="px-6 py-5">
+                        {{-- ORDER --}}
+                        <td class="px-6 py-5">
 
-                                <p class="text-sm font-semibold
+                            <p class="text-sm font-semibold
                                     text-[#493535]">
 
-                                    {{ $order->order_number }}
+                                {{ $order->order_number }}
 
-                                </p>
+                            </p>
 
-                                <p class="text-xs text-[#A28B83] mt-1">
-                                    #{{ $order->id }}
-                                </p>
+                            <p class="text-xs text-[#A28B83] mt-1">
+                                #{{ $order->id }}
+                            </p>
 
-                            </td>
+                        </td>
 
 
-                            {{-- USER --}}
-                            <td class="px-6 py-5">
+                        {{-- USER --}}
+                        <td class="px-6 py-5">
 
-                                <p class="text-sm font-medium
+                            <p class="text-sm font-medium
                                     text-[#5C4845]">
 
-                                    {{ $order->address_name }}
+                                {{ $order->address_name }}
 
-                                </p>
+                            </p>
 
-                                <p class="text-xs text-[#A28B83] mt-1">
+                            <p class="text-xs text-[#A28B83] mt-1">
 
-                                    {{ $order->address_phone }}
+                                {{ $order->address_phone }}
 
-                                </p>
+                            </p>
 
-                            </td>
+                        </td>
 
 
-                            {{-- TOTAL --}}
-                            <td class="px-6 py-5">
+                        //TOTAL
+                        <td class="px-6 py-5">
 
-                                <p class="text-sm font-semibold
+                            <p class="text-sm font-semibold
                                     text-[#493535]">
 
-                                    Rp {{ number_format($order->total, 0, ',', '.') }}
+                                Rp {{ number_format($order->total, 0, ',', '.') }}
 
-                                </p>
+                            </p>
 
-                            </td>
+                        </td>
 
 
-                            {{-- STATUS --}}
-                            <td class="px-6 py-5">
+                        //STATUS
+                        <td class="px-6 py-5">
 
-                                @if(in_array($order->status, ['completed', 'selesai']))
+                            @if(in_array($order->status, ['completed', 'selesai']))
 
-                                    <span class="inline-flex
+                            <span class="inline-flex
                                         px-3 py-1.5 rounded-full
                                         bg-[#E7F1E8]
                                         text-[#64806A]
                                         text-xs font-medium">
 
-                                        Selesai
+                                Selesai
 
-                                    </span>
+                            </span>
 
-                                @elseif(in_array($order->status, ['processing', 'diproses']))
+                            @elseif(in_array($order->status, ['processing', 'diproses']))
 
-                                    <span class="inline-flex
+                            <span class="inline-flex
                                         px-3 py-1.5 rounded-full
                                         bg-[#F3E9DD]
                                         text-[#856B4E]
                                         text-xs font-medium">
 
-                                        Diproses
+                                Diproses
 
-                                    </span>
+                            </span>
 
-                                @elseif(in_array($order->status, ['shipped', 'dikirim']))
+                            @elseif(in_array($order->status, ['shipped', 'dikirim']))
 
-                                    <span class="inline-flex
+                            <span class="inline-flex
                                         px-3 py-1.5 rounded-full
                                         bg-[#E6EDF3]
                                         text-[#60758A]
                                         text-xs font-medium">
 
-                                        Dikirim
+                                Dikirim
 
-                                    </span>
+                            </span>
 
-                                @elseif(in_array($order->status, ['cancelled', 'dibatalkan']))
+                            @elseif(in_array($order->status, ['cancelled', 'dibatalkan']))
 
-                                    <span class="inline-flex
+                            <span class="inline-flex
                                         px-3 py-1.5 rounded-full
                                         bg-[#F9E7E7]
                                         text-[#A45D63]
                                         text-xs font-medium">
 
-                                        Dibatalkan
+                                Dibatalkan
 
-                                    </span>
+                            </span>
 
-                                @else
+                            @else
 
-                                    <span class="inline-flex
+                            <span class="inline-flex
                                         px-3 py-1.5 rounded-full
                                         bg-[#F2E2E4]
                                         text-[#7D2942]
                                         text-xs font-medium">
 
-                                        Pending
+                                Pending
 
-                                    </span>
+                            </span>
 
-                                @endif
+                            @endif
 
-                            </td>
-
-
-                            {{-- DATE --}}
-                            <td class="px-6 py-5">
-
-                                <p class="text-sm text-[#725F5F]">
-                                    {{ $order->created_at?->format('d M Y') }}
-                                </p>
-
-                                <p class="text-xs text-[#A28B83] mt-1">
-                                    {{ $order->created_at?->format('H:i') }}
-                                </p>
-
-                            </td>
+                        </td>
 
 
-                            {{-- ACTION --}}
-                            <td class="px-6 py-5 text-right">
+                        // DATE
+                        <td class="px-6 py-5">
 
-                                <a
-                                    href="{{ route('admin.pesanan.show', $order) }}"
-                                    class="inline-flex
+                            <p class="text-sm text-[#725F5F]">
+                                {{ $order->created_at?->format('d M Y') }}
+                            </p>
+
+                            <p class="text-xs text-[#A28B83] mt-1">
+                                {{ $order->created_at?->format('H:i') }}
+                            </p>
+
+                        </td>
+
+
+                        // ACTION
+                        <td class="px-6 py-5 text-right">
+
+                            <a
+                                href="{{ route('admin.pesanan.show', $order) }}"
+                                class="inline-flex
                                     px-4 py-2
                                     rounded-lg
                                     bg-[#F2E2E4]
                                     text-[#7D2942]
                                     text-xs font-medium
                                     hover:bg-[#EBD4D8]
-                                    transition"
-                                >
-                                    Detail
-                                </a>
+                                    transition">
+                                Detail
+                            </a>
 
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
 
                     @empty
 
-                        <tr>
+                    <tr>
 
-                            <td
-                                colspan="6"
-                                class="px-6 py-16 text-center"
-                            >
+                        <td
+                            colspan="6"
+                            class="px-6 py-16 text-center">
 
-                                <p class="text-sm text-[#8F7B76]">
-                                    Belum ada pesanan.
-                                </p>
+                            <p class="text-sm text-[#8F7B76]">
+                                Belum ada pesanan.
+                            </p>
 
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
 
                     @endforelse
 
@@ -465,14 +459,14 @@
         </div>
 
 
-        {{-- PAGINATION --}}
+        // PAGINATION
         @if($orders->hasPages())
 
-            <div class="px-6 py-5 border-t border-[#EDE2DA]">
+        <div class="px-6 py-5 border-t border-[#EDE2DA]">
 
-                {{ $orders->links() }}
+            {{ $orders->links() }}
 
-            </div>
+        </div>
 
         @endif
 

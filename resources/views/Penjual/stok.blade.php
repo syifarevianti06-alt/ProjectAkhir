@@ -8,7 +8,7 @@
 
 <div class="space-y-7">
 
-    {{-- HEADER --}}
+    // HEADER
     <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
 
         <div>
@@ -24,7 +24,7 @@
     </div>
 
 
-    {{-- SUCCESS MESSAGE --}}
+    // SUCCESS MESSAGE
     @if (session('success'))
 
         <div class="flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
@@ -51,7 +51,7 @@
     @endif
 
 
-    {{-- ERROR MESSAGE --}}
+    // ERROR MESSAGE
     @if ($errors->any())
 
         <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -71,10 +71,10 @@
     @endif
 
 
-    {{-- STATISTIK --}}
+    // STATISTIK
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-        {{-- TOTAL PRODUK --}}
+        // TOTAL PRODUK
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -92,7 +92,7 @@
         </div>
 
 
-        {{-- TOTAL STOK --}}
+        // TOTAL STOK
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -110,7 +110,7 @@
         </div>
 
 
-        {{-- STOK MENIPIS --}}
+        // STOK MENIPIS
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -128,7 +128,7 @@
         </div>
 
 
-        {{-- STOK HABIS --}}
+        // STOK HABIS
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -148,12 +148,12 @@
     </div>
 
 
-    {{-- SEARCH & FILTER --}}
+    // SEARCH & FILTER
     <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
         <div class="flex flex-col gap-4 md:flex-row">
 
-            {{-- SEARCH --}}
+            // SEARCH
             <div class="relative w-full max-w-[350px]">
 
                 <svg
@@ -181,7 +181,7 @@
             </div>
 
 
-            {{-- STATUS FILTER --}}
+            //STATUS FILTER
             <select
                 id="statusFilter"
                 class="h-10 rounded-lg border border-[#eadede] bg-[#fcf9f9] px-4 text-xs text-[#4d4141] outline-none focus:border-[#986d6d]"
@@ -197,14 +197,14 @@
     </div>
 
 
-    {{-- TABLE --}}
+    // TABLE
     <div class="overflow-hidden rounded-2xl border border-[#eadede] bg-white shadow-sm">
 
         <div class="overflow-x-auto">
 
             <table class="w-full min-w-[850px] text-left text-xs">
 
-                {{-- TABLE HEADER --}}
+                // TABLE HEADER
                 <thead class="bg-[#fcf8f8]">
 
                     <tr class="border-b border-[#eadede] text-[#8f7b7b]">
@@ -234,7 +234,7 @@
                 </thead>
 
 
-                {{-- TABLE BODY --}}
+                // TABLE BODY
                 <tbody
                     id="stockTable"
                     class="divide-y divide-[#f1eaea]"
@@ -267,12 +267,12 @@
                             data-status="{{ $status }}"
                         >
 
-                            {{-- PRODUK --}}
+                            // PRODUK
                             <td class="px-6 py-5">
 
                                 <div class="flex items-center gap-4">
 
-                                    {{-- GAMBAR PRODUK --}}
+                                    // GAMBAR PRODUK
                                     @if ($product->image)
 
                                         <img
@@ -305,7 +305,7 @@
                                     @endif
 
 
-                                    {{-- NAMA --}}
+                                    // NAMA
                                     <div>
 
                                         <p class="font-semibold text-[#4d4141]">
@@ -323,7 +323,7 @@
                             </td>
 
 
-                            {{-- KATEGORI --}}
+                            // KATEGORI
                             <td class="px-6 py-5 text-[#665858]">
 
                                 {{ $product->category }}
@@ -331,7 +331,7 @@
                             </td>
 
 
-                            {{-- STOK --}}
+                            // STOK
                             <td class="px-6 py-5">
 
                                 <span class="font-semibold text-[#4d4141]">
@@ -345,7 +345,7 @@
                             </td>
 
 
-                            {{-- STATUS --}}
+                            // STATUS
                             <td class="px-6 py-5">
 
                                 <span class="rounded-full px-3 py-1 text-[10px] {{ $statusClass }}">
@@ -355,7 +355,7 @@
                             </td>
 
 
-                            {{-- AKSI --}}
+                            // AKSI
                             <td class="px-6 py-5 text-center">
 
                                 <button
@@ -423,7 +423,7 @@
 </div>
 
 
-{{-- MODAL UPDATE STOK --}}
+//MODAL UPDATE STOK
 <div
     id="stockModal"
     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4"
@@ -431,7 +431,7 @@
 
     <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
 
-        {{-- MODAL HEADER --}}
+        // MODAL HEADER
         <div class="flex items-start justify-between">
 
             <div>
@@ -460,7 +460,7 @@
         </div>
 
 
-        {{-- FORM --}}
+        // FORM
         <form
             id="stockForm"
             method="POST"
@@ -495,7 +495,7 @@
             </div>
 
 
-            {{-- MODAL BUTTON --}}
+            // MODAL BUTTON
             <div class="mt-6 flex justify-end gap-3">
 
                 <button
@@ -522,7 +522,7 @@
 </div>
 
 
-{{-- SEARCH, FILTER & MODAL SCRIPT --}}
+//SEARCH, FILTER & MODAL SCRIPT
 <script>
 
     const searchInput = document.getElementById('searchProduct');
@@ -564,9 +564,8 @@
     statusFilter.addEventListener('change', filterStock);
 
 
-    // ==========================================
     // MODAL UPDATE STOK
-    // ==========================================
+    
 
     function openStockModal(id, name, stock) {
 

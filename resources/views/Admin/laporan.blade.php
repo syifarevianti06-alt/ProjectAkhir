@@ -7,7 +7,7 @@
 
 <div class="space-y-7">
 
-    {{-- HEADER --}}
+    // HEADER
     <div class="flex items-end justify-between">
 
         <div>
@@ -27,12 +27,11 @@
         </div>
 
 
-        {{-- FILTER BULAN --}}
+        // FILTER BULAN
         <form
             action="{{ route('admin.laporan') }}"
             method="GET"
-            class="flex items-center gap-3"
-        >
+            class="flex items-center gap-3">
 
             <input
                 type="month"
@@ -44,8 +43,7 @@
                 px-4 py-2.5
                 text-sm text-[#665250]
                 focus:outline-none
-                focus:border-[#9D6673]"
-            >
+                focus:border-[#9D6673]">
 
             <button
                 type="submit"
@@ -55,8 +53,7 @@
                 px-5 py-2.5
                 rounded-xl
                 text-sm font-medium
-                transition"
-            >
+                transition">
                 Tampilkan
             </button>
 
@@ -65,10 +62,10 @@
     </div>
 
 
-    {{-- RINGKASAN --}}
+    // RINGKASAN
     <div class="grid grid-cols-4 gap-5">
 
-        {{-- PESANAN --}}
+        // PESANAN
         <div class="bg-white
             border border-[#EDE2DA]
             rounded-2xl p-5">
@@ -91,7 +88,7 @@
         </div>
 
 
-        {{-- PENDAPATAN --}}
+        // PENDAPATAN
         <div class="bg-white
             border border-[#EDE2DA]
             rounded-2xl p-5">
@@ -114,7 +111,7 @@
         </div>
 
 
-        {{-- PRODUK --}}
+        // PRODUK
         <div class="bg-white
             border border-[#EDE2DA]
             rounded-2xl p-5">
@@ -137,7 +134,7 @@
         </div>
 
 
-        {{-- RATA-RATA --}}
+        // RATA-RATA
         <div class="bg-white
             border border-[#EDE2DA]
             rounded-2xl p-5">
@@ -162,7 +159,7 @@
     </div>
 
 
-    {{-- GRAFIK --}}
+    // GRAFIK
     <div class="bg-white
         border border-[#EDE2DA]
         rounded-2xl p-6">
@@ -183,50 +180,48 @@
         <div class="h-72 flex items-end gap-2 overflow-x-auto">
 
             @php
-                $maxGrafik = collect($grafikPenjualan)->max('total');
-                $maxGrafik = $maxGrafik > 0 ? $maxGrafik : 1;
+            $maxGrafik = collect($grafikPenjualan)->max('total');
+            $maxGrafik = $maxGrafik > 0 ? $maxGrafik : 1;
             @endphp
 
             @foreach($grafikPenjualan as $data)
 
-                @php
-                    $tinggi = ($data['total'] / $maxGrafik) * 100;
-                @endphp
+            @php
+            $tinggi = ($data['total'] / $maxGrafik) * 100;
+            @endphp
 
-                <div class="min-w-[28px] flex-1 h-full
+            <div class="min-w-[28px] flex-1 h-full
                     flex flex-col justify-end items-center group">
 
-                    <div class="relative w-full flex justify-center">
+                <div class="relative w-full flex justify-center">
 
-                        <div
-                            class="w-full max-w-[28px]
+                    <div
+                        class="w-full max-w-[28px]
                             bg-[#7D2942]
                             hover:bg-[#692238]
                             rounded-t-lg
                             transition"
-                            style="height: {{ max($tinggi, 3) }}%;"
-                        ></div>
+                        style="height: {{ max($tinggi, 3) }}%;"></div>
 
-                        <div
-                            class="absolute bottom-full mb-2
+                    <div
+                        class="absolute bottom-full mb-2
                             hidden group-hover:block
                             bg-[#493535]
                             text-white
                             text-[10px]
                             rounded-lg
                             px-2 py-1
-                            whitespace-nowrap"
-                        >
-                            Rp {{ number_format($data['total'], 0, ',', '.') }}
-                        </div>
-
+                            whitespace-nowrap">
+                        Rp {{ number_format($data['total'], 0, ',', '.') }}
                     </div>
 
-                    <p class="text-[9px] text-[#A28B83] mt-3">
-                        {{ $data['tanggal'] }}
-                    </p>
-
                 </div>
+
+                <p class="text-[9px] text-[#A28B83] mt-3">
+                    {{ $data['tanggal'] }}
+                </p>
+
+            </div>
 
             @endforeach
 
@@ -261,63 +256,63 @@
 
                 @forelse($produkTerlaris as $index => $produk)
 
-                    <div class="px-6 py-4
+                <div class="px-6 py-4
                         flex items-center gap-4">
 
-                        <div class="w-8 h-8 rounded-full
+                    <div class="w-8 h-8 rounded-full
                             bg-[#F3E4E5]
                             text-[#7D2942]
                             flex items-center
                             justify-center
                             text-xs font-semibold">
 
-                            {{ $index + 1 }}
+                        {{ $index + 1 }}
 
-                        </div>
+                    </div>
 
 
-                        <div class="flex-1 min-w-0">
+                    <div class="flex-1 min-w-0">
 
-                            <p class="text-sm font-medium
+                        <p class="text-sm font-medium
                                 text-[#493535]
                                 truncate">
 
-                                {{ $produk->product_name }}
+                            {{ $produk->product_name }}
 
-                            </p>
+                        </p>
 
-                            <p class="text-xs text-[#A28B83] mt-1">
+                        <p class="text-xs text-[#A28B83] mt-1">
 
-                                {{ $produk->total_terjual }} item terjual
+                            {{ $produk->total_terjual }} item terjual
 
-                            </p>
+                        </p>
 
-                        </div>
+                    </div>
 
 
-                        <p class="text-sm font-semibold
+                    <p class="text-sm font-semibold
                             text-[#7D2942]">
 
-                            Rp {{ number_format(
+                        Rp {{ number_format(
                                 $produk->total_pendapatan,
                                 0,
                                 ',',
                                 '.'
                             ) }}
 
-                        </p>
+                    </p>
 
-                    </div>
+                </div>
 
                 @empty
 
-                    <div class="px-6 py-12 text-center">
+                <div class="px-6 py-12 text-center">
 
-                        <p class="text-sm text-[#A28B83]">
-                            Belum ada data penjualan.
-                        </p>
+                    <p class="text-sm text-[#A28B83]">
+                        Belum ada data penjualan.
+                    </p>
 
-                    </div>
+                </div>
 
                 @endforelse
 
@@ -326,7 +321,7 @@
         </div>
 
 
-        {{-- STATUS PESANAN --}}
+        //STATUS PESANAN
         <div class="bg-white
             border border-[#EDE2DA]
             rounded-2xl
@@ -350,75 +345,74 @@
 
                 @forelse($statusPesanan as $status)
 
-                    @php
+                @php
 
-                        $namaStatus = match($status->status) {
+                $namaStatus = match($status->status) {
 
-                            'pending',
-                            'baru' => 'Pending',
+                'pending',
+                'baru' => 'Pending',
 
-                            'processing',
-                            'diproses' => 'Diproses',
+                'processing',
+                'diproses' => 'Diproses',
 
-                            'shipped',
-                            'dikirim' => 'Dikirim',
+                'shipped',
+                'dikirim' => 'Dikirim',
 
-                            'completed',
-                            'selesai' => 'Selesai',
+                'completed',
+                'selesai' => 'Selesai',
 
-                            'cancelled',
-                            'dibatalkan' => 'Dibatalkan',
+                'cancelled',
+                'dibatalkan' => 'Dibatalkan',
 
-                            default => ucfirst($status->status),
+                default => ucfirst($status->status),
 
-                        };
+                };
 
-                    @endphp
+                @endphp
 
 
-                    <div>
+                <div>
 
-                        <div class="flex items-center
+                    <div class="flex items-center
                             justify-between mb-2">
 
-                            <span class="text-sm text-[#665250]">
-                                {{ $namaStatus }}
-                            </span>
+                        <span class="text-sm text-[#665250]">
+                            {{ $namaStatus }}
+                        </span>
 
-                            <span class="text-xs
+                        <span class="text-xs
                                 text-[#A28B83]">
 
-                                {{ $status->jumlah }}
+                            {{ $status->jumlah }}
 
-                            </span>
+                        </span>
 
-                        </div>
+                    </div>
 
 
-                        <div class="w-full h-2
+                    <div class="w-full h-2
                             bg-[#F1E8E3]
                             rounded-full overflow-hidden">
 
-                            <div
-                                class="h-full
+                        <div
+                            class="h-full
                                 bg-[#7D2942]
                                 rounded-full"
-                                style="width: {{ $totalPesanan > 0 ? ($status->jumlah / $totalPesanan) * 100 : 0 }}%;"
-                            ></div>
-
-                        </div>
+                            style="width: {{ $totalPesanan > 0 ? ($status->jumlah / $totalPesanan) * 100 : 0 }}%;"></div>
 
                     </div>
+
+                </div>
 
                 @empty
 
-                    <div class="py-10 text-center">
+                <div class="py-10 text-center">
 
-                        <p class="text-sm text-[#A28B83]">
-                            Belum ada data pesanan.
-                        </p>
+                    <p class="text-sm text-[#A28B83]">
+                        Belum ada data pesanan.
+                    </p>
 
-                    </div>
+                </div>
 
                 @endforelse
 

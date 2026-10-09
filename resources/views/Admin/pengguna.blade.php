@@ -7,9 +7,9 @@
 
 <div class="space-y-7">
 
-    {{-- =========================
-        HEADER
-    ========================== --}}
+
+    // HEADER
+
     <div class="flex items-end justify-between">
 
         <div>
@@ -33,8 +33,7 @@
             bg-[#986D6D] hover:bg-[#845B5B]
             text-white text-sm font-medium
             px-5 py-3 rounded-xl
-            transition duration-200"
-        >
+            transition duration-200">
             <span class="text-lg leading-none">+</span>
             Tambah Pengguna
         </a>
@@ -42,36 +41,33 @@
     </div>
 
 
-    {{-- =========================
-        SUCCESS MESSAGE
-    ========================== --}}
+    // SUCCESS MESSAGE
     @if(session('success'))
 
-        <div class="flex items-center gap-3
+    <div class="flex items-center gap-3
             bg-[#F2F8F3]
             border border-[#DCEBDD]
             text-[#65856B]
             rounded-xl px-5 py-4 text-sm">
 
-            <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center">
-                ✓
-            </div>
-
-            <span>
-                {{ session('success') }}
-            </span>
-
+        <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+            ✓
         </div>
+
+        <span>
+            {{ session('success') }}
+        </span>
+
+    </div>
 
     @endif
 
 
-    {{-- =========================
-        STATISTICS
-    ========================== --}}
+
+    // STATISTICS
     <div class="grid grid-cols-4 gap-5">
 
-        {{-- TOTAL --}}
+        //TOTAL
         <div class="bg-white rounded-2xl border border-[#EDE4E4] p-5">
 
             <div class="flex items-start justify-between">
@@ -98,7 +94,7 @@
         </div>
 
 
-        {{-- PELANGGAN --}}
+        //PELANGGAN
         <div class="bg-white rounded-2xl border border-[#EDE4E4] p-5">
 
             <div class="flex items-start justify-between">
@@ -125,7 +121,7 @@
         </div>
 
 
-        {{-- PENJUAL --}}
+        // PENJUAL
         <div class="bg-white rounded-2xl border border-[#EDE4E4] p-5">
 
             <div class="flex items-start justify-between">
@@ -152,7 +148,7 @@
         </div>
 
 
-        {{-- ADMIN --}}
+        // ADMIN
         <div class="bg-white rounded-2xl border border-[#EDE4E4] p-5">
 
             <div class="flex items-start justify-between">
@@ -181,18 +177,15 @@
     </div>
 
 
-    {{-- =========================
-        SEARCH + FILTER
-    ========================== --}}
+    //SEARCH + FILTER
     <div class="bg-white rounded-2xl border border-[#EDE4E4] p-5">
 
         <form
             action="{{ route('admin.pengguna') }}"
             method="GET"
-            class="flex items-center gap-3"
-        >
+            class="flex items-center gap-3">
 
-            {{-- SEARCH --}}
+            //SEARCH
             <div class="relative flex-1">
 
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#B29A9A]">
@@ -214,13 +207,12 @@
                     focus:outline-none
                     focus:border-[#C9AAAA]
                     focus:ring-2
-                    focus:ring-[#F3E4E4]"
-                >
+                    focus:ring-[#F3E4E4]">
 
             </div>
 
 
-            {{-- ROLE --}}
+            //ROLE
             <select
                 name="role"
                 class="w-44
@@ -230,8 +222,7 @@
                 px-4 py-3
                 text-sm text-[#806F6F]
                 focus:outline-none
-                focus:border-[#C9AAAA]"
-            >
+                focus:border-[#C9AAAA]">
 
                 <option value="">
                     Semua Role
@@ -239,29 +230,26 @@
 
                 <option
                     value="pelanggan"
-                    {{ request('role') === 'pelanggan' ? 'selected' : '' }}
-                >
+                    {{ request('role') === 'pelanggan' ? 'selected' : '' }}>
                     Pelanggan
                 </option>
 
                 <option
                     value="penjual"
-                    {{ request('role') === 'penjual' ? 'selected' : '' }}
-                >
+                    {{ request('role') === 'penjual' ? 'selected' : '' }}>
                     Penjual
                 </option>
 
                 <option
                     value="admin"
-                    {{ request('role') === 'admin' ? 'selected' : '' }}
-                >
+                    {{ request('role') === 'admin' ? 'selected' : '' }}>
                     Admin
                 </option>
 
             </select>
 
 
-            {{-- BUTTON --}}
+            //BUTTON
             <button
                 type="submit"
                 class="bg-[#986D6D]
@@ -270,8 +258,7 @@
                 px-5 py-3
                 rounded-xl
                 text-sm font-medium
-                transition"
-            >
+                transition">
                 Cari
             </button>
 
@@ -280,12 +267,10 @@
     </div>
 
 
-    {{-- =========================
-        TABLE
-    ========================== --}}
+    // TABLE
     <div class="bg-white rounded-2xl border border-[#EDE4E4] overflow-hidden">
 
-        {{-- TABLE HEADER --}}
+        // TABLE HEADER
         <div class="px-6 py-5 border-b border-[#F0E8E8]">
 
             <div class="flex items-center justify-between">
@@ -311,7 +296,7 @@
         </div>
 
 
-        {{-- TABLE --}}
+        // TABLE
         <div class="overflow-x-auto">
 
             <table class="w-full">
@@ -359,189 +344,185 @@
 
                     @forelse($users as $user)
 
-                        <tr class="hover:bg-[#FFFCFC] transition">
+                    <tr class="hover:bg-[#FFFCFC] transition">
 
 
-                            {{-- NAMA --}}
-                            <td class="px-6 py-5">
+                        // NAMA
+                        <td class="px-6 py-5">
 
-                                <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-3">
 
-                                    <div class="w-10 h-10 rounded-full
+                                <div class="w-10 h-10 rounded-full
                                         bg-[#F3E4E4]
                                         text-[#986D6D]
                                         flex items-center justify-center
                                         text-sm font-semibold">
 
-                                        {{ strtoupper(substr($user->name, 0, 1)) }}
-
-                                    </div>
-
-                                    <div>
-
-                                        <p class="text-sm font-medium text-[#604B4B]">
-                                            {{ $user->name }}
-                                        </p>
-
-                                        <p class="text-[11px] text-[#B29A9A]">
-                                            ID #{{ $user->id }}
-                                        </p>
-
-                                    </div>
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
 
                                 </div>
 
-                            </td>
+                                <div>
+
+                                    <p class="text-sm font-medium text-[#604B4B]">
+                                        {{ $user->name }}
+                                    </p>
+
+                                    <p class="text-[11px] text-[#B29A9A]">
+                                        ID #{{ $user->id }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </td>
 
 
-                            {{-- EMAIL --}}
-                            <td class="px-6 py-5">
+                        {{-- EMAIL --}}
+                        <td class="px-6 py-5">
 
-                                <p class="text-sm text-[#806F6F]">
-                                    {{ $user->email }}
-                                </p>
+                            <p class="text-sm text-[#806F6F]">
+                                {{ $user->email }}
+                            </p>
 
-                            </td>
+                        </td>
 
 
-                            {{-- ROLE --}}
-                            <td class="px-6 py-5">
+                        {{-- ROLE --}}
+                        <td class="px-6 py-5">
 
-                                @if($user->role === 'admin')
+                            @if($user->role === 'admin')
 
-                                    <span class="inline-flex items-center
+                            <span class="inline-flex items-center
                                         rounded-full
                                         bg-[#F3E4E4]
                                         text-[#986D6D]
                                         px-3 py-1.5
                                         text-xs font-medium">
-                                        Admin
-                                    </span>
+                                Admin
+                            </span>
 
-                                @elseif($user->role === 'penjual')
+                            @elseif($user->role === 'penjual')
 
-                                    <span class="inline-flex items-center
+                            <span class="inline-flex items-center
                                         rounded-full
                                         bg-[#F1ECE8]
                                         text-[#8D7566]
                                         px-3 py-1.5
                                         text-xs font-medium">
-                                        Penjual
-                                    </span>
+                                Penjual
+                            </span>
 
-                                @else
+                            @else
 
-                                    <span class="inline-flex items-center
+                            <span class="inline-flex items-center
                                         rounded-full
                                         bg-[#F4F0F0]
                                         text-[#806F6F]
                                         px-3 py-1.5
                                         text-xs font-medium">
-                                        Pelanggan
-                                    </span>
+                                Pelanggan
+                            </span>
 
-                                @endif
+                            @endif
 
-                            </td>
-
-
-                            {{-- TANGGAL --}}
-                            <td class="px-6 py-5">
-
-                                <p class="text-sm text-[#806F6F]">
-                                    {{ $user->created_at?->format('d M Y') }}
-                                </p>
-
-                                <p class="text-[11px] text-[#B29A9A] mt-1">
-                                    {{ $user->created_at?->format('H:i') }}
-                                </p>
-
-                            </td>
+                        </td>
 
 
-                            {{-- AKSI --}}
-                            <td class="px-6 py-5">
+                        // TANGGAL
+                        <td class="px-6 py-5">
 
-                                <div class="flex items-center justify-end gap-2">
+                            <p class="text-sm text-[#806F6F]">
+                                {{ $user->created_at?->format('d M Y') }}
+                            </p>
 
-                                    {{-- EDIT --}}
-                                    <a
-                                        href="{{ route('admin.pengguna.edit', $user) }}"
-                                        class="w-9 h-9 rounded-lg
+                            <p class="text-[11px] text-[#B29A9A] mt-1">
+                                {{ $user->created_at?->format('H:i') }}
+                            </p>
+
+                        </td>
+
+
+                        // AKSI
+                        <td class="px-6 py-5">
+
+                            <div class="flex items-center justify-end gap-2">
+
+                                // EDIT
+                                <a
+                                    href="{{ route('admin.pengguna.edit', $user) }}"
+                                    class="w-9 h-9 rounded-lg
                                         bg-[#F7F1F1]
                                         text-[#986D6D]
                                         flex items-center justify-center
                                         hover:bg-[#F0E3E3]
                                         transition"
-                                        title="Edit"
-                                    >
-                                        ✎
-                                    </a>
+                                    title="Edit">
+                                    ✎
+                                </a>
 
 
-                                    {{-- DELETE --}}
-                                    <form
-                                        action="{{ route('admin.pengguna.destroy', $user) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')"
-                                    >
+                                // DELETE
+                                <form
+                                    action="{{ route('admin.pengguna.destroy', $user) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus pengguna ini?')">
 
-                                        @csrf
-                                        @method('DELETE')
+                                    @csrf
+                                    @method('DELETE')
 
-                                        <button
-                                            type="submit"
-                                            class="w-9 h-9 rounded-lg
+                                    <button
+                                        type="submit"
+                                        class="w-9 h-9 rounded-lg
                                             bg-[#FFF3F3]
                                             text-[#B87878]
                                             flex items-center justify-center
                                             hover:bg-[#FCE5E5]
                                             transition"
-                                            title="Hapus"
-                                        >
-                                            ×
-                                        </button>
+                                        title="Hapus">
+                                        ×
+                                    </button>
 
-                                    </form>
+                                </form>
 
-                                </div>
+                            </div>
 
-                            </td>
+                        </td>
 
-                        </tr>
+                    </tr>
 
                     @empty
 
-                        <tr>
+                    <tr>
 
-                            <td
-                                colspan="5"
-                                class="px-6 py-16 text-center"
-                            >
+                        <td
+                            colspan="5"
+                            class="px-6 py-16 text-center">
 
-                                <div class="flex flex-col items-center">
+                            <div class="flex flex-col items-center">
 
-                                    <div class="w-14 h-14 rounded-full
+                                <div class="w-14 h-14 rounded-full
                                         bg-[#F8EEEE]
                                         text-[#A58E8E]
                                         flex items-center justify-center
                                         text-xl mb-3">
-                                        ♙
-                                    </div>
-
-                                    <p class="text-sm font-medium text-[#806F6F]">
-                                        Belum ada pengguna
-                                    </p>
-
-                                    <p class="text-xs text-[#B29A9A] mt-1">
-                                        Data pengguna akan muncul di sini.
-                                    </p>
-
+                                    ♙
                                 </div>
 
-                            </td>
+                                <p class="text-sm font-medium text-[#806F6F]">
+                                    Belum ada pengguna
+                                </p>
 
-                        </tr>
+                                <p class="text-xs text-[#B29A9A] mt-1">
+                                    Data pengguna akan muncul di sini.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
 
                     @endforelse
 
@@ -551,17 +532,15 @@
 
         </div>
 
+        // PAGINATION
 
-        {{-- =========================
-            PAGINATION
-        ========================== --}}
         @if($users->hasPages())
 
-            <div class="px-6 py-5 border-t border-[#F0E8E8]">
+        <div class="px-6 py-5 border-t border-[#F0E8E8]">
 
-                {{ $users->links() }}
+            {{ $users->links() }}
 
-            </div>
+        </div>
 
         @endif
 

@@ -34,9 +34,7 @@ class PenjualLaporanController extends Controller
             'selesai',
         ];
 
-        // ==========================================
         // TOTAL PESANAN
-        // ==========================================
 
         $totalPesanan = Order::whereBetween(
             'created_at',
@@ -45,9 +43,9 @@ class PenjualLaporanController extends Controller
             ->count();
 
 
-        // ==========================================
+
         // TOTAL PENDAPATAN
-        // ==========================================
+
 
         $totalPendapatan = Order::whereBetween(
             'created_at',
@@ -57,9 +55,8 @@ class PenjualLaporanController extends Controller
             ->sum('total');
 
 
-        // ==========================================
+
         // TOTAL PRODUK TERJUAL
-        // ==========================================
 
         $totalProdukTerjual = OrderItem::whereHas('order', function ($query) use (
             $awalBulan,
@@ -76,9 +73,9 @@ class PenjualLaporanController extends Controller
             ->sum('quantity');
 
 
-        // ==========================================
+
         // RATA-RATA NILAI PESANAN
-        // ==========================================
+
 
         $rataRataPesanan = Order::whereBetween(
             'created_at',
@@ -88,9 +85,8 @@ class PenjualLaporanController extends Controller
             ->avg('total') ?? 0;
 
 
-        // ==========================================
+
         // GRAFIK PENJUALAN HARIAN
-        // ==========================================
 
         $grafikPenjualan = [];
 
@@ -115,9 +111,8 @@ class PenjualLaporanController extends Controller
         }
 
 
-        // ==========================================
+
         // PRODUK TERLARIS
-        // ==========================================
 
         $produkTerlaris = OrderItem::select(
             'product_id',
@@ -146,9 +141,8 @@ class PenjualLaporanController extends Controller
             ->get();
 
 
-        // ==========================================
+
         // STATUS PESANAN
-        // ==========================================
 
         $statusPesanan = Order::whereBetween(
             'created_at',
@@ -163,9 +157,7 @@ class PenjualLaporanController extends Controller
             ->get();
 
 
-        // ==========================================
         // PRODUK DENGAN PENJUALAN TERBANYAK
-        // ==========================================
 
         $produkTerjual = $produkTerlaris->sum('total_terjual');
 

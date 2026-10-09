@@ -7,7 +7,7 @@
 
 <div class="max-w-4xl mx-auto">
 
-    {{-- HEADER --}}
+    //HEADER
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-2xl font-semibold text-[#332326]">
@@ -26,7 +26,7 @@
     </div>
 
 
-    {{-- FORM --}}
+    //FORM
     <div class="bg-white rounded-2xl border border-[#eadfe1] shadow-sm p-7">
 
         <form
@@ -38,7 +38,7 @@
             @method('PUT')
 
 
-            {{-- NAMA --}}
+            //NAMA
             <div class="mb-5">
                 <label class="block text-sm font-medium text-[#332326] mb-2">
                     Nama Produk
@@ -57,7 +57,7 @@
             </div>
 
 
-            {{-- KATEGORI --}}
+            //KATEGORI
             <div class="mb-5">
                 <label class="block text-sm font-medium text-[#332326] mb-2">
                     Kategori
@@ -71,7 +71,7 @@
             </div>
 
 
-            {{-- DESKRIPSI --}}
+            //DESKRIPSI
             <div class="mb-5">
                 <label class="block text-sm font-medium text-[#332326] mb-2">
                     Deskripsi
@@ -84,7 +84,7 @@
             </div>
 
 
-            {{-- HARGA + STOK --}}
+            //HARGA + STOK
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
 
                 <div>
@@ -118,7 +118,7 @@
             </div>
 
 
-            {{-- UKURAN --}}
+            //UKURAN
             <div class="mb-5">
                 <label class="block text-sm font-medium text-[#332326] mb-2">
                     Ukuran
@@ -137,7 +137,7 @@
             </div>
 
 
-            {{-- WARNA --}}
+            //WARNA
             <div class="mb-5">
                 <label class="block text-sm font-medium text-[#332326] mb-2">
                     Warna
@@ -156,7 +156,7 @@
             </div>
 
 
-            {{-- GAMBAR --}}
+            //GAMBAR
             <div class="mb-7">
                 <label class="block text-sm font-medium text-[#332326] mb-2">
                     Gambar Produk
@@ -184,7 +184,7 @@
             </div>
 
 
-            {{-- BUTTON --}}
+            //BUTTON
             <div class="flex gap-3">
 
                 <a

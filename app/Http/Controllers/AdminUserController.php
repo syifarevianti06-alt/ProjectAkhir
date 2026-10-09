@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class AdminUserController extends Controller
 {
-    /**
-     * Menampilkan semua user.
-     */
+
+    // Menampilkan semua user.
+
     public function index()
     {
         $users = User::latest()->get();
@@ -17,17 +17,17 @@ class AdminUserController extends Controller
         return view('Admin.user.index', compact('users'));
     }
 
-    /**
-     * Menampilkan detail user.
-     */
+
+    //Menampilkan detail user.
+
     public function show(User $user)
     {
         return view('Admin.user.show', compact('user'));
     }
 
-    /**
-     * Mengubah status user.
-     */
+
+    // Mengubah status user.
+
     public function updateStatus(Request $request, User $user)
     {
         $request->validate([
@@ -42,9 +42,9 @@ class AdminUserController extends Controller
             ->with('success', 'Status user berhasil diperbarui.');
     }
 
-    /**
-     * Method resource lainnya tidak digunakan.
-     */
+
+    //Method resource lainnya tidak digunakan.
+
     public function create()
     {
         abort(404);

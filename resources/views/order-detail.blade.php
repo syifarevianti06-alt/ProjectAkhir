@@ -8,16 +8,15 @@
 
     <div class="max-w-5xl mx-auto px-6 py-10">
 
-        {{-- KEMBALI --}}
+        // KEMBALI
         <a
             href="{{ route('orders') }}"
-            class="inline-flex items-center text-sm text-[#8b203d] hover:underline mb-6"
-        >
+            class="inline-flex items-center text-sm text-[#8b203d] hover:underline mb-6">
             ← Kembali ke Pesanan Saya
         </a>
 
 
-        {{-- HEADER --}}
+        // HEADER
         <div class="mb-8">
 
             <h1 class="text-3xl font-bold text-[#332326]">
@@ -31,7 +30,7 @@
         </div>
 
 
-        {{-- STATUS PESANAN --}}
+        // STATUS PESANAN
         <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -43,40 +42,39 @@
                     </p>
 
                     @php
-                        $status = strtolower($order->status ?? '');
+                    $status = strtolower($order->status ?? '');
 
-                        $statusClass = match ($status) {
-                            'pending',
-                            'baru',
-                            'menunggu_pembayaran'
-                                => 'bg-yellow-50 text-yellow-700',
+                    $statusClass = match ($status) {
+                    'pending',
+                    'baru',
+                    'menunggu_pembayaran'
+                    => 'bg-yellow-50 text-yellow-700',
 
-                            'paid',
-                            'processing',
-                            'diproses'
-                                => 'bg-blue-50 text-blue-700',
+                    'paid',
+                    'processing',
+                    'diproses'
+                    => 'bg-blue-50 text-blue-700',
 
-                            'shipped',
-                            'dikirim'
-                                => 'bg-purple-50 text-purple-700',
+                    'shipped',
+                    'dikirim'
+                    => 'bg-purple-50 text-purple-700',
 
-                            'completed',
-                            'selesai'
-                                => 'bg-green-50 text-green-700',
+                    'completed',
+                    'selesai'
+                    => 'bg-green-50 text-green-700',
 
-                            'cancelled',
-                            'dibatalkan'
-                                => 'bg-red-50 text-red-700',
+                    'cancelled',
+                    'dibatalkan'
+                    => 'bg-red-50 text-red-700',
 
-                            default
-                                => 'bg-gray-50 text-gray-600',
-                        };
+                    default
+                    => 'bg-gray-50 text-gray-600',
+                    };
                     @endphp
 
                     <span
                         class="inline-flex mt-2 rounded-full px-3 py-1
-                               text-xs font-medium {{ $statusClass }}"
-                    >
+                               text-xs font-medium {{ $statusClass }}">
                         {{ ucfirst(str_replace('_', ' ', $order->status ?? 'Tidak diketahui')) }}
                     </span>
 
@@ -100,7 +98,7 @@
         </div>
 
 
-        {{-- INFORMASI PENGIRIMAN --}}
+        // INFORMASI PENGIRIMAN
         <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
             <h2 class="text-lg font-semibold text-[#332326] mb-5">
@@ -170,7 +168,7 @@
         </div>
 
 
-        {{-- PRODUK --}}
+        // PRODUK
         <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
             <h2 class="text-lg font-semibold text-[#332326] mb-5">
@@ -179,109 +177,108 @@
 
             @if ($order->items->count())
 
-                <div class="divide-y divide-gray-100">
+            <div class="divide-y divide-gray-100">
 
-                    @foreach ($order->items as $item)
+                @foreach ($order->items as $item)
 
-                        <div class="flex gap-4 py-5 first:pt-0 last:pb-0">
+                <div class="flex gap-4 py-5 first:pt-0 last:pb-0">
 
-                            {{-- FOTO --}}
-                            <div class="h-20 w-20 flex-shrink-0 overflow-hidden
+                    // FOTO
+                    <div class="h-20 w-20 flex-shrink-0 overflow-hidden
                                         rounded-xl bg-[#f8f1eb]">
 
-                                @if ($item->product_image)
+                        @if ($item->product_image)
 
-                                    <img
-                                        src="{{ asset('storage/' . $item->product_image) }}"
-                                        alt="{{ $item->product_name }}"
-                                        class="h-full w-full object-cover"
-                                    >
+                        <img
+                            src="{{ asset('storage/' . $item->product_image) }}"
+                            alt="{{ $item->product_name }}"
+                            class="h-full w-full object-cover">
 
-                                @else
+                        @else
 
-                                    <div class="flex h-full w-full items-center
+                        <div class="flex h-full w-full items-center
                                                 justify-center">
-                                        <span class="text-xs text-gray-400">
-                                            No Image
-                                        </span>
-                                    </div>
+                            <span class="text-xs text-gray-400">
+                                No Image
+                            </span>
+                        </div>
 
-                                @endif
+                        @endif
 
-                            </div>
-
-
-                            {{-- DETAIL PRODUK --}}
-                            <div class="flex-1 min-w-0">
-
-                                <h3 class="font-semibold text-[#332326]">
-                                    {{ $item->product_name }}
-                                </h3>
-
-                                <div class="mt-2 space-y-1 text-xs text-gray-400">
-
-                                    <p>
-                                        Ukuran:
-                                        {{ $item->size ?: '-' }}
-                                    </p>
-
-                                    <p>
-                                        Warna:
-                                        {{ $item->color ?: '-' }}
-                                    </p>
-
-                                    <p>
-                                        Jumlah:
-                                        {{ $item->quantity }} pcs
-                                    </p>
-
-                                </div>
-
-                            </div>
+                    </div>
 
 
-                            {{-- HARGA --}}
-                            <div class="text-right flex-shrink-0">
+                    // DETAIL PRODUK
+                    <div class="flex-1 min-w-0">
 
-                                <p class="text-sm font-semibold text-[#332326]">
-                                    Rp {{ number_format(
+                        <h3 class="font-semibold text-[#332326]">
+                            {{ $item->product_name }}
+                        </h3>
+
+                        <div class="mt-2 space-y-1 text-xs text-gray-400">
+
+                            <p>
+                                Ukuran:
+                                {{ $item->size ?: '-' }}
+                            </p>
+
+                            <p>
+                                Warna:
+                                {{ $item->color ?: '-' }}
+                            </p>
+
+                            <p>
+                                Jumlah:
+                                {{ $item->quantity }} pcs
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    // HARGA
+                    <div class="text-right flex-shrink-0">
+
+                        <p class="text-sm font-semibold text-[#332326]">
+                            Rp {{ number_format(
                                         $item->price * $item->quantity,
                                         0,
                                         ',',
                                         '.'
                                     ) }}
-                                </p>
+                        </p>
 
-                                <p class="mt-1 text-xs text-gray-400">
-                                    Rp {{ number_format(
+                        <p class="mt-1 text-xs text-gray-400">
+                            Rp {{ number_format(
                                         $item->price,
                                         0,
                                         ',',
                                         '.'
                                     ) }}
-                                    / pcs
-                                </p>
+                            / pcs
+                        </p>
 
-                            </div>
-
-                        </div>
-
-                    @endforeach
+                    </div>
 
                 </div>
+
+                @endforeach
+
+            </div>
 
             @else
 
-                <div class="py-8 text-center text-sm text-gray-400">
-                    Tidak ada produk dalam pesanan ini.
-                </div>
+            <div class="py-8 text-center text-sm text-gray-400">
+                Tidak ada produk dalam pesanan ini.
+            </div>
 
             @endif
 
         </div>
 
 
-        {{-- RINGKASAN PEMBAYARAN --}}
+        // RINGKASAN PEMBAYARAN
         <div class="bg-white rounded-2xl p-6 shadow-sm">
 
             <h2 class="text-lg font-semibold text-[#332326] mb-5">
@@ -355,25 +352,24 @@
             </div>
 
 
-            {{-- BAYAR QRIS --}}
+            // BAYAR QRIS
             @if (
-                strtolower($order->payment_method ?? '') === 'qris' &&
-                in_array(strtolower($order->status ?? ''), [
-                    'pending',
-                    'baru',
-                    'menunggu_pembayaran'
-                ])
+            strtolower($order->payment_method ?? '') === 'qris' &&
+            in_array(strtolower($order->status ?? ''), [
+            'pending',
+            'baru',
+            'menunggu_pembayaran'
+            ])
             )
 
-                <a
-                    href="{{ route('payment.qris', $order->id) }}"
-                    class="block mt-6 w-full rounded-xl
+            <a
+                href="{{ route('payment.qris', $order->id) }}"
+                class="block mt-6 w-full rounded-xl
                            bg-[#8b2947] py-3 text-center
                            text-sm font-semibold text-white
-                           hover:bg-[#721f39] transition"
-                >
-                    Bayar dengan QRIS
-                </a>
+                           hover:bg-[#721f39] transition">
+                Bayar dengan QRIS
+            </a>
 
             @endif
 

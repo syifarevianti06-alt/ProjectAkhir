@@ -18,12 +18,12 @@
 
             <div class="flex items-center justify-between">
 
-                <!-- Logo -->
+                //Logo
                 <a href="/" class="text-2xl font-bold tracking-wide">
                     Lune Attiré
                 </a>
 
-                <!-- Menu -->
+                //Menu
                 <div class="flex gap-8 text-sm">
 
                     <a href="/home" class="hover:text-pink-500">
@@ -39,28 +39,26 @@
                     </a>
 
                     <a href="{{ route('cart.index') }}">
-    Keranjang
-</a>
+                        Keranjang
+                    </a>
 
                 </div>
 
-                <!-- Login -->
-              <!-- PROFIL / LOGIN -->
-@auth
-    <a
-        href="{{ route('profil') }}"
-        class="text-sm hover:text-pink-500 transition"
-    >
-        Profil
-    </a>
-@else
-    <a
-        href="{{ route('login') }}"
-        class="text-sm hover:text-pink-500 transition"
-    >
-        Login
-    </a>
-@endauth
+                //Login
+                // PROFIL / LOGIN
+                @auth
+                <a
+                    href="{{ route('profil') }}"
+                    class="text-sm hover:text-pink-500 transition">
+                    Profil
+                </a>
+                @else
+                <a
+                    href="{{ route('login') }}"
+                    class="text-sm hover:text-pink-500 transition">
+                    Login
+                </a>
+                @endauth
 
             </div>
 
@@ -68,13 +66,13 @@
     </nav>
 
 
-    <!-- CONTENT -->
+    //CONTENT
     <main>
         @yield('content')
     </main>
 
 
-    <!-- FOOTER -->
+    //FOOTER
     <footer class="bg-black text-white mt-20">
         <div class="max-w-7xl mx-auto px-6 py-8 text-center">
 
@@ -94,4 +92,5 @@
     </footer>
 
 </body>
+
 </html>

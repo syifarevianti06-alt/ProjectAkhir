@@ -9,9 +9,8 @@ use Illuminate\Support\Str;
 
 class AdminProductController extends Controller
 {
-    /**
-     * Daftar produk
-     */
+    //Daftar produk
+
     public function index(Request $request)
     {
         $query = Product::query();
@@ -57,17 +56,15 @@ class AdminProductController extends Controller
         ));
     }
 
-    /**
-     * Form tambah produk
-     */
+    //Form tambah produk
+
     public function create()
     {
         return view('admin.produk-create');
     }
 
-    /**
-     * Simpan produk
-     */
+    //Simpan produk
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -91,7 +88,7 @@ class AdminProductController extends Controller
         // Slug otomatis
         $data['slug'] = Str::slug($data['name']);
 
-        // Sizes dari string menjadi array
+        // Ukuran dari string menjadi array
         if (!empty($data['sizes'])) {
             $data['sizes'] = array_map(
                 'trim',
@@ -101,7 +98,7 @@ class AdminProductController extends Controller
             $data['sizes'] = null;
         }
 
-        // Colors dari string menjadi array
+        // Warna dari string menjadi array
         if (!empty($data['colors'])) {
             $data['colors'] = array_map(
                 'trim',
@@ -118,17 +115,16 @@ class AdminProductController extends Controller
             ->with('success', 'Produk berhasil ditambahkan.');
     }
 
-    /**
-     * Form edit produk
-     */
+    // Form edit produk
+
     public function edit(Product $product)
     {
         return view('admin.produk-edit', compact('product'));
     }
 
-    /**
-     * Update produk
-     */
+
+    // Update produk
+
     public function update(Request $request, Product $product)
     {
         $data = $request->validate([
@@ -142,10 +138,10 @@ class AdminProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // Slug
+        // slug
         $data['slug'] = Str::slug($data['name']);
 
-        // Sizes
+        // Ukuran
         if (!empty($data['sizes'])) {
             $data['sizes'] = array_map(
                 'trim',
@@ -155,7 +151,7 @@ class AdminProductController extends Controller
             $data['sizes'] = null;
         }
 
-        // Colors
+        // Warna
         if (!empty($data['colors'])) {
             $data['colors'] = array_map(
                 'trim',
@@ -188,9 +184,7 @@ class AdminProductController extends Controller
             ->with('success', 'Produk berhasil diperbarui.');
     }
 
-    /**
-     * Hapus produk
-     */
+    // Hapus produk
     public function destroy(Product $product)
     {
         // Hapus gambar

@@ -11,18 +11,18 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $items = $request->user()->cartItems()->with('product')->get();
-        $total = $items->sum(fn ($item) => $item->subtotal);
+        $total = $items->sum(fn($item) => $item->subtotal);
 
-        return view('cart.index', compact('items','total'));
+        return view('cart.index', compact('items', 'total'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => ['required','exists:products,id'],
-            'size' => ['nullable','string'],
-            'color' => ['nullable','string'],
-            'quantity' => ['required','integer','min:1'],
+            'product_id' => ['required', 'exists:products,id'],
+            'size' => ['nullable', 'string'],
+            'color' => ['nullable', 'string'],
+            'quantity' => ['required', 'integer', 'min:1'],
         ]);
 
         $item = CartItem::firstOrNew([
@@ -40,7 +40,7 @@ class CartController extends Controller
     public function update(Request $request, CartItem $cartItem)
     {
         abort_unless($cartItem->user_id === $request->user()->id, 403);
-        $validated = $request->validate(['quantity' => ['required','integer','min:1']]);
+        $validated = $request->validate(['quantity' => ['required', 'integer', 'min:1']]);
         $cartItem->update($validated);
 
         return back();

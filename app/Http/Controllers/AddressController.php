@@ -21,11 +21,11 @@ class AddressController extends Controller
     protected function rules(): array
     {
         return [
-            'name' => ['required','string','max:255'],
-            'phone' => ['required','string','max:20'],
-            'address' => ['required','string'],
-            'city' => ['required','string','max:100'],
-            'postal_code' => ['required','string','max:10'],
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:20'],
+            'address' => ['required', 'string'],
+            'city' => ['required', 'string', 'max:100'],
+            'postal_code' => ['required', 'string', 'max:10'],
         ];
     }
 

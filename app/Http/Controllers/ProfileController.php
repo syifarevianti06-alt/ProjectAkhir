@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+
 class ProfileController extends Controller
 {
     public function edit()
@@ -111,29 +112,29 @@ class ProfileController extends Controller
         );
     }
     public function updatePassword(Request $request)
-{
-    $user = User::where('role', 'penjual')->first();
+    {
+        $user = User::where('role', 'penjual')->first();
 
-    if (!$user) {
-        abort(404, 'Akun penjual belum ditemukan.');
+        if (!$user) {
+            abort(404, 'Akun penjual belum ditemukan.');
+        }
+
+        $validated = $request->validate([
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+            ],
+        ]);
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with(
+            'status',
+            'Password berhasil diperbarui.'
+        );
     }
-
-    $validated = $request->validate([
-        'password' => [
-            'required',
-            'string',
-            'min:8',
-            'confirmed',
-        ],
-    ]);
-
-    $user->update([
-        'password' => Hash::make($validated['password']),
-    ]);
-
-    return back()->with(
-        'status',
-        'Password berhasil diperbarui.'
-    );
-}
 }

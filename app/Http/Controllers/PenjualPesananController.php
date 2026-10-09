@@ -25,7 +25,7 @@ class PenjualPesananController extends Controller
             });
         }
 
-        // Filter status
+        // status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }

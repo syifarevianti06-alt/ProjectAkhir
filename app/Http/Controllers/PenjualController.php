@@ -11,9 +11,9 @@ class PenjualController extends Controller
 {
     public function dashboard()
     {
-        // ==========================================
+
         // STATUS PESANAN YANG DIHITUNG SEBAGAI PENJUALAN
-        // ==========================================
+
 
         $statusSukses = [
             'paid',
@@ -24,9 +24,6 @@ class PenjualController extends Controller
         ];
 
 
-        // ==========================================
-        // STATISTIK PESANAN
-        // ==========================================
 
         // Penjualan hari ini
         $penjualanHariIni = Order::whereDate('created_at', today())
@@ -55,9 +52,9 @@ class PenjualController extends Controller
         ])->count();
 
 
-        // ==========================================
+
         // DATA PRODUK
-        // ==========================================
+
 
         $totalProduk = Product::count();
 
@@ -71,9 +68,9 @@ class PenjualController extends Controller
             ->get();
 
 
-        // ==========================================
+
         // PESANAN TERBARU
-        // ==========================================
+
 
         $pesananTerbaru = Order::with('user')
             ->latest()
@@ -81,9 +78,9 @@ class PenjualController extends Controller
             ->get();
 
 
-        // ==========================================
+
         // GRAFIK PENJUALAN 7 HARI TERAKHIR
-        // ==========================================
+
 
         $grafikPenjualan = [];
 
@@ -102,9 +99,9 @@ class PenjualController extends Controller
         }
 
 
-        // ==========================================
+
         // PENJUALAN BERDASARKAN KATEGORI
-        // ==========================================
+
 
         $kategoriPenjualan = Product::query()
             ->join(
@@ -132,9 +129,7 @@ class PenjualController extends Controller
         $totalTerjual = $kategoriPenjualan->sum('jumlah');
 
 
-        // ==========================================
         // KIRIM DATA KE DASHBOARD PENJUAL
-        // ==========================================
 
         return view('penjual.dashboard', compact(
             'penjualanHariIni',

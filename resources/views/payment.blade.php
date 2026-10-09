@@ -22,7 +22,7 @@
                 Silakan lakukan pembayaran melalui QRIS.
             </p>
 
-            {{-- TOTAL --}}
+            // TOTAL
             <div class="mt-6 rounded-xl bg-[#fbf5ef] p-4">
 
                 <p class="text-xs text-gray-500">
@@ -35,7 +35,7 @@
 
             </div>
 
-            {{-- QRIS DUMMY --}}
+            // QRIS DUMMY
             <div class="mt-7 flex justify-center">
 
                 <div class="w-64 h-64 bg-white border border-gray-200 rounded-xl p-4">
@@ -52,17 +52,15 @@
                                         {{ ($i * 7 + $order->id) % 3 === 0
                                             ? 'bg-[#332326]'
                                             : 'bg-white border border-gray-100' }}">
-                                    </div>
-
-                                @endfor
-
                             </div>
 
-                            <p class="mt-3 text-[9px] font-bold tracking-widest">
-                                QRIS DUMMY
-                            </p>
+                            @endfor
 
                         </div>
+
+                        <p class="mt-3 text-[9px] font-bold tracking-widest">
+                            QRIS DUMMY
+                        </p>
 
                     </div>
 
@@ -70,45 +68,45 @@
 
             </div>
 
-            <p class="mt-5 text-xs text-gray-400">
-                QRIS ini hanya digunakan untuk simulasi pembayaran.
+        </div>
+
+        <p class="mt-5 text-xs text-gray-400">
+            QRIS ini hanya digunakan untuk simulasi pembayaran.
+        </p>
+
+        // NOMOR PESANAN
+        <div class="mt-5 border-t border-gray-100 pt-5">
+
+            <p class="text-xs text-gray-400">
+                Nomor Pesanan
             </p>
 
-            {{-- NOMOR PESANAN --}}
-            <div class="mt-5 border-t border-gray-100 pt-5">
-
-                <p class="text-xs text-gray-400">
-                    Nomor Pesanan
-                </p>
-
-                <p class="mt-1 text-sm font-semibold text-[#332326]">
-                    {{ $order->order_number }}
-                </p>
-
-            </div>
-
-            {{-- TOMBOL --}}
-            <form
-                action="{{ route('payment.qris.success', $order->id) }}"
-                method="POST"
-                class="mt-6"
-            >
-                @csrf
-
-                <button
-                    type="submit"
-                    class="w-full rounded-xl bg-[#8b5e5e] py-3
-                           text-sm font-semibold text-white
-                           hover:bg-[#754b4b]"
-                >
-                    Saya Sudah Bayar
-                </button>
-
-            </form>
+            <p class="mt-1 text-sm font-semibold text-[#332326]">
+                {{ $order->order_number }}
+            </p>
 
         </div>
 
+        // TOMBOL
+        <form
+            action="{{ route('payment.qris.success', $order->id) }}"
+            method="POST"
+            class="mt-6">
+            @csrf
+
+            <button
+                type="submit"
+                class="w-full rounded-xl bg-[#8b5e5e] py-3
+                           text-sm font-semibold text-white
+                           hover:bg-[#754b4b]">
+                Saya Sudah Bayar
+            </button>
+
+        </form>
+
     </div>
+
+</div>
 
 </div>
 

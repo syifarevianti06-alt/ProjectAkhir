@@ -180,7 +180,7 @@
                                 class="size-btn w-10 h-8 border border-gray-300
                                        rounded-md text-xs bg-pink
                                        hover:border-[#8b2947]
-                                       hover:text-[#fcfafb]"
+                    "
                             >
                                 {{ $size }}
                             </button>
@@ -228,7 +228,7 @@
                                 class="color-btn px-4 py-2 border border-gray-300
                                        rounded-md bg-pink text-[10px]
                                        hover:border-[#8b2947]
-                                       hover:text-[#fcf6f7]"
+                                      "
                             >
                                 {{ $color }}
                             </button>
@@ -326,10 +326,10 @@
 </form>
                       <a
     href="{{ route('checkout', ['product_id' => $product->id, 'quantity' => 1]) }}"
-    class="text-center bg-[#c48797]
-           text-white py-2.5 rounded-md
-           text-xs font-medium
-           hover:bg-[#8b2947] transition"
+    class="text-center bg-[#8b2947]
+           text-sm font-semibold
+           rounded-xl py-3 text-white
+           hover:bg-[#721f39] transition"
 >
     Beli sekarang
 </a>

@@ -18,17 +18,14 @@ class CustomerProductController extends Controller
                 $query->where(function ($q) use ($search) {
 
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('category', 'like', "%{$search}%")
-                      ->orWhere('description', 'like', "%{$search}%");
-
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
                 });
-
             })
 
             ->when($request->filled('category'), function ($query) use ($request) {
 
                 $query->where('category', $request->category);
-
             })
 
             ->latest()
@@ -50,10 +47,10 @@ class CustomerProductController extends Controller
     }
 
 
-   public function show($id)
-{
-    $product = Product::findOrFail($id);
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
 
-    return view('products.show', compact('product'));
-}
+        return view('products.show', compact('product'));
+    }
 }

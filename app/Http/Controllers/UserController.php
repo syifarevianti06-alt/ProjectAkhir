@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Menampilkan daftar pengguna
-     */
+
+    //Menampilkan daftar pengguna
+
     public function index(Request $request)
     {
         $query = User::query();
@@ -53,17 +53,17 @@ class UserController extends Controller
         ));
     }
 
-    /**
-     * Form tambah pengguna
-     */
+
+    // Form tambah pengguna
+
     public function create()
     {
         return view('admin.pengguna-create');
     }
 
-    /**
-     * Menyimpan pengguna baru
-     */
+
+    //Menyimpan pengguna baru
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -105,17 +105,17 @@ class UserController extends Controller
             ->with('success', 'Pengguna berhasil ditambahkan.');
     }
 
-    /**
-     * Form edit pengguna
-     */
+
+    //Form edit pengguna
+
     public function edit(User $user)
     {
         return view('admin.pengguna-edit', compact('user'));
     }
 
-    /**
-     * Update pengguna
-     */
+
+    // Update pengguna
+
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
@@ -149,7 +149,7 @@ class UserController extends Controller
         $user->email = $data['email'];
         $user->role = $data['role'];
 
-        // Password hanya diubah jika diisi
+        // Password diubah jika diisi
         if (!empty($data['password'])) {
             $user->password = Hash::make($data['password']);
         }
@@ -161,9 +161,9 @@ class UserController extends Controller
             ->with('success', 'Data pengguna berhasil diperbarui.');
     }
 
-    /**
-     * Hapus pengguna
-     */
+
+    //Hapus pengguna
+
     public function destroy(User $user)
     {
         $user->delete();

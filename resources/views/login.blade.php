@@ -14,27 +14,25 @@
 
     <div
         class="relative min-h-screen w-full bg-cover bg-center bg-no-repeat"
-        style="background-image: url('{{ asset('images/bege.jpeg') }}');"
-    >
+        style="background-image: url('{{ asset('images/bege.jpeg') }}');">
 
-        {{-- Overlay background --}}
+        // OVERLAY BACKGROUND
         <div class="absolute inset-0 bg-black/35"></div>
 
 
-        {{-- Container Login --}}
+        // Container Login
         <div class="relative z-10 flex min-h-screen items-center justify-center px-5 py-10">
 
-            {{-- Card --}}
+            // Card
             <div
                 class="w-full max-w-[460px]
                        rounded-[28px]
                        bg-[#faf8f8]/95
                        px-8 py-9
                        shadow-2xl
-                       sm:px-11 sm:py-10"
-            >
+                       sm:px-11 sm:py-10">
 
-                {{-- Logo / Judul --}}
+                // Logo / Judul
                 <div class="mb-8 text-center">
 
                     <h1 class="font-serif text-[30px] font-bold text-[#966767]">
@@ -44,8 +42,7 @@
                     <p
                         class="mx-auto mt-3 max-w-[270px]
                                font-serif text-sm leading-[1.5]
-                               text-[#966767]"
-                    >
+                               text-[#966767]">
                         Masuk sekarang untuk
                         <br>
                         mencari style keren kamu
@@ -54,54 +51,50 @@
                 </div>
 
 
-                {{-- ERROR --}}
+                // ERROR
                 @if ($errors->any())
 
-                    <div
-                        class="mb-5 rounded-lg
+                <div
+                    class="mb-5 rounded-lg
                                bg-red-50
                                px-4 py-3
-                               text-xs text-red-600"
-                    >
-                        {{ $errors->first() }}
-                    </div>
+                               text-xs text-red-600">
+                    {{ $errors->first() }}
+                </div>
 
                 @endif
 
 
-                {{-- SUCCESS --}}
+                // SUCCESS
                 @if (session('success'))
 
-                    <div
-                        class="mb-5 rounded-lg
+                <div
+                    class="mb-5 rounded-lg
                                bg-green-50
                                px-4 py-3
-                               text-xs text-green-600"
-                    >
-                        {{ session('success') }}
-                    </div>
+                               text-xs text-green-600">
+                    {{ session('success') }}
+                </div>
 
                 @endif
 
 
-                {{-- FORM LOGIN --}}
+                // FORM LOGIN
                 <form
                     action="{{ route('login.process') }}"
-                    method="POST"
-                >
+                    method="POST">
 
                     @csrf
 
 
-                    {{-- EMAIL --}}
+                    // EMAIL
                     <div class="mb-5">
 
                         <label
                             for="email"
                             class="mb-2 block
                                    font-serif text-[13px]
-                                   font-semibold text-[#966767]"
-                        >
+                                   font-semibold text-[#966767]">
                             Email
                         </label>
 
@@ -123,21 +116,19 @@
                                    transition
                                    focus:border-[#966767]
                                    focus:ring-2
-                                   focus:ring-[#966767]/10"
-                        >
+                                   focus:ring-[#966767]/10">
 
                     </div>
 
 
-                    {{-- PASSWORD --}}
+                    // PASSWORD
                     <div class="mb-2">
 
                         <label
                             for="password"
                             class="mb-2 block
                                    font-serif text-[13px]
-                                   font-semibold text-[#966767]"
-                        >
+                                   font-semibold text-[#966767]">
                             Kata Sandi
                         </label>
 
@@ -157,28 +148,26 @@
                                    transition
                                    focus:border-[#966767]
                                    focus:ring-2
-                                   focus:ring-[#966767]/10"
-                        >
+                                   focus:ring-[#966767]/10">
 
                     </div>
 
 
-                    {{-- LUPA PASSWORD --}}
+                    // LUPA PASSWORD
                     <div class="mb-5 text-right">
 
                         <a
                             href="#"
                             class="font-serif text-[11px]
                                    font-semibold text-[#966767]
-                                   hover:underline"
-                        >
+                                   hover:underline">
                             Lupa password?
                         </a>
 
                     </div>
 
 
-                    {{-- BUTTON LOGIN --}}
+                    // BUTTON LOGIN
                     <button
                         type="submit"
                         class="h-[46px] w-full
@@ -187,20 +176,18 @@
                                font-serif text-[13px]
                                font-bold text-white
                                transition
-                               hover:bg-[#8e5959]"
-                    >
+                               hover:bg-[#8e5959]">
                         MASUK SEKARANG
                     </button>
 
                 </form>
 
 
-                {{-- REGISTER --}}
+                // REGISTER
                 <div
                     class="mt-6 text-center
                            font-serif text-xs
-                           text-[#966767]"
-                >
+                           text-[#966767]">
 
                     <span>
                         Belum punya akun?
@@ -209,8 +196,7 @@
                     <a
                         href="{{ route('register') }}"
                         class="font-bold text-[#966767]
-                               hover:underline"
-                    >
+                               hover:underline">
                         Register
                     </a>
 

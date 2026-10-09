@@ -98,7 +98,7 @@ class ProductController extends Controller
         ]);
 
 
-        // Update gambar jika ada gambar baru
+        // Update gambar
         if ($request->hasFile('image')) {
 
             if (
@@ -110,11 +110,7 @@ class ProductController extends Controller
 
             $data['image'] = $request->file('image')
                 ->store('products', 'public');
-
         } else {
-
-            // Kalau tidak upload gambar baru,
-            // gunakan gambar lama
             $data['image'] = $product->image;
         }
 
@@ -130,11 +126,9 @@ class ProductController extends Controller
                 'trim',
                 explode(',', $data['sizes'])
             );
-
         } else {
 
             $data['sizes'] = null;
-
         }
 
 
@@ -145,11 +139,9 @@ class ProductController extends Controller
                 'trim',
                 explode(',', $data['colors'])
             );
-
         } else {
 
             $data['colors'] = null;
-
         }
 
 
@@ -165,7 +157,7 @@ class ProductController extends Controller
     // Menghapus produk
     public function destroy(Product $product)
     {
-        // Hapus gambar produk dari storage
+
         if (
             $product->image &&
             Storage::disk('public')->exists($product->image)
