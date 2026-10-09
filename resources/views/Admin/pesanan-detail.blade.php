@@ -7,14 +7,15 @@
 
 <div class="max-w-6xl mx-auto space-y-6">
 
-    //HEADER
+    {{-- HEADER --}}
     <div>
 
         <a
             href="{{ route('admin.pesanan') }}"
             class="inline-flex items-center gap-2
             text-sm text-[#8D716D]
-            hover:text-[#7D2942] mb-4">
+            hover:text-[#7D2942] mb-4"
+        >
             ← Kembali ke Pesanan
         </a>
 
@@ -34,48 +35,48 @@
             </div>
 
 
-            // STATUS
+            {{-- STATUS --}}
             <div>
 
                 @if(in_array($order->status, ['completed', 'selesai']))
 
-                <span class="px-4 py-2 rounded-full
+                    <span class="px-4 py-2 rounded-full
                         bg-[#E7F1E8] text-[#64806A]
                         text-sm font-medium">
-                    Selesai
-                </span>
+                        Selesai
+                    </span>
 
                 @elseif(in_array($order->status, ['processing', 'diproses']))
 
-                <span class="px-4 py-2 rounded-full
+                    <span class="px-4 py-2 rounded-full
                         bg-[#F3E9DD] text-[#856B4E]
                         text-sm font-medium">
-                    Diproses
-                </span>
+                        Diproses
+                    </span>
 
                 @elseif(in_array($order->status, ['shipped', 'dikirim']))
 
-                <span class="px-4 py-2 rounded-full
+                    <span class="px-4 py-2 rounded-full
                         bg-[#E6EDF3] text-[#60758A]
                         text-sm font-medium">
-                    Dikirim
-                </span>
+                        Dikirim
+                    </span>
 
                 @elseif(in_array($order->status, ['cancelled', 'dibatalkan']))
 
-                <span class="px-4 py-2 rounded-full
+                    <span class="px-4 py-2 rounded-full
                         bg-[#F9E7E7] text-[#A45D63]
                         text-sm font-medium">
-                    Dibatalkan
-                </span>
+                        Dibatalkan
+                    </span>
 
                 @else
 
-                <span class="px-4 py-2 rounded-full
+                    <span class="px-4 py-2 rounded-full
                         bg-[#F2E2E4] text-[#7D2942]
                         text-sm font-medium">
-                    Pending
-                </span>
+                        Pending
+                    </span>
 
                 @endif
 
@@ -88,21 +89,21 @@
 
     @if(session('success'))
 
-    <div class="bg-[#F1E8E3]
+        <div class="bg-[#F1E8E3]
             border border-[#E1D0C8]
             text-[#70534D]
             rounded-xl px-5 py-4 text-sm">
 
-        {{ session('success') }}
+            {{ session('success') }}
 
-    </div>
+        </div>
 
     @endif
 
 
     <div class="grid grid-cols-3 gap-6">
 
-        // DETAIL PESANAN
+        {{-- DETAIL PESANAN --}}
         <div class="col-span-2
             bg-white
             border border-[#EDE2DA]
@@ -123,89 +124,90 @@
 
                 @forelse($order->items as $item)
 
-                <div class="p-6 flex items-center gap-5">
+                    <div class="p-6 flex items-center gap-5">
 
-                    {{-- IMAGE --}}
-                    <div class="w-20 h-20 rounded-xl
+                        {{-- IMAGE --}}
+                        <div class="w-20 h-20 rounded-xl
                             bg-[#F8F2EE]
                             overflow-hidden
                             flex-shrink-0">
 
-                        @if($item->product_image)
+                            @if($item->product_image)
 
-                        <img
-                            src="{{ asset('storage/' . $item->product_image) }}"
-                            class="w-full h-full object-cover"
-                            alt="{{ $item->product_name }}">
+                                <img
+                                    src="{{ asset('storage/' . $item->product_image) }}"
+                                    class="w-full h-full object-cover"
+                                    alt="{{ $item->product_name }}"
+                                >
 
-                        @else
+                            @else
 
-                        <div class="w-full h-full
+                                <div class="w-full h-full
                                     flex items-center justify-center
                                     text-[#B5A39D]">
-                            —
-                        </div>
+                                    —
+                                </div>
 
-                        @endif
-
-                    </div>
-
-
-                    // INFO
-                    <div class="flex-1">
-
-                        <p class="font-medium text-[#493535]">
-                            {{ $item->product_name }}
-                        </p>
-
-                        <p class="text-xs text-[#A28B83] mt-1">
-
-                            {{ $item->size ? 'Ukuran: ' . $item->size : '' }}
-
-                            @if($item->size && $item->color)
-                            ·
                             @endif
 
-                            {{ $item->color ? 'Warna: ' . $item->color : '' }}
-
-                        </p>
-
-                        <p class="text-xs text-[#A28B83] mt-2">
-                            {{ $item->quantity }} ×
-                            Rp {{ number_format($item->price, 0, ',', '.') }}
-                        </p>
-
-                    </div>
+                        </div>
 
 
-                    // SUBTOTAL
-                    <div class="text-right">
+                        {{-- INFO --}}
+                        <div class="flex-1">
 
-                        <p class="text-sm font-semibold text-[#493535]">
+                            <p class="font-medium text-[#493535]">
+                                {{ $item->product_name }}
+                            </p>
 
-                            Rp
-                            {{ number_format(
+                            <p class="text-xs text-[#A28B83] mt-1">
+
+                                {{ $item->size ? 'Ukuran: ' . $item->size : '' }}
+
+                                @if($item->size && $item->color)
+                                    ·
+                                @endif
+
+                                {{ $item->color ? 'Warna: ' . $item->color : '' }}
+
+                            </p>
+
+                            <p class="text-xs text-[#A28B83] mt-2">
+                                {{ $item->quantity }} ×
+                                Rp {{ number_format($item->price, 0, ',', '.') }}
+                            </p>
+
+                        </div>
+
+
+                        {{-- SUBTOTAL --}}
+                        <div class="text-right">
+
+                            <p class="text-sm font-semibold text-[#493535]">
+
+                                Rp
+                                {{ number_format(
                                     $item->price * $item->quantity,
                                     0,
                                     ',',
                                     '.'
                                 ) }}
 
-                        </p>
+                            </p>
+
+                        </div>
 
                     </div>
 
-                </div>
-
                 @empty
 
-                <div class="p-10 text-center">
+                    <div class="p-10 text-center">
 
-                    <p class="text-sm text-[#A28B83]">
-                        Tidak ada item pesanan.
-                    </p>
+                        <p class="text-sm text-[#A28B83]">
+                            Tidak ada item pesanan.
+                        </p>
 
-                </div>
+                    </div>
 
                 @endforelse
 
@@ -249,10 +251,10 @@
         </div>
 
 
-        // SISI KANAN
+        {{-- SISI KANAN --}}
         <div class="space-y-6">
 
-            // CUSTOMER
+            {{-- CUSTOMER --}}
             <div class="bg-white
                 border border-[#EDE2DA]
                 rounded-2xl p-6">
@@ -276,7 +278,7 @@
             </div>
 
 
-            // ALAMAT
+            {{-- ALAMAT --}}
             <div class="bg-white
                 border border-[#EDE2DA]
                 rounded-2xl p-6">
@@ -292,13 +294,13 @@
                     {{ $order->address_full }}
 
                     @if($order->address_city)
-                    <br>
-                    {{ $order->address_city }}
+                        <br>
+                        {{ $order->address_city }}
                     @endif
 
                     @if($order->address_postal_code)
-                    <br>
-                    {{ $order->address_postal_code }}
+                        <br>
+                        {{ $order->address_postal_code }}
                     @endif
 
                 </div>
@@ -306,7 +308,7 @@
             </div>
 
 
-            // PEMBAYARAN
+            {{-- PEMBAYARAN --}}
             <div class="bg-white
                 border border-[#EDE2DA]
                 rounded-2xl p-6">
@@ -321,16 +323,16 @@
 
                 @if($order->paid_at)
 
-                <p class="text-xs text-[#A28B83] mt-2">
-                    Dibayar {{ $order->paid_at->format('d M Y, H:i') }}
-                </p>
+                    <p class="text-xs text-[#A28B83] mt-2">
+                        Dibayar {{ $order->paid_at->format('d M Y, H:i') }}
+                    </p>
 
                 @endif
 
             </div>
 
 
-            // UPDATE STATUS
+            {{-- UPDATE STATUS --}}
             <div class="bg-white
                 border border-[#EDE2DA]
                 rounded-2xl p-6">
@@ -342,7 +344,8 @@
                 <form
                     action="{{ route('admin.pesanan.status', $order) }}"
                     method="POST"
-                    class="mt-5">
+                    class="mt-5"
+                >
 
                     @csrf
                     @method('PUT')
@@ -356,7 +359,8 @@
                         px-4 py-3
                         text-sm text-[#665250]
                         focus:outline-none
-                        focus:border-[#9D6673]">
+                        focus:border-[#9D6673]"
+                    >
 
                         <option value="pending"
                             {{ in_array($order->status, ['pending', 'baru']) ? 'selected' : '' }}>
@@ -395,7 +399,8 @@
                         rounded-xl
                         py-3
                         text-sm font-medium
-                        transition">
+                        transition"
+                    >
                         Simpan Status
                     </button>
 

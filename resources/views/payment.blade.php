@@ -22,7 +22,7 @@
                 Silakan lakukan pembayaran melalui QRIS.
             </p>
 
-            // TOTAL
+            {{-- TOTAL --}}
             <div class="mt-6 rounded-xl bg-[#fbf5ef] p-4">
 
                 <p class="text-xs text-gray-500">
@@ -35,7 +35,7 @@
 
             </div>
 
-            // QRIS DUMMY
+            {{-- QRIS DUMMY --}}
             <div class="mt-7 flex justify-center">
 
                 <div class="w-64 h-64 bg-white border border-gray-200 rounded-xl p-4">
@@ -74,7 +74,7 @@
             QRIS ini hanya digunakan untuk simulasi pembayaran.
         </p>
 
-        // NOMOR PESANAN
+        {{-- NOMOR PESANAN --}}
         <div class="mt-5 border-t border-gray-100 pt-5">
 
             <p class="text-xs text-gray-400">
@@ -87,7 +87,7 @@
 
         </div>
 
-        // TOMBOL
+        {{-- TOMBOL --}}
         <form
             action="{{ route('payment.qris.success', $order->id) }}"
             method="POST"

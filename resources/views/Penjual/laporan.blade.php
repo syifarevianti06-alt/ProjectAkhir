@@ -8,7 +8,7 @@
 
 <div class="space-y-7">
 
-    //HEADER
+    {{-- HEADER --}}
     <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
         <div>
@@ -22,21 +22,24 @@
         </div>
 
 
-        //FILTER BULAN
+        {{-- FILTER BULAN --}}
         <form
             action="{{ route('penjual.laporan') }}"
             method="GET"
-            class="flex items-center gap-2">
+            class="flex items-center gap-2"
+        >
 
             <input
                 type="month"
                 name="bulan"
                 value="{{ $bulan }}"
-                class="rounded-xl border border-[#eadede] bg-white px-4 py-2.5 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]">
+                class="rounded-xl border border-[#eadede] bg-white px-4 py-2.5 text-sm text-[#4d4141] outline-none focus:border-[#986d6d]"
+            >
 
             <button
                 type="submit"
-                class="rounded-xl bg-[#986d6d] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#805959]">
+                class="rounded-xl bg-[#986d6d] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#805959]"
+            >
                 Tampilkan
             </button>
 
@@ -45,10 +48,10 @@
     </div>
 
 
-    //STATISTIK
+    {{-- STATISTIK --}}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-        // PENDAPATAN
+        {{-- PENDAPATAN --}}
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -66,7 +69,7 @@
         </div>
 
 
-        // PESANAN
+        {{-- PESANAN --}}
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -84,7 +87,7 @@
         </div>
 
 
-        // PRODUK TERJUAL
+        {{-- PRODUK TERJUAL --}}
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -102,7 +105,7 @@
         </div>
 
 
-        // RATA-RATA
+        {{-- RATA-RATA --}}
         <div class="rounded-2xl border border-[#eadede] bg-white p-5 shadow-sm">
 
             <p class="text-xs text-[#a28f8f]">
@@ -122,7 +125,7 @@
     </div>
 
 
-    //GRAFIK PENJUALAN
+    {{-- GRAFIK PENJUALAN --}}
     <div class="rounded-2xl border border-[#eadede] bg-white p-6 shadow-sm">
 
         <div class="mb-6">
@@ -139,7 +142,7 @@
 
 
         @php
-        $maxPenjualan = collect($grafikPenjualan)->max('total') ?: 1;
+            $maxPenjualan = collect($grafikPenjualan)->max('total') ?: 1;
         @endphp
 
 
@@ -147,33 +150,34 @@
 
             @foreach ($grafikPenjualan as $data)
 
-            @php
-            $persentase = ($data['total'] / $maxPenjualan) * 100;
-            @endphp
+                @php
+                    $persentase = ($data['total'] / $maxPenjualan) * 100;
+                @endphp
 
-            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3">
 
-                <div class="w-12 text-xs text-[#9a8888]">
-                    {{ $data['tanggal'] }}
-                </div>
+                    <div class="w-12 text-xs text-[#9a8888]">
+                        {{ $data['tanggal'] }}
+                    </div>
 
-                <div class="flex-1">
+                    <div class="flex-1">
 
-                    <div class="h-7 overflow-hidden rounded-lg bg-[#f8eeee]">
+                        <div class="h-7 overflow-hidden rounded-lg bg-[#f8eeee]">
 
-                        <div
-                            class="h-full rounded-lg bg-[#986d6d] transition-all"
-                            style="width: {{ $persentase }}%"></div>
+                            <div
+                                class="h-full rounded-lg bg-[#986d6d] transition-all"
+                                style="width: {{ $persentase }}%"
+                            ></div>
+
+                        </div>
 
                     </div>
 
-                </div>
+                    <div class="w-32 text-right text-xs font-medium text-[#5f4c4c]">
+                        Rp {{ number_format($data['total'], 0, ',', '.') }}
+                    </div>
 
-                <div class="w-32 text-right text-xs font-medium text-[#5f4c4c]">
-                    Rp {{ number_format($data['total'], 0, ',', '.') }}
                 </div>
-
-            </div>
 
             @endforeach
 
@@ -182,11 +186,11 @@
     </div>
 
 
-    // PRODUK TERLARIS + STATUS PESANAN
+    {{-- PRODUK TERLARIS + STATUS PESANAN --}}
     <div class="grid gap-6 lg:grid-cols-2">
 
 
-        // PRODUK TERLARIS
+        {{-- PRODUK TERLARIS --}}
         <div class="rounded-2xl border border-[#eadede] bg-white shadow-sm">
 
             <div class="border-b border-[#eadede] px-6 py-5">
@@ -206,48 +210,48 @@
 
                 @forelse ($produkTerlaris as $index => $produk)
 
-                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center justify-between px-6 py-4">
 
-                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-4">
 
-                        <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#f8eeee] text-xs font-semibold text-[#986d6d]">
-                            {{ $index + 1 }}
+                            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#f8eeee] text-xs font-semibold text-[#986d6d]">
+                                {{ $index + 1 }}
+                            </div>
+
+                            <div>
+
+                                <p class="text-sm font-medium text-[#4d4141]">
+                                    {{ $produk->product_name }}
+                                </p>
+
+                                <p class="mt-1 text-[11px] text-[#a28f8f]">
+                                    {{ $produk->total_terjual }} pcs terjual
+                                </p>
+
+                            </div>
+
                         </div>
 
-                        <div>
 
-                            <p class="text-sm font-medium text-[#4d4141]">
-                                {{ $produk->product_name }}
-                            </p>
+                        <div class="text-right">
 
-                            <p class="mt-1 text-[11px] text-[#a28f8f]">
-                                {{ $produk->total_terjual }} pcs terjual
+                            <p class="text-sm font-semibold text-[#4d4141]">
+                                Rp {{ number_format($produk->total_pendapatan, 0, ',', '.') }}
                             </p>
 
                         </div>
 
                     </div>
-
-
-                    <div class="text-right">
-
-                        <p class="text-sm font-semibold text-[#4d4141]">
-                            Rp {{ number_format($produk->total_pendapatan, 0, ',', '.') }}
-                        </p>
-
-                    </div>
-
-                </div>
 
                 @empty
 
-                <div class="px-6 py-12 text-center">
+                    <div class="px-6 py-12 text-center">
 
-                    <p class="text-sm text-[#9a8888]">
-                        Belum ada data penjualan.
-                    </p>
+                        <p class="text-sm text-[#9a8888]">
+                            Belum ada data penjualan.
+                        </p>
 
-                </div>
+                    </div>
 
                 @endforelse
 
@@ -256,7 +260,7 @@
         </div>
 
 
-        // STATUS PESANAN
+        {{-- STATUS PESANAN --}}
         <div class="rounded-2xl border border-[#eadede] bg-white shadow-sm">
 
             <div class="border-b border-[#eadede] px-6 py-5">
@@ -276,61 +280,61 @@
 
                 @forelse ($statusPesanan as $status)
 
-                @php
+                    @php
 
-                $namaStatus = match (strtolower($status->status)) {
+                        $namaStatus = match (strtolower($status->status)) {
 
-                'pending',
-                'baru' => 'Pesanan Baru',
+                            'pending',
+                            'baru' => 'Pesanan Baru',
 
-                'paid' => 'Sudah Dibayar',
+                            'paid' => 'Sudah Dibayar',
 
-                'processing',
-                'diproses' => 'Diproses',
+                            'processing',
+                            'diproses' => 'Diproses',
 
-                'shipped',
-                'dikirim' => 'Dikirim',
+                            'shipped',
+                            'dikirim' => 'Dikirim',
 
-                'completed',
-                'selesai' => 'Selesai',
+                            'completed',
+                            'selesai' => 'Selesai',
 
-                'cancelled',
-                'dibatalkan' => 'Dibatalkan',
+                            'cancelled',
+                            'dibatalkan' => 'Dibatalkan',
 
-                default => ucfirst($status->status),
+                            default => ucfirst($status->status),
 
-                };
+                        };
 
-                @endphp
+                    @endphp
 
 
-                <div class="flex items-center justify-between px-6 py-4">
+                    <div class="flex items-center justify-between px-6 py-4">
 
-                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-3">
 
-                        <div class="h-2.5 w-2.5 rounded-full bg-[#986d6d]"></div>
+                            <div class="h-2.5 w-2.5 rounded-full bg-[#986d6d]"></div>
 
-                        <span class="text-sm text-[#5f4c4c]">
-                            {{ $namaStatus }}
+                            <span class="text-sm text-[#5f4c4c]">
+                                {{ $namaStatus }}
+                            </span>
+
+                        </div>
+
+                        <span class="text-sm font-semibold text-[#4d4141]">
+                            {{ $status->jumlah }}
                         </span>
 
                     </div>
 
-                    <span class="text-sm font-semibold text-[#4d4141]">
-                        {{ $status->jumlah }}
-                    </span>
-
-                </div>
-
                 @empty
 
-                <div class="px-6 py-12 text-center">
+                    <div class="px-6 py-12 text-center">
 
-                    <p class="text-sm text-[#9a8888]">
-                        Belum ada data pesanan.
-                    </p>
+                        <p class="text-sm text-[#9a8888]">
+                            Belum ada data pesanan.
+                        </p>
 
-                </div>
+                    </div>
 
                 @endforelse
 
@@ -341,7 +345,7 @@
     </div>
 
 
-    // INFO
+    {{-- INFO --}}
     <div class="rounded-2xl border border-[#eadede] bg-[#fcf8f8] px-5 py-4">
 
         <p class="text-xs leading-5 text-[#806f6f]">

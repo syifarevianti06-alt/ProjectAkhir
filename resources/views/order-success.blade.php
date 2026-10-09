@@ -4,11 +4,11 @@
 
 <div class="min-h-[calc(100vh-80px)] bg-[#f8f1eb] px-6 py-12">
 
-    // CONTENT
+    <!-- CONTENT -->
     <div class="max-w-xl mx-auto text-center">
 
 
-        // ICON SUKSES
+        <!-- ICON SUKSES -->
         <div class="flex justify-center mb-6">
 
             <div class="w-[72px] h-[72px]
@@ -24,27 +24,27 @@
 
         </div>
 
-        // JUDUL
+        <!-- JUDUL -->
         <h1 class="text-3xl font-bold text-[#3f2528]">
             Pesanan Berhasil!
         </h1>
 
 
-        // SUBTITLE
+        <!-- SUBTITLE -->
         <p class="text-sm text-[#a18b8b] mt-3">
             Terima kasih, pesanan kamu telah berhasil dibuat.
         </p>
 
 
-        // DETAIL PESANAN
+        <!-- DETAIL PESANAN -->
         <div class="bg-white rounded-xl p-7 mt-8
                     text-left shadow-sm">
 
 
-            // BARIS ATAS
+            <!-- BARIS ATAS -->
             <div class="grid grid-cols-2 gap-8">
 
-                // NOMOR PESANAN
+                <!-- NOMOR PESANAN -->
                 <div>
 
                     <p class="text-xs text-[#a18b8b]">
@@ -58,7 +58,7 @@
                 </div>
 
 
-                // TOTAL
+                <!-- TOTAL -->
                 <div>
 
                     <p class="text-xs text-[#a18b8b]">
@@ -74,10 +74,10 @@
             </div>
 
 
-            // BARIS KEDUA
+            <!-- BARIS KEDUA -->
             <div class="grid grid-cols-2 gap-8 mt-5">
 
-                // METODE
+                <!-- METODE -->
                 <div>
 
                     <p class="text-xs text-[#a18b8b]">
@@ -91,7 +91,7 @@
                 </div>
 
 
-                // ESTIMASI
+                <!-- ESTIMASI -->
                 <div>
 
                     <p class="text-xs text-[#a18b8b]">
@@ -107,7 +107,7 @@
             </div>
 
 
-            // ALAMAT
+            <!-- ALAMAT -->
             <div class="mt-5">
 
                 <p class="text-xs text-[#a18b8b]">
@@ -123,10 +123,10 @@
         </div>
 
 
-        // TOMBOL
+        <!-- TOMBOL -->
         <div class="grid grid-cols-2 gap-4 mt-8">
 
-            // LIHAT PESANAN
+            <!-- LIHAT PESANAN -->
             <a
                 href="/pesanan"
                 class="py-3 rounded-lg
@@ -140,7 +140,7 @@
             </a>
 
 
-            // KEMBALI
+            <!-- KEMBALI -->
             <a
                 href="/"
                 class="py-3 rounded-lg

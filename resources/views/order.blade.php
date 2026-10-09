@@ -6,7 +6,7 @@
 
     <div class="max-w-6xl mx-auto px-6 py-10">
 
-        // HEADER
+        {{-- HEADER --}}
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-[#332326]">
                 Pesanan Saya
@@ -18,7 +18,7 @@
         </div>
 
 
-        // SUCCESS
+        {{-- SUCCESS --}}
         @if (session('success'))
         <div class="mb-6 rounded-xl bg-green-50 px-5 py-3 text-sm text-green-700">
             {{ session('success') }}
@@ -26,7 +26,7 @@
         @endif
 
 
-        // BELUM ADA PESANAN
+        {{-- BELUM ADA PESANAN --}}
         @if ($orders->isEmpty())
 
         <div class="rounded-2xl bg-white p-12 text-center shadow-sm">
@@ -65,14 +65,14 @@
 
         @else
 
-        // LIST PESANAN
+        {{-- LIST PESANAN --}}
         <div class="space-y-5">
 
             @foreach ($orders as $order)
 
             <div class="rounded-2xl bg-white p-6 shadow-sm">
 
-                // HEADER PESANAN
+                {{-- HEADER PESANAN --}}
                 <div class="flex flex-col gap-3 border-b border-gray-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
 
                     <div>
@@ -135,14 +135,14 @@
                 </div>
 
 
-                // PRODUK
+                {{-- PRODUK --}}
                 <div class="py-5">
 
                     @foreach ($order->items as $item)
 
                     <div class="flex items-center gap-4 py-2">
 
-                        // GAMBAR PRODUK
+                        {{-- FOTO PRODUK --}}
                         <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[#f8f1eb]">
 
                             @if ($item->product_image)
@@ -159,7 +159,7 @@
                         </div>
 
 
-                        // INFO PRODUK
+                        {{-- INFO PRODUK --}}
                         <div class="min-w-0 flex-1">
 
                             <h3 class="truncate text-sm font-semibold text-[#332326]">
@@ -177,7 +177,7 @@
                         </div>
 
 
-                        // HARGA
+                        {{-- HARGA --}}
                         <div class="text-right">
 
                             <p class="text-sm font-semibold text-[#332326]">
@@ -193,7 +193,7 @@
                 </div>
 
 
-                // FOOTER
+                {{-- FOOTER --}}
                 <div class="flex flex-col gap-4 border-t border-gray-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
 
                     <div>

@@ -7,7 +7,7 @@
 <div class="min-h-screen bg-[#f8f5f2] py-10">
     <div class="max-w-6xl mx-auto px-5">
 
-        // HEADER
+        {{-- HEADER --}}
         <div class="mb-8">
             <h1 class="text-3xl font-serif text-[#5d4545]">
                 Checkout
@@ -19,7 +19,7 @@
         </div>
 
 
-        // ERROR
+        {{-- ERROR --}}
         @if ($errors->any())
         <div class="mb-6 bg-red-50 border border-red-200 text-red-600 rounded-xl p-4">
             <p class="font-semibold mb-2">
@@ -35,7 +35,7 @@
         @endif
 
 
-        // SUCCESS
+        {{-- SUCCESS --}}
         @if (session('success'))
         <div class="mb-6 bg-green-50 border border-green-200 text-green-600 rounded-xl p-4">
             {{ session('success') }}
@@ -48,7 +48,9 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                // INFORMASI PENGIRIMAN
+                {{-- ================================================= --}}
+                {{-- INFORMASI PENGIRIMAN --}}
+                {{-- ================================================= --}}
                 <div class="lg:col-span-2">
 
                     <div class="bg-white rounded-2xl p-7 shadow-sm">
@@ -58,7 +60,7 @@
                         </h2>
 
 
-                        // NAMA
+                        {{-- NAMA --}}
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Nama Penerima
@@ -74,7 +76,7 @@
                         </div>
 
 
-                        // NOMOR TELEPON
+                        {{-- NOMOR TELEPON --}}
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Nomor Telepon
@@ -90,7 +92,7 @@
                         </div>
 
 
-                        // ALAMAT
+                        {{-- ALAMAT --}}
                         <div class="mb-5">
                             <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Alamat Lengkap
@@ -105,7 +107,7 @@
                         </div>
 
 
-                        // KOTA + KODE POS
+                        {{-- KOTA + KODE POS --}}
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
 
                             <div>
@@ -140,7 +142,7 @@
                         </div>
 
 
-                        // METODE PEMBAYARAN
+                        {{-- METODE PEMBAYARAN --}}
                         <div class="mt-8">
 
                             <h2 class="text-xl font-semibold text-[#4b3838] mb-5">
@@ -175,7 +177,9 @@
                 </div>
 
 
-                // RINGKASAN PESANAN
+                {{-- ================================================= --}}
+                {{-- RINGKASAN PESANAN --}}
+                {{-- ================================================= --}}
                 <div>
 
                     <div class="bg-white rounded-2xl p-6 shadow-sm sticky top-5">
@@ -185,7 +189,9 @@
                         </h2>
 
 
-                        // JIKA BELI DARI KERANJANG
+                        {{-- ================================================= --}}
+                        {{-- JIKA CHECKOUT DARI KERANJANG --}}
+                        {{-- ================================================= --}}
 
                         @if(isset($items) && $items->count())
 
@@ -195,7 +201,7 @@
 
                             <div class="flex gap-4">
 
-                                // GAMBAR
+                                {{-- GAMBAR --}}
                                 @if (!empty($item->product->image))
 
                                 <img
@@ -214,7 +220,7 @@
                                 @endif
 
 
-                                // INFO
+                                {{-- INFO --}}
                                 <div class="flex-1">
 
                                     <h3 class="font-medium text-[#4b3838]">
@@ -259,13 +265,15 @@
                         </div>
 
 
-                        // JIKA BELI LANGSUNG DARI PRODUK
+                        {{-- ================================================= --}}
+                        {{-- JIKA BELI LANGSUNG DARI PRODUK --}}
+                        {{-- ================================================= --}}
 
                         @else
 
                         <div class="flex gap-4">
 
-                            // GAMBAR
+                            {{-- GAMBAR --}}
                             @if (!empty($product->image))
 
                             <img
@@ -321,14 +329,14 @@
                         @endif
 
 
-                        // PEMISAH
+                        {{-- PEMISAH --}}
                         <div class="border-t border-gray-200 my-6"></div>
 
 
-                        // TOTAL
+                        {{-- TOTAL --}}
                         <div class="space-y-3">
 
-                            // SUBTOTAL
+                            {{-- SUBTOTAL --}}
                             <div class="flex justify-between text-sm">
 
                                 <span class="text-gray-500">
@@ -342,7 +350,7 @@
                             </div>
 
 
-                            // ONGKIR
+                            {{-- ONGKIR --}}
                             <div class="flex justify-between text-sm">
 
                                 <span class="text-gray-500">
@@ -356,7 +364,7 @@
                             </div>
 
 
-                            // TOTAL
+                            {{-- TOTAL --}}
                             <div class="border-t border-gray-200 pt-4 flex justify-between">
 
                                 <span class="font-semibold text-[#4b3838]">
@@ -372,11 +380,13 @@
                         </div>
 
 
-                        // DATA PRODUK
+                        {{-- ================================================= --}}
+                        {{-- DATA PRODUK --}}
+                        {{-- ================================================= --}}
 
                         @if(isset($items) && $items->count())
 
-                        // SEMUA PRODUK DARI KERANJANG
+                        {{-- SEMUA PRODUK DARI KERANJANG --}}
 
                         @foreach($items as $index => $item)
 
@@ -404,7 +414,7 @@
 
                         @else
 
-                        // SATU PRODUK DARI BELI SEKARANG
+                        {{-- SATU PRODUK DARI BELI SEKARANG --}}
 
                         <input
                             type="hidden"
@@ -429,7 +439,7 @@
                         @endif
 
 
-                        // BUTTON
+                        {{-- BUTTON --}}
                         <button
                             type="submit"
                             class="w-full mt-7 bg-[#8b5e5e] hover:bg-[#754b4b] text-white py-3.5 rounded-xl font-semibold transition">

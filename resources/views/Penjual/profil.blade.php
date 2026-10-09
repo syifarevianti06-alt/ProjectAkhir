@@ -7,7 +7,7 @@
 
 <div class="max-w-5xl space-y-7">
 
-    // HEADER
+    {{-- HEADER --}}
     <div>
         <h1 class="font-serif text-2xl font-bold text-[#4d4141]">
             Profil Toko
@@ -19,7 +19,7 @@
     </div>
 
 
-    // PESAN BERHASIL
+    {{-- PESAN BERHASIL --}}
     @if (session('status'))
     <div class="rounded-xl border border-green-100 bg-green-50 px-5 py-4 text-sm text-green-700">
         {{ session('status') }}
@@ -27,7 +27,7 @@
     @endif
 
 
-    // ERROR VALIDASI
+    {{-- ERROR VALIDASI --}}
     @if ($errors->any())
     <div class="rounded-xl border border-red-100 bg-red-50 px-5 py-4 text-sm text-red-700">
         <p class="font-semibold mb-2">
@@ -43,12 +43,12 @@
     @endif
 
 
-    // INFORMASI TOKO
+    {{-- INFORMASI TOKO --}}
     <div class="rounded-2xl border border-[#eadede] bg-white p-7 shadow-sm">
 
         <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
 
-            // LOGO
+            {{-- LOGO --}}
             <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-[#f4e9e9]">
 
                 <span class="font-serif text-xl font-bold text-[#986d6d]">
@@ -79,7 +79,7 @@
     </div>
 
 
-    // FORM INFORMASI
+    {{-- FORM INFORMASI --}}
     <form action="{{ route('penjual.profil.update') }}" method="POST">
         @csrf
         @method('PUT')
@@ -98,7 +98,7 @@
 
             <div class="mt-6 grid gap-5 md:grid-cols-2">
 
-                // NAMA PEMILIK
+                {{-- NAMA PEMILIK --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -115,7 +115,7 @@
                 </div>
 
 
-                // NAMA TOKO
+                {{-- NAMA TOKO --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -132,7 +132,7 @@
                 </div>
 
 
-                // EMAIL
+                {{-- EMAIL --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -149,7 +149,7 @@
                 </div>
 
 
-                // NOMOR TELEPON
+                {{-- TELEPON --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -166,7 +166,7 @@
                 </div>
 
 
-                // KATEGORI
+                {{-- KATEGORI --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -197,7 +197,7 @@
                 </div>
 
 
-                // ALAMAT
+                {{-- ALAMAT --}}
                 <div class="md:col-span-2">
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -213,7 +213,7 @@
                 </div>
 
 
-                // DESKRIPSI
+                {{-- DESKRIPSI --}}
                 <div class="md:col-span-2">
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -231,7 +231,7 @@
             </div>
 
 
-            // BUTTON
+            {{-- BUTTON --}}
             <div class="mt-7 flex justify-end">
 
                 <button
@@ -249,7 +249,7 @@
 
 
 
-    // AKUN
+    {{-- AKUN --}}
     <div class="rounded-2xl border border-[#eadede] bg-white p-7 shadow-sm">
 
         <h2 class="font-serif text-lg font-semibold text-[#4d4141]">
@@ -260,17 +260,17 @@
             Kelola informasi login akun penjual.
         </p>
 
-        <form
-            action="{{ route('penjual.profil.password') }}"
-            method="POST"
-            class="mt-6">
+       <form
+    action="{{ route('penjual.profil.password') }}"
+    method="POST"
+    class="mt-6">
 
-            @csrf
-            @method('PUT')
+    @csrf
+    @method('PUT')
 
             <div class="grid gap-5 md:grid-cols-2">
 
-                // PASSWORD BARU
+                {{-- PASSWORD BARU --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">
@@ -287,7 +287,7 @@
 
                 </div>
 
-                // KONFIRMASI PASSWORD
+                {{-- KONFIRMASI PASSWORD --}}
                 <div>
 
                     <label class="mb-2 block text-xs font-semibold text-[#665858]">

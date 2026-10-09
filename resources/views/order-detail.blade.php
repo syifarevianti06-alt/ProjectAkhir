@@ -8,7 +8,7 @@
 
     <div class="max-w-5xl mx-auto px-6 py-10">
 
-        // KEMBALI
+        {{-- KEMBALI --}}
         <a
             href="{{ route('orders') }}"
             class="inline-flex items-center text-sm text-[#8b203d] hover:underline mb-6">
@@ -16,7 +16,7 @@
         </a>
 
 
-        // HEADER
+        {{-- HEADER --}}
         <div class="mb-8">
 
             <h1 class="text-3xl font-bold text-[#332326]">
@@ -30,7 +30,7 @@
         </div>
 
 
-        // STATUS PESANAN
+        {{-- STATUS PESANAN --}}
         <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,7 +98,7 @@
         </div>
 
 
-        // INFORMASI PENGIRIMAN
+        {{-- INFORMASI PENGIRIMAN --}}
         <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
             <h2 class="text-lg font-semibold text-[#332326] mb-5">
@@ -168,7 +168,7 @@
         </div>
 
 
-        // PRODUK
+        {{-- PRODUK --}}
         <div class="bg-white rounded-2xl p-6 shadow-sm mb-6">
 
             <h2 class="text-lg font-semibold text-[#332326] mb-5">
@@ -183,7 +183,7 @@
 
                 <div class="flex gap-4 py-5 first:pt-0 last:pb-0">
 
-                    // FOTO
+                    {{-- FOTO --}}
                     <div class="h-20 w-20 flex-shrink-0 overflow-hidden
                                         rounded-xl bg-[#f8f1eb]">
 
@@ -208,7 +208,7 @@
                     </div>
 
 
-                    // DETAIL PRODUK
+                    {{-- DETAIL PRODUK --}}
                     <div class="flex-1 min-w-0">
 
                         <h3 class="font-semibold text-[#332326]">
@@ -237,7 +237,7 @@
                     </div>
 
 
-                    // HARGA
+                    {{-- HARGA --}}
                     <div class="text-right flex-shrink-0">
 
                         <p class="text-sm font-semibold text-[#332326]">
@@ -278,7 +278,7 @@
         </div>
 
 
-        // RINGKASAN PEMBAYARAN
+        {{-- RINGKASAN PEMBAYARAN --}}
         <div class="bg-white rounded-2xl p-6 shadow-sm">
 
             <h2 class="text-lg font-semibold text-[#332326] mb-5">
@@ -352,7 +352,7 @@
             </div>
 
 
-            // BAYAR QRIS
+            {{-- BAYAR QRIS --}}
             @if (
             strtolower($order->payment_method ?? '') === 'qris' &&
             in_array(strtolower($order->status ?? ''), [

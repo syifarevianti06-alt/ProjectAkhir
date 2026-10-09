@@ -16,14 +16,14 @@
         class="relative min-h-screen w-full bg-cover bg-center bg-no-repeat"
         style="background-image: url('{{ asset('images/bege.jpeg') }}');">
 
-        // OVERLAY BACKGROUND
+        {{-- Overlay background --}}
         <div class="absolute inset-0 bg-black/35"></div>
 
 
-        // Container Login
+        {{-- Container Login --}}
         <div class="relative z-10 flex min-h-screen items-center justify-center px-5 py-10">
 
-            // Card
+            {{-- Card --}}
             <div
                 class="w-full max-w-[460px]
                        rounded-[28px]
@@ -32,7 +32,7 @@
                        shadow-2xl
                        sm:px-11 sm:py-10">
 
-                // Logo / Judul
+                {{-- Logo / Judul --}}
                 <div class="mb-8 text-center">
 
                     <h1 class="font-serif text-[30px] font-bold text-[#966767]">
@@ -51,7 +51,7 @@
                 </div>
 
 
-                // ERROR
+                {{-- ERROR --}}
                 @if ($errors->any())
 
                 <div
@@ -65,7 +65,7 @@
                 @endif
 
 
-                // SUCCESS
+                {{-- SUCCESS --}}
                 @if (session('success'))
 
                 <div
@@ -79,7 +79,7 @@
                 @endif
 
 
-                // FORM LOGIN
+                {{-- FORM LOGIN --}}
                 <form
                     action="{{ route('login.process') }}"
                     method="POST">
@@ -87,7 +87,7 @@
                     @csrf
 
 
-                    // EMAIL
+                    {{-- EMAIL --}}
                     <div class="mb-5">
 
                         <label
@@ -121,7 +121,7 @@
                     </div>
 
 
-                    // PASSWORD
+                    {{-- PASSWORD --}}
                     <div class="mb-2">
 
                         <label
@@ -153,7 +153,7 @@
                     </div>
 
 
-                    // LUPA PASSWORD
+                    {{-- LUPA PASSWORD --}}
                     <div class="mb-5 text-right">
 
                         <a
@@ -167,7 +167,7 @@
                     </div>
 
 
-                    // BUTTON LOGIN
+                    {{-- BUTTON LOGIN --}}
                     <button
                         type="submit"
                         class="h-[46px] w-full
@@ -183,7 +183,7 @@
                 </form>
 
 
-                // REGISTER
+                {{-- REGISTER --}}
                 <div
                     class="mt-6 text-center
                            font-serif text-xs

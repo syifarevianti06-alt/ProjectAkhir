@@ -2,7 +2,9 @@
 
 @section('content')
 
-// HERO BANNER
+{{-- ========================= --}}
+{{-- HERO BANNER --}}
+{{-- ========================= --}}
 <section class="bg-[#faf5ef]">
 
     <div class="max-w-[1400px] mx-auto px-6 pt-5">
@@ -13,17 +15,17 @@
                    bg-cover bg-center"
             style="background-image: url('{{ asset('images/banner.jpeg') }}');">
 
-            // OVERLAY TIPIS
+            {{-- Overlay tipis --}}
             <div class="absolute inset-0 bg-white/20"></div>
 
 
-            // Ornamen kiri
+            {{-- Ornamen kiri --}}
             <div class="absolute left-8 top-8 text-[#b98585] text-2xl">
                 ✦
             </div>
 
 
-            // TEXT HERO
+            {{-- TEXT HERO --}}
             <div
                 class="relative z-10 flex h-full
                        max-w-[650px] flex-col
@@ -70,12 +72,14 @@
 
 
 
-// PRODUK TERBARU
+{{-- ========================= --}}
+{{-- PRODUK TERBARU --}}
+{{-- ========================= --}}
 <section class="bg-[#faf5ef]">
 
     <div class="mx-auto max-w-[1400px] px-8 py-5">
 
-        // JUDUL
+        {{-- JUDUL --}}
         <div class="mb-3">
 
             <h2
@@ -94,7 +98,7 @@
         </div>
 
 
-        // PRODUK DARI DATABASE
+        {{-- PRODUK DARI DATABASE --}}
         <div
             class="grid grid-cols-1 gap-6
                    sm:grid-cols-2
@@ -106,7 +110,7 @@
                 class="overflow-hidden rounded-xl
                            bg-[#f0eeeb] shadow-sm">
 
-                // FOTO PRODUK
+                {{-- FOTO PRODUK --}}
                 <div class="h-[220px] overflow-hidden">
 
                     @if ($product->image)
@@ -137,13 +141,13 @@
                 {{-- INFORMASI PRODUK --}}
                 <div class="p-3">
 
-                    // KATEGORI
+                    {{-- KATEGORI --}}
                     <p class="text-[10px] font-semibold text-gray-500">
                         {{ $product->category ?? 'Fashion' }}
                     </p>
 
 
-                    // NAMA
+                    {{-- NAMA --}}
                     <h3
                         class="mt-1 min-h-[40px]
                                    font-serif text-xs
@@ -153,7 +157,7 @@
                     </h3>
 
 
-                    // HARGA
+                    {{-- HARGA --}}
                     <p
                         class="mt-2 font-serif
                                    text-sm font-bold">
@@ -161,7 +165,7 @@
                     </p>
 
 
-                    // DETAIL
+                    {{-- DETAIL --}}
                     <a
                         href="{{ route('produk.show', $product->id) }}"
                         class="mt-2 block rounded-full

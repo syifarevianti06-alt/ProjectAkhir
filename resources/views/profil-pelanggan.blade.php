@@ -6,24 +6,26 @@
 
     <div class="max-w-6xl mx-auto px-6 py-12">
 
-        // JUDUL
+        <!-- JUDUL -->
         <h1 class="text-3xl font-bold text-[#332326] mb-8">
             Profil Saya
         </h1>
 
 
-        // CONTENT
+        <!-- CONTENT -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
 
-            // CARD PROFIL
+            {{-- ========================= --}}
+            {{-- CARD PROFIL --}}
+            {{-- ========================= --}}
 
             <div class="lg:col-span-2 bg-white rounded-2xl p-7">
 
-                // FOTO / IDENTITAS
+                {{-- FOTO / IDENTITAS --}}
                 <div class="flex items-center gap-5 mb-8">
 
-                    // AVATAR
+                    {{-- AVATAR --}}
                     <div
                         class="w-[72px] h-[72px]
                    rounded-full
@@ -35,7 +37,7 @@
                         </span>
                     </div>
 
-                    // NAMA & EMAIL ASLI
+                    {{-- NAMA & EMAIL ASLI --}}
                     <div>
                         <h2 class="text-xl font-bold text-[#332326]">
                             {{ $user->name }}
@@ -49,7 +51,7 @@
                 </div>
 
 
-                // NAMA LENGKAP
+                {{-- NAMA LENGKAP --}}
                 <div
                     class="border-b border-gray-300 py-4
                flex justify-between items-center">
@@ -63,7 +65,7 @@
                 </div>
 
 
-                // EMAIL
+                {{-- EMAIL --}}
                 <div
                     class="border-b border-gray-300 py-4
                flex justify-between items-center">
@@ -77,7 +79,7 @@
                 </div>
 
 
-                // ROLE
+                {{-- ROLE --}}
                 <div
                     class="border-b border-gray-300 py-4
                flex justify-between items-center">
@@ -95,7 +97,10 @@
 
             </div>
 
-            // CARD EDIT PROFIL
+            <!-- ========================= -->
+            <!-- CARD EDIT PROFIL -->
+            <!-- ========================= -->
+
             <div
                 id="edit-profile"
                 class="bg-white rounded-2xl p-7">
