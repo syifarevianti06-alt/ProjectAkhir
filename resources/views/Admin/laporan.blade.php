@@ -1,433 +1,230 @@
+```blade
 @extends('layouts.admin')
 
-@section('title', 'Laporan - Lune Attiré')
-@section('page-title', 'Laporan')
+@section('title', 'Laporan Penjualan')
 
 @section('content')
 
 <div class="space-y-7">
 
     {{-- HEADER --}}
-    <div class="flex items-end justify-between">
-
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-
-            <p class="text-[11px] uppercase tracking-[0.16em] text-[#A28B83]">
-                Sales Report
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#986d6d]">
+                LUNE ATTIRÉ · REPORT
             </p>
 
-            <h1 class="text-2xl font-semibold text-[#493535] mt-1">
+            <h1 class="mt-2 font-serif text-3xl font-bold text-[#4d4141]">
                 Laporan Penjualan
             </h1>
 
-            <p class="text-sm text-[#A28B83] mt-1">
-                Pantau performa penjualan Lune Attiré.
+            <p class="mt-2 text-sm text-[#9a8888]">
+                Ringkasan performa penjualan Lune Attiré.
             </p>
-
         </div>
 
-
-        {{-- FILTER BULAN --}}
-        <form
-            action="{{ route('admin.laporan') }}"
-            method="GET"
-            class="flex items-center gap-3"
+        <button
+            type="button"
+            onclick="window.print()"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#7b1f3a] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#61172d]"
         >
+            <span>↓</span>
+            Export PDF
+        </button>
+    </div>
 
-            <input
-                type="month"
-                name="bulan"
-                value="{{ $bulan }}"
-                class="bg-white
-                border border-[#E5D8D1]
-                rounded-xl
-                px-4 py-2.5
-                text-sm text-[#665250]
-                focus:outline-none
-                focus:border-[#9D6673]"
-            >
+
+    {{-- FILTER PERIODE --}}
+    <div class="flex flex-col justify-between gap-4 rounded-2xl border border-[#eadede] bg-white p-4 shadow-sm sm:flex-row sm:items-center">
+        <div>
+            <h2 class="text-sm font-semibold text-[#4d4141]">
+                Periode Laporan
+            </h2>
+            <p class="mt-1 text-xs text-[#a28f8f]">
+                Pilih rentang waktu penjualan.
+            </p>
+        </div>
+
+        <form method="GET"
+              action="{{ url()->current() }}"
+              class="flex flex-wrap gap-2">
 
             <button
                 type="submit"
-                class="bg-[#7D2942]
-                hover:bg-[#692238]
-                text-white
-                px-5 py-2.5
-                rounded-xl
-                text-sm font-medium
-                transition"
+                name="periode"
+                value="3"
+                class="rounded-xl border px-4 py-2.5 text-sm font-medium transition
+                {{ request('periode', '6') == '3'
+                    ? 'border-[#7b1f3a] bg-[#7b1f3a] text-white'
+                    : 'border-[#eadede] bg-white text-[#8f7a7a] hover:bg-[#fcf5f5]' }}"
             >
-                Tampilkan
+                3 Bulan Terakhir
+            </button>
+
+            <button
+                type="submit"
+                name="periode"
+                value="6"
+                class="rounded-xl border px-4 py-2.5 text-sm font-medium transition
+                {{ request('periode', '6') == '6'
+                    ? 'border-[#7b1f3a] bg-[#7b1f3a] text-white'
+                    : 'border-[#eadede] bg-white text-[#8f7a7a] hover:bg-[#fcf5f5]' }}"
+            >
+                6 Bulan Terakhir
             </button>
 
         </form>
-
     </div>
 
 
-    {{-- RINGKASAN --}}
-    <div class="grid grid-cols-4 gap-5">
+    {{-- STATISTIK --}}
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
 
-        {{-- PESANAN --}}
-        <div class="bg-white
-            border border-[#EDE2DA]
-            rounded-2xl p-5">
+        {{-- TOTAL PENJUALAN --}}
+        <div class="rounded-2xl border border-[#eadede] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+            <div class="flex items-center justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f6e9e9] text-xl text-[#986d6d]">
+                    Rp
+                </div>
 
-            <p class="text-xs text-[#A28B83]">
-                Total Pesanan
+                <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+                    {{ $persenPenjualan >= 0 ? '+' : '' }}{{ $persenPenjualan }}%
+                </span>
+            </div>
+
+            <p class="mt-5 text-sm text-[#9a8888]">
+                Total Penjualan
             </p>
 
-            <p class="text-3xl font-semibold
-                text-[#493535] mt-3">
+            <h2 class="mt-2 text-2xl font-bold text-[#4d4141]">
+                Rp {{ number_format($totalPenjualan, 0, ',', '.') }}
+            </h2>
 
-                {{ number_format($totalPesanan, 0, ',', '.') }}
-
+            <p class="mt-2 text-xs text-[#a28f8f]">
+                Dibandingkan periode sebelumnya
             </p>
-
-            <p class="text-xs text-[#A28B83] mt-2">
-                Pada bulan terpilih
-            </p>
-
         </div>
 
 
-        {{-- PENDAPATAN --}}
-        <div class="bg-white
-            border border-[#EDE2DA]
-            rounded-2xl p-5">
+        {{-- JUMLAH TRANSAKSI --}}
+        <div class="rounded-2xl border border-[#eadede] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+            <div class="flex items-center justify-between">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f6e9e9] text-xl text-[#986d6d]">
+                    ▤
+                </div>
 
-            <p class="text-xs text-[#A28B83]">
-                Total Pendapatan
+                <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+                    {{ $persenTransaksi >= 0 ? '+' : '' }}{{ $persenTransaksi }}%
+                </span>
+            </div>
+
+            <p class="mt-5 text-sm text-[#9a8888]">
+                Jumlah Transaksi
             </p>
 
-            <p class="text-2xl font-semibold
-                text-[#7D2942] mt-3">
+            <h2 class="mt-2 text-2xl font-bold text-[#4d4141]">
+                {{ number_format($jumlahTransaksi, 0, ',', '.') }}
+            </h2>
 
-                Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
-
+            <p class="mt-2 text-xs text-[#a28f8f]">
+                Total pesanan pada periode ini
             </p>
-
-            <p class="text-xs text-[#A28B83] mt-2">
-                Dari pesanan berhasil
-            </p>
-
         </div>
 
 
-        {{-- PRODUK --}}
-        <div class="bg-white
-            border border-[#EDE2DA]
-            rounded-2xl p-5">
+        {{-- PRODUK TERJUAL --}}
+        <div class="rounded-2xl border border-[#eadede] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:col-span-2 xl:col-span-1">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f6e9e9] text-xl text-[#986d6d]">
+                ♧
+            </div>
 
-            <p class="text-xs text-[#A28B83]">
+            <p class="mt-5 text-sm text-[#9a8888]">
                 Produk Terjual
             </p>
 
-            <p class="text-3xl font-semibold
-                text-[#493535] mt-3">
+            <h2 class="mt-2 text-2xl font-bold text-[#4d4141]">
+                {{ number_format($produkTerjual, 0, ',', '.') }}
+            </h2>
 
-                {{ number_format($totalProdukTerjual, 0, ',', '.') }}
-
+            <p class="mt-2 text-xs text-[#a28f8f]">
+                Item terjual dalam periode ini
             </p>
-
-            <p class="text-xs text-[#A28B83] mt-2">
-                Total item
-            </p>
-
-        </div>
-
-
-        {{-- RATA-RATA --}}
-        <div class="bg-white
-            border border-[#EDE2DA]
-            rounded-2xl p-5">
-
-            <p class="text-xs text-[#A28B83]">
-                Rata-rata Pesanan
-            </p>
-
-            <p class="text-2xl font-semibold
-                text-[#493535] mt-3">
-
-                Rp {{ number_format($rataRataPesanan, 0, ',', '.') }}
-
-            </p>
-
-            <p class="text-xs text-[#A28B83] mt-2">
-                Per transaksi
-            </p>
-
         </div>
 
     </div>
 
 
-    {{-- GRAFIK --}}
-    <div class="bg-white
-        border border-[#EDE2DA]
-        rounded-2xl p-6">
+    {{-- GRAFIK PENJUALAN --}}
+    <div class="rounded-2xl border border-[#eadede] bg-white p-6 shadow-sm">
 
-        <div class="mb-6">
+        <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+            <div>
+                <h2 class="font-serif text-xl font-bold text-[#4d4141]">
+                    Grafik Penjualan Bulanan
+                </h2>
 
-            <h2 class="font-semibold text-[#493535]">
-                Grafik Penjualan
-            </h2>
+                <p class="mt-1 text-xs text-[#a28f8f]">
+                    Perbandingan pendapatan setiap bulan.
+                </p>
+            </div>
 
-            <p class="text-xs text-[#A28B83] mt-1">
-                Pendapatan berdasarkan tanggal.
-            </p>
-
+            <div class="flex items-center gap-2">
+                <span class="h-3 w-3 rounded-sm bg-[#b98282]"></span>
+                <span class="text-xs text-[#9a8888]">Total penjualan</span>
+            </div>
         </div>
 
+        @php
+            $grafik = collect($grafikBulanan ?? []);
+            $maksGrafik = max(1, (float) $grafik->max('total'));
+        @endphp
 
-        <div class="h-72 flex items-end gap-2 overflow-x-auto">
+        <div class="mt-8 flex h-64 items-end gap-3 rounded-xl bg-[#fcf9f9] px-4 pb-4 pt-6 sm:gap-6 sm:px-8">
 
-            @php
-                $maxGrafik = collect($grafikPenjualan)->max('total');
-                $maxGrafik = $maxGrafik > 0 ? $maxGrafik : 1;
-            @endphp
-
-            @foreach($grafikPenjualan as $data)
-
+            @forelse ($grafik as $data)
                 @php
-                    $tinggi = ($data['total'] / $maxGrafik) * 100;
+                    $total = (float) ($data['total'] ?? 0);
+                    $tinggi = $total > 0
+                        ? max(4, ($total / $maksGrafik) * 100)
+                        : 2;
                 @endphp
 
-                <div class="min-w-[28px] flex-1 h-full
-                    flex flex-col justify-end items-center group">
+                <div class="group relative flex h-full min-w-0 flex-1 flex-col justify-end">
 
-                    <div class="relative w-full flex justify-center">
-
-                        <div
-                            class="w-full max-w-[28px]
-                            bg-[#7D2942]
-                            hover:bg-[#692238]
-                            rounded-t-lg
-                            transition"
-                            style="height: {{ max($tinggi, 3) }}%;"
-                        ></div>
-
-                        <div
-                            class="absolute bottom-full mb-2
-                            hidden group-hover:block
-                            bg-[#493535]
-                            text-white
-                            text-[10px]
-                            rounded-lg
-                            px-2 py-1
-                            whitespace-nowrap"
-                        >
-                            Rp {{ number_format($data['total'], 0, ',', '.') }}
-                        </div>
-
+                    <div class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded-lg bg-[#4d4141] px-3 py-2 text-xs text-white shadow-lg group-hover:block">
+                        Rp {{ number_format($total, 0, ',', '.') }}
                     </div>
 
-                    <p class="text-[9px] text-[#A28B83] mt-3">
-                        {{ $data['tanggal'] }}
-                    </p>
+                    <div
+                        class="w-full rounded-t-lg bg-[#b98282] transition-all duration-300 group-hover:bg-[#7b1f3a]"
+                        style="height: {{ $tinggi }}%;"
+                    ></div>
 
                 </div>
 
+            @empty
+                <div class="flex w-full items-center justify-center text-sm text-[#a28f8f]">
+                    Belum ada data penjualan.
+                </div>
+            @endforelse
+
+        </div>
+
+        <div class="mt-3 flex gap-3 sm:gap-6">
+            @foreach ($grafik as $data)
+                <div class="min-w-0 flex-1 truncate text-center text-xs text-[#9a8888]">
+                    {{ $data['bulan'] }}
+                </div>
             @endforeach
-
         </div>
 
     </div>
 
 
-    <div class="grid grid-cols-2 gap-6">
-
-        {{-- PRODUK TERLARIS --}}
-        <div class="bg-white
-            border border-[#EDE2DA]
-            rounded-2xl
-            overflow-hidden">
-
-            <div class="px-6 py-5
-                border-b border-[#EDE2DA]">
-
-                <h2 class="font-semibold text-[#493535]">
-                    Produk Terlaris
-                </h2>
-
-                <p class="text-xs text-[#A28B83] mt-1">
-                    Produk berdasarkan jumlah terjual.
-                </p>
-
-            </div>
-
-
-            <div class="divide-y divide-[#F0E5DF]">
-
-                @forelse($produkTerlaris as $index => $produk)
-
-                    <div class="px-6 py-4
-                        flex items-center gap-4">
-
-                        <div class="w-8 h-8 rounded-full
-                            bg-[#F3E4E5]
-                            text-[#7D2942]
-                            flex items-center
-                            justify-center
-                            text-xs font-semibold">
-
-                            {{ $index + 1 }}
-
-                        </div>
-
-
-                        <div class="flex-1 min-w-0">
-
-                            <p class="text-sm font-medium
-                                text-[#493535]
-                                truncate">
-
-                                {{ $produk->product_name }}
-
-                            </p>
-
-                            <p class="text-xs text-[#A28B83] mt-1">
-
-                                {{ $produk->total_terjual }} item terjual
-
-                            </p>
-
-                        </div>
-
-
-                        <p class="text-sm font-semibold
-                            text-[#7D2942]">
-
-                            Rp {{ number_format(
-                                $produk->total_pendapatan,
-                                0,
-                                ',',
-                                '.'
-                            ) }}
-
-                        </p>
-
-                    </div>
-
-                @empty
-
-                    <div class="px-6 py-12 text-center">
-
-                        <p class="text-sm text-[#A28B83]">
-                            Belum ada data penjualan.
-                        </p>
-
-                    </div>
-
-                @endforelse
-
-            </div>
-
-        </div>
-
-
-        {{-- STATUS PESANAN --}}
-        <div class="bg-white
-            border border-[#EDE2DA]
-            rounded-2xl
-            overflow-hidden">
-
-            <div class="px-6 py-5
-                border-b border-[#EDE2DA]">
-
-                <h2 class="font-semibold text-[#493535]">
-                    Status Pesanan
-                </h2>
-
-                <p class="text-xs text-[#A28B83] mt-1">
-                    Distribusi status pesanan bulan ini.
-                </p>
-
-            </div>
-
-
-            <div class="p-6 space-y-4">
-
-                @forelse($statusPesanan as $status)
-
-                    @php
-
-                        $namaStatus = match($status->status) {
-
-                            'pending',
-                            'baru' => 'Pending',
-
-                            'processing',
-                            'diproses' => 'Diproses',
-
-                            'shipped',
-                            'dikirim' => 'Dikirim',
-
-                            'completed',
-                            'selesai' => 'Selesai',
-
-                            'cancelled',
-                            'dibatalkan' => 'Dibatalkan',
-
-                            default => ucfirst($status->status),
-
-                        };
-
-                    @endphp
-
-
-                    <div>
-
-                        <div class="flex items-center
-                            justify-between mb-2">
-
-                            <span class="text-sm text-[#665250]">
-                                {{ $namaStatus }}
-                            </span>
-
-                            <span class="text-xs
-                                text-[#A28B83]">
-
-                                {{ $status->jumlah }}
-
-                            </span>
-
-                        </div>
-
-
-                        <div class="w-full h-2
-                            bg-[#F1E8E3]
-                            rounded-full overflow-hidden">
-
-                            <div
-                                class="h-full
-                                bg-[#7D2942]
-                                rounded-full"
-                                style="width: {{ $totalPesanan > 0 ? ($status->jumlah / $totalPesanan) * 100 : 0 }}%;"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-                @empty
-
-                    <div class="py-10 text-center">
-
-                        <p class="text-sm text-[#A28B83]">
-                            Belum ada data pesanan.
-                        </p>
-
-                    </div>
-
-                @endforelse
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-@endsection
+    {{-- PRODUK TERLARIS --}}
+    <div class="rounded-2xl border border-[#eadede] bg-white p-6 shadow-sm">
+
+        <div class="mb-6">
+            <h2 class="font-serif text-xl font-bold text-[#4d4141]">
+                Produk Terlaris
+            </h

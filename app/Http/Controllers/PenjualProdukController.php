@@ -9,22 +9,21 @@ use Illuminate\Support\Facades\Storage;
 
 class PenjualProdukController extends Controller
 {
-
     // Menampilkan semua produk.
-
     public function index()
-
     {
         $products = Product::latest()->paginate(10);
 
         return view('penjual.produk', compact('products'));
     }
 
+    // Menampilkan form tambah produk.
     public function create()
     {
         return view('penjual.tambah-produk');
     }
 
+    // Menyimpan produk baru.
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -37,7 +36,11 @@ class PenjualProdukController extends Controller
             'colors' => ['nullable', 'string'],
 
             'images' => ['nullable', 'array'],
-            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'images.*' => [
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+            ],
         ]);
 
         $data = [
@@ -56,17 +59,12 @@ class PenjualProdukController extends Controller
                 : null,
         ];
 
-
-
         // BUAT PRODUK
         $product = Product::create($data);
 
         // SIMPAN BANYAK FOTO
-
         if ($request->hasFile('images')) {
-
             foreach ($request->file('images') as $index => $image) {
-
                 $path = $image->store('products', 'public');
 
                 ProductImage::create([
@@ -88,19 +86,18 @@ class PenjualProdukController extends Controller
     }
 
     // Menampilkan detail produk.
-
     public function show(Product $product)
     {
         return view('penjual.products.show', compact('product'));
     }
 
     // Menampilkan halaman edit produk.
-
     public function edit(Product $product)
     {
         return view('penjual.products.edit', compact('product'));
     }
 
+    // Memperbarui produk.
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
@@ -111,7 +108,12 @@ class PenjualProdukController extends Controller
             'stock' => ['required', 'integer', 'min:0'],
             'sizes' => ['nullable', 'string'],
             'colors' => ['nullable', 'string'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+            ],
         ]);
 
         $data = [
@@ -120,21 +122,26 @@ class PenjualProdukController extends Controller
             'description' => $validated['description'] ?? null,
             'price' => $validated['price'],
             'stock' => $validated['stock'],
+
             'sizes' => !empty($validated['sizes'])
                 ? array_map('trim', explode(',', $validated['sizes']))
                 : null,
+
             'colors' => !empty($validated['colors'])
                 ? array_map('trim', explode(',', $validated['colors']))
                 : null,
         ];
 
         if ($request->hasFile('image')) {
-
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
+            if (
+                $product->image
+                && Storage::disk('public')->exists($product->image)
+            ) {
                 Storage::disk('public')->delete($product->image);
             }
 
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $data['image'] = $request->file('image')
+                ->store('products', 'public');
         }
 
         $product->update($data);
@@ -144,8 +151,7 @@ class PenjualProdukController extends Controller
             ->with('success', 'Produk berhasil diperbarui.');
     }
 
-    //Menghapus produk.
-
+    // Menghapus produk.
     public function destroy(Product $product)
     {
         $product->delete();

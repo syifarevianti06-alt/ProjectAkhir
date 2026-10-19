@@ -3,61 +3,84 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class PenjualProfileController extends Controller
 {
+    // Menampilkan profil asli dari akun yang login
     public function index()
     {
-        $user = auth()->user();
-        $profile = $user;
+        $profile = Auth::user();
 
-        return view('penjual.profil', compact('user', 'profile'));
+        if (!$profile) {
+            return redirect()->route('login');
+        }
+
+        return view('Penjual.profil', compact('profile'));
     }
 
+    // Menampilkan halaman edit
+    public function edit()
+    {
+        $profile = Auth::user();
+
+        if (!$profile) {
+            return redirect()->route('login');
+        }
+
+        return view('Penjual.profil-edit', compact('profile'));
+    }
+
+    // Menyimpan perubahan profil
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'store_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:30'],
-            'category' => ['nullable', 'string', 'max:255'],
-            'address' => ['nullable', 'string'],
-            'description' => ['nullable', 'string'],
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $data = $request->validate([
+            'store_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:30',
+            'address' => 'nullable|string|max:1000',
+            'description' => 'nullable|string|max:2000',
         ]);
 
-        $user->update([
-            'name' => $validated['name'],
-            'store_name' => $validated['store_name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'category' => $validated['category'] ?? null,
-            'address' => $validated['address'] ?? null,
-            'description' => $validated['description'] ?? null,
-        ]);
+        $user->fill($data);
+        $user->save();
 
         return redirect()
             ->route('penjual.profil')
-            ->with('status', 'Profil toko berhasil diperbarui.');
+            ->with('success', 'Profil berhasil diperbarui.');
     }
 
+    // Mengubah password akun
     public function updatePassword(Request $request)
     {
-        $validated = $request->validate([
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        $request->validate([
+            'password' => [
+                'required',
+                'confirmed',
+                Password::defaults(),
+            ],
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
 
-        $user->update([
-            'password' => Hash::make($validated['password']),
-        ]);
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
 
         return redirect()
             ->route('penjual.profil')
-            ->with('status', 'Password berhasil diubah.');
+            ->with('success', 'Password berhasil diperbarui.');
     }
 }

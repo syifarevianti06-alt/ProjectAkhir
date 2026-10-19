@@ -17,6 +17,8 @@ use App\Http\Controllers\PenjualProfileController;
 use App\Http\Controllers\PenjualStokController;
 use App\Http\Controllers\PenjualLaporanController;
 use App\Http\Controllers\PenjualPesananController;
+use App\Http\Controllers\PenjualKategoriController;
+use App\Http\Controllers\PenjualtransaksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PelangganProfileController;
 use App\Http\Controllers\CustomerProductController;
@@ -174,14 +176,51 @@ Route::put('/penjual/pesanan/{order}/status', [PenjualPesananController::class, 
     ->name('penjual.pesanan.status');
 
 // PENJUAL PROFIL TOKO
-Route::get('/penjual/profil', [PenjualProfileController::class, 'index'])
-    ->name('penjual.profil');
+Route::middleware('auth')->group(function () {
+    Route::get('/penjual/profil', [
+        PenjualProfileController::class,
+        'index'
+    ])->name('penjual.profil');
 
-Route::put('/penjual/profil', [PenjualProfileController::class, 'update'])
-    ->name('penjual.profil.update');
+    Route::get('/penjual/profil/edit', [
+        PenjualProfileController::class,
+        'edit'
+    ])->name('penjual.profil.edit');
 
-Route::put('/penjual/profil/password', [PenjualProfileController::class, 'updatePassword'])
-    ->name('penjual.profil.password');
+    Route::put('/penjual/profil', [
+        PenjualProfileController::class,
+        'update'
+    ])->name('penjual.profil.update');
+
+    Route::put('/penjual/profil/password', [
+        PenjualProfileController::class,
+        'updatePassword'
+    ])->name('penjual.profil.password');
+});
+
+    // PENJUAL KATEGORI
+Route::get('/penjual/kategori', [PenjualKategoriController::class, 'index'])
+    ->name('penjual.kategori');
+
+Route::get('/penjual/kategori/tambah', [PenjualKategoriController::class, 'create'])
+    ->name('penjual.kategori.create');
+
+Route::post('/penjual/kategori', [PenjualKategoriController::class, 'store'])
+    ->name('penjual.kategori.store');
+
+Route::get('/penjual/kategori/{kategori}/edit', [PenjualKategoriController::class, 'edit'])
+    ->name('penjual.kategori.edit');
+
+Route::put('/penjual/kategori/{kategori}', [PenjualKategoriController::class, 'update'])
+    ->name('penjual.kategori.update');
+
+Route::delete('/penjual/kategori/{kategori}', [PenjualKategoriController::class, 'destroy'])
+    ->name('penjual.kategori.destroy');
+
+
+// PENJUAL TRANSAKSI
+Route::get('/penjual/transaksi', [PenjualTransaksiController::class, 'index'])
+    ->name('penjual.transaksi');
 
 
 // HOME PELANGGAN
