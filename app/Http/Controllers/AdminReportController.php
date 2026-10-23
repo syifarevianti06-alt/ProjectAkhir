@@ -12,20 +12,27 @@ class AdminReportController extends Controller
 {
     public function index(Request $request)
     {
-        // Default: bulan berjalan
-        $bulan = $request->get('bulan', now()->format('Y-m'));
+        // Filter periode: 3 atau 6 bulan
+        $periode = (int) $request->get('periode', 6);
 
-        try {
-            $tanggal = Carbon::createFromFormat('Y-m', $bulan);
-        } catch (\Exception $e) {
-            $tanggal = now();
-            $bulan = now()->format('Y-m');
+        if (!in_array($periode, [3, 6])) {
+            $periode = 6;
         }
 
-        $awalBulan = $tanggal->copy()->startOfMonth();
-        $akhirBulan = $tanggal->copy()->endOfMonth();
+        $awalPeriode = now()
+            ->startOfMonth()
+            ->subMonths($periode - 1);
 
-        // Status yang dianggap sebagai pesanan berhasil
+        $akhirPeriode = now()->endOfMonth();
+
+        $awalPeriodeLalu = $awalPeriode->copy()
+            ->subMonths($periode);
+
+        $akhirPeriodeLalu = $awalPeriode->copy()
+            ->subDay()
+            ->endOfDay();
+
+        // Status pesanan yang dihitung sebagai penjualan berhasil
         $statusSukses = [
             'paid',
             'processing',
@@ -34,70 +41,92 @@ class AdminReportController extends Controller
             'selesai',
         ];
 
-        // TOTAL PESANAN
-        $totalPesanan = Order::whereBetween('created_at', [
-            $awalBulan,
-            $akhirBulan,
-        ])->count();
-
-        // TOTAL PENDAPATAN
-        $totalPendapatan = Order::whereBetween('created_at', [
-            $awalBulan,
-            $akhirBulan,
+        // Total penjualan pada periode terpilih
+        $totalPenjualan = Order::whereBetween('created_at', [
+            $awalPeriode,
+            $akhirPeriode,
         ])
             ->whereIn('status', $statusSukses)
             ->sum('total');
 
-        // TOTAL ITEM TERJUAL
-        $totalProdukTerjual = OrderItem::whereHas('order', function ($query) use (
-            $awalBulan,
-            $akhirBulan,
-            $statusSukses
-        ) {
-            $query->whereBetween('created_at', [
-                $awalBulan,
-                $akhirBulan,
-            ])
-                ->whereIn('status', $statusSukses);
-        })->sum('quantity');
-
-        // RATA-RATA NILAI PESANAN
-        $rataRataPesanan = Order::whereBetween('created_at', [
-            $awalBulan,
-            $akhirBulan,
+        // Jumlah transaksi berhasil
+        $jumlahTransaksi = Order::whereBetween('created_at', [
+            $awalPeriode,
+            $akhirPeriode,
         ])
             ->whereIn('status', $statusSukses)
-            ->avg('total') ?? 0;
+            ->count();
 
+        // Total produk terjual
+        $produkTerjual = OrderItem::whereHas(
+            'order',
+            function ($query) use (
+                $awalPeriode,
+                $akhirPeriode,
+                $statusSukses
+            ) {
+                $query->whereBetween('created_at', [
+                    $awalPeriode,
+                    $akhirPeriode,
+                ])->whereIn('status', $statusSukses);
+            }
+        )->sum('quantity');
 
+        // Data periode sebelumnya
+        $penjualanLalu = Order::whereBetween('created_at', [
+            $awalPeriodeLalu,
+            $akhirPeriodeLalu,
+        ])
+            ->whereIn('status', $statusSukses)
+            ->sum('total');
 
-        // GRAFIK PENJUALAN HARIAN
+        $transaksiLalu = Order::whereBetween('created_at', [
+            $awalPeriodeLalu,
+            $akhirPeriodeLalu,
+        ])
+            ->whereIn('status', $statusSukses)
+            ->count();
 
+        // Persentase perubahan penjualan
+        $persenPenjualan = $penjualanLalu > 0
+            ? round(
+                (($totalPenjualan - $penjualanLalu)
+                    / $penjualanLalu) * 100,
+                1
+            )
+            : ($totalPenjualan > 0 ? 100 : 0);
 
-        $grafikPenjualan = [];
+        // Persentase perubahan transaksi
+        $persenTransaksi = $transaksiLalu > 0
+            ? round(
+                (($jumlahTransaksi - $transaksiLalu)
+                    / $transaksiLalu) * 100,
+                1
+            )
+            : ($jumlahTransaksi > 0 ? 100 : 0);
 
-        $hari = $awalBulan->copy();
+        // Grafik penjualan bulanan
+        $grafikBulanan = [];
 
-        while ($hari->lte($akhirBulan)) {
+        $bulanGrafik = $awalPeriode->copy()->startOfMonth();
 
-            $total = Order::whereDate('created_at', $hari)
+        while ($bulanGrafik->lte($akhirPeriode)) {
+            $total = Order::whereBetween('created_at', [
+                $bulanGrafik->copy()->startOfMonth(),
+                $bulanGrafik->copy()->endOfMonth(),
+            ])
                 ->whereIn('status', $statusSukses)
                 ->sum('total');
 
-            $grafikPenjualan[] = [
-                'tanggal' => $hari->format('d'),
-                'label' => $hari->format('d M'),
+            $grafikBulanan[] = [
+                'bulan' => $bulanGrafik->translatedFormat('M Y'),
                 'total' => (float) $total,
             ];
 
-            $hari->addDay();
+            $bulanGrafik->addMonth();
         }
 
-
-
-        // PRODUK TERLARIS
-
-
+        // Produk terlaris
         $produkTerlaris = OrderItem::select(
             'product_id',
             'product_name',
@@ -105,44 +134,59 @@ class AdminReportController extends Controller
             DB::raw('SUM(price * quantity) as total_pendapatan')
         )
             ->whereHas('order', function ($query) use (
-                $awalBulan,
-                $akhirBulan,
+                $awalPeriode,
+                $akhirPeriode,
                 $statusSukses
             ) {
                 $query->whereBetween('created_at', [
-                    $awalBulan,
-                    $akhirBulan,
-                ])
-                    ->whereIn('status', $statusSukses);
+                    $awalPeriode,
+                    $akhirPeriode,
+                ])->whereIn('status', $statusSukses);
             })
             ->groupBy('product_id', 'product_name')
             ->orderByDesc('total_terjual')
-            ->take(10)
+            ->limit(10)
             ->get();
 
-
-
-        // STATUS PESANAN
-
+        // Ringkasan status pesanan
         $statusPesanan = Order::whereBetween('created_at', [
-            $awalBulan,
-            $akhirBulan,
+            $awalPeriode,
+            $akhirPeriode,
         ])
             ->select('status', DB::raw('COUNT(*) as jumlah'))
             ->groupBy('status')
             ->orderByDesc('jumlah')
             ->get();
 
+        // Rata-rata nilai transaksi berhasil
+        $rataRataPesanan = Order::whereBetween('created_at', [
+            $awalPeriode,
+            $akhirPeriode,
+        ])
+            ->whereIn('status', $statusSukses)
+            ->avg('total') ?? 0;
+
+        // Kompatibilitas dengan nama variabel lama
+        $totalPesanan = $jumlahTransaksi;
+        $totalPendapatan = $totalPenjualan;
+        $totalProdukTerjual = $produkTerjual;
 
         return view('admin.laporan', compact(
-            'bulan',
+            'periode',
+            'awalPeriode',
+            'akhirPeriode',
             'totalPesanan',
+            'jumlahTransaksi',
             'totalPendapatan',
+            'totalPenjualan',
             'totalProdukTerjual',
+            'produkTerjual',
             'rataRataPesanan',
-            'grafikPenjualan',
+            'grafikBulanan',
             'produkTerlaris',
-            'statusPesanan'
+            'statusPesanan',
+            'persenPenjualan',
+            'persenTransaksi'
         ));
     }
 }
